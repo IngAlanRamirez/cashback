@@ -82,4 +82,13 @@
       </div>
     }
   </div>
+
+  <!-- Modal de Selección de Tarjetas -->
+  <app-card-selection
+    [isOpen]="isCardSelectionOpen()"
+    [products]="mockProducts"
+    [currentProduct]="mockProduct"
+    (close)="onCardSelectionClose()"
+    (productSelected)="onProductSelected($event)">
+  </app-card-selection>
 </ion-content>

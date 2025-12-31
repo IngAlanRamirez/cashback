@@ -1,0 +1,89 @@
+:host {
+  display: none; // El componente no renderiza nada visualmente
+}
+
+// Estilos para el action sheet personalizado
+::ng-deep .card-selection-action-sheet {
+  --width: 100%;
+  --max-width: 100%;
+  --background: #ffffff;
+  --backdrop-opacity: 0.7;
+  --border-radius: 16px 16px 0 0;
+  
+  .action-sheet-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    margin: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+  }
+  
+  .action-sheet-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    overflow: hidden;
+  }
+  
+  .action-sheet-group {
+    border-radius: 16px 16px 0 0 !important;
+    overflow: hidden;
+  }
+  
+  .action-sheet-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #191919;
+    text-align: center;
+    padding: 16px;
+    padding-right: 100px; // Espacio para el botón cancelar
+    background-color: #F2F2F2;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    position: relative;
+    
+    .cancel-header-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #ec0000;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+      
+      &:active {
+        opacity: 0.6;
+      }
+    }
+  }
+  
+  .action-sheet-button {
+    --color: #191919;
+    font-size: 16px;
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &.action-sheet-cancel {
+      --color: #ec0000;
+      font-weight: 400;
+    }
+  }
+}
+

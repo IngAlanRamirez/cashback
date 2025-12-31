@@ -17,6 +17,7 @@ import { CardInfoComponent } from './components/card-info/card-info.component';
 import { AccumulatedCashbackComponent } from './components/accumulated-cashback/accumulated-cashback.component';
 import { MonthlyCashbackByStoreComponent } from './components/monthly-cashback-by-store/monthly-cashback-by-store.component';
 import { TransactionsListComponent } from './components/transactions-list/transactions-list.component';
+import { CardSelectionComponent } from './components/card-selection/card-selection.component';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
@@ -43,7 +44,8 @@ import { Purchase } from './models/purchase';
     CardInfoComponent,
     AccumulatedCashbackComponent,
     MonthlyCashbackByStoreComponent,
-    TransactionsListComponent
+    TransactionsListComponent,
+    CardSelectionComponent
   ]
 })
 export class CashbackPage {
@@ -53,21 +55,86 @@ export class CashbackPage {
   // Signal para controlar la visibilidad del banner
   isBannerOpen = signal<boolean>(true);
   
+  // Signal para controlar la visibilidad del modal de selección de tarjetas
+  isCardSelectionOpen = signal<boolean>(false);
+  
   // Datos mock para desarrollo
   mockProduct: Product = {
     type: 'CREDIT',
     cardIdentification: {
-      displayNumber: '1234567890122930'
+      displayNumber: '1234567890127896'
     },
     image: {
       imageNumber: '74141001253'
     },
     product: {
       name: 'LikeU'
-    }
+    },
+    associatedAccounts: [{
+      account: {
+        contract: {
+          contractId: 'contract-1'
+        },
+        typeCode: 'CREDIT',
+        statusInfo: {
+          statusCode: 'ACTIVE'
+        },
+        balances: []
+      }
+    }]
   };
   
-  mockProducts: Product[] = [this.mockProduct];
+  mockProducts: Product[] = [
+    this.mockProduct,
+    {
+      type: 'DEBIT',
+      cardIdentification: {
+        displayNumber: '1234567890124123'
+      },
+      image: {
+        imageNumber: '06001402555'
+      },
+      product: {
+        name: 'Débito LikeU'
+      },
+      associatedAccounts: [{
+        account: {
+          contract: {
+            contractId: 'contract-2'
+          },
+          typeCode: 'DEBIT',
+          statusInfo: {
+            statusCode: 'ACTIVE'
+          },
+          balances: []
+        }
+      }]
+    },
+    {
+      type: 'CREDIT',
+      cardIdentification: {
+        displayNumber: '1234567890125241'
+      },
+      image: {
+        imageNumber: 'other'
+      },
+      product: {
+        name: 'Santander Nómina'
+      },
+      associatedAccounts: [{
+        account: {
+          contract: {
+            contractId: 'contract-3'
+          },
+          typeCode: 'CREDIT',
+          statusInfo: {
+            statusCode: 'ACTIVE'
+          },
+          balances: []
+        }
+      }]
+    }
+  ];
   
   mockCashbackAmounts: CashBackAmounts = {
     monthAmount: {
@@ -235,8 +302,26 @@ export class CashbackPage {
    * Maneja el click en la tarjeta
    */
   onCardClick(): void {
-    console.log('Card clicked - Abrir modal de selección de tarjetas');
-    // TODO: Implementar modal para seleccionar tarjeta
+    if (this.mockProducts.length > 1) {
+      this.isCardSelectionOpen.set(true);
+    }
+  }
+
+  /**
+   * Maneja el cierre del modal de selección de tarjetas
+   */
+  onCardSelectionClose(): void {
+    this.isCardSelectionOpen.set(false);
+  }
+
+  /**
+   * Maneja la selección de una tarjeta
+   */
+  onProductSelected(product: Product): void {
+    this.mockProduct = product;
+    this.isCardSelectionOpen.set(false);
+    // TODO: Aquí se actualizarían los datos de cashback según la tarjeta seleccionada
+    console.log('Tarjeta seleccionada:', product);
   }
 
   /**
