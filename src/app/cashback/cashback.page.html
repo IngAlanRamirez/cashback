@@ -1,13 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>cashback</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cashback</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">cashback</ion-title>
+      <ion-title size="large">Cashback</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-container">
+    <ion-segment 
+      [value]="selectedTab()" 
+      (ionChange)="onTabChange($event)"
+      class="custom-segment">
+      <ion-segment-button value="resumen">
+        <ion-label>Resumen</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="promo">
+        <ion-label>Promo Cashback</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Content Container -->
+  <div class="container">
+    <!-- Tab Resumen -->
+    @if (selectedTab() === 'resumen') {
+      <div class="tab-content">
+        <!-- Aquí se integrarán los componentes de Resumen -->
+      </div>
+    }
+
+    <!-- Tab Promo Cashback -->
+    @if (selectedTab() === 'promo') {
+      <div class="tab-content">
+        <!-- Aquí se integrarán los componentes de Promo Cashback -->
+        <p>Contenido de Promo Cashback (pendiente de implementar)</p>
+      </div>
+    }
+  </div>
 </ion-content>

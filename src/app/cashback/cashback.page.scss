@@ -1,0 +1,67 @@
+:host {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Tabs Container
+.tabs-container {
+  margin: 24px 16px 0;
+  margin-top: 68px; // Espacio debajo del header fijo
+  
+  .custom-segment {
+    background-color: var(--sn-color-mercury, #e5e5e5);
+    border-radius: 12px;
+    padding: 4px;
+    
+    ion-segment-button {
+      --indicator-color: transparent;
+      --background-checked: var(--sn-color-clear, #ffffff);
+      --color: var(--sn-color-text-secondary, #92949c);
+      --color-checked: var(--sn-color-text-primary, #191919);
+      font-size: 16px;
+      font-weight: 400;
+      border-radius: 8px;
+      margin: 0 4px;
+      min-height: 36px;
+      
+      &::part(indicator) {
+        display: none;
+      }
+      
+      &.segment-button-checked {
+        font-weight: 700;
+        background-color: var(--sn-color-clear, #ffffff);
+      }
+    }
+  }
+}
+
+// Content Container
+.container {
+  padding: 0 16px;
+  flex: 1;
+  
+  .tab-content {
+    padding-bottom: 20px;
+  }
+}
+
+// Estilos adicionales para el header
+ion-header {
+  ion-toolbar {
+    --background: var(--sn-color-concrete, #f4f5f8);
+    
+    ion-title {
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--sn-color-text-primary, #191919);
+    }
+    
+    ion-back-button {
+      --color: var(--sn-color-santander, #ec0000);
+    }
+  }
+}
+
