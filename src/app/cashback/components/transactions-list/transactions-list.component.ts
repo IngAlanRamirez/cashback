@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonIcon, IonButton } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { options, warning } from 'ionicons/icons';
 import { Purchase } from '../../models/purchase';
@@ -11,7 +11,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, IonButton, TransactionItemComponent]
+  imports: [CommonModule, IonIcon, TransactionItemComponent]
 })
 export class TransactionsListComponent {
   @Input() purchases: Purchase[] = [];

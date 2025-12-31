@@ -72,27 +72,29 @@ export class TransactionItemComponent {
   }
 
   /**
-   * Formatea el monto de cashback
+   * Formatea el monto de cashback (formato: $X.XX)
    */
   formatCashbackAmount(): string {
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',
       currency: 'MXN',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(this.cashback_amount);
+      maximumFractionDigits: 2,
+      currencyDisplay: 'symbol'
+    }).format(this.cashback_amount).replace('MX$', '$'); // Asegurar formato $X.XX
   }
 
   /**
-   * Formatea el monto de la compra
+   * Formatea el monto de la compra (formato: $XXX.XX)
    */
   formatPurchaseAmount(): string {
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',
       currency: 'MXN',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(this.amount);
+      maximumFractionDigits: 2,
+      currencyDisplay: 'symbol'
+    }).format(this.amount).replace('MX$', '$'); // Asegurar formato $XXX.XX
   }
 }
 

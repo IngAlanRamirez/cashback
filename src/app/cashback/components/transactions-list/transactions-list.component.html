@@ -34,15 +34,12 @@
     }
   </div>
   
-  @if (hasMorePages()) {
-    <div class="btn-more-container">
-      <ion-button 
-        fill="clear" 
-        (click)="onLoadMore()"
-        class="btn-more">
-        Ver más
-      </ion-button>
-    </div>
-  }
+  <div class="btn-more-container">
+    <span 
+      class="btn-more"
+      (click)="onLoadMore()">
+      Ver más
+    </span>
+  </div>
 }
 

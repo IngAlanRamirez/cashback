@@ -26,29 +26,29 @@
       border-radius: 0 4px 4px 0;
     }
 
-    // Colores de categorías (coinciden con los del proyecto anterior)
+    // Colores de categorías según la imagen
     &.progress-theme-restaurant {
-      background-color: var(--sn-color-category-restaurant, #4db6ac); // Teal
+      background-color: #00cbd1; // Teal/Cyan para Restaurantes
     }
 
     &.progress-theme-pharmacy {
-      background-color: var(--sn-color-category-pharmacy, #f48fb1); // Rosa
+      background-color: #d23984; // Magenta/Rosa para Farmacias
     }
 
     &.progress-theme-gas-station {
-      background-color: var(--sn-color-category-gas, #d23984); // Magenta
+      background-color: #d23984; // Magenta (si se usa)
     }
 
     &.progress-theme-entertainment {
-      background-color: var(--sn-color-category-entertainment, #00cbd1); // Cyan
+      background-color: #00cbd1; // Cyan (si se usa)
     }
 
     &.progress-theme-supermarket {
-      background-color: var(--sn-color-category-supermarket, #ef0000); // Rojo
+      background-color: #ef0000; // Rojo para Supermercados
     }
 
     &.progress-theme-telecom {
-      background-color: var(--sn-color-category-telecom, #81d4fa); // Azul claro
+      background-color: #a0b4ff; // Azul claro/Lavanda para Telecomunicaciones
     }
   }
 }

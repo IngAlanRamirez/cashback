@@ -8,10 +8,10 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  border-radius: 12px;
-  background: #ccd6fa; // Azul claro del proyecto anterior
+  border-radius: 16px; // Bordes muy redondeados como en la imagen
+  background: #ccd6fa; // Azul claro
   padding: 16px;
-  gap: 8px;
+  gap: 12px;
   margin-top: 24px;
   width: 100%;
 
@@ -20,15 +20,30 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    
+    .info-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
     
     ion-icon {
-      font-size: 20px;
-      color: #595959;
+      font-size: 18px;
+      color: #595959; // Gris oscuro para iconos
     }
 
     &.close-icon {
       cursor: pointer;
       margin-left: auto;
+      width: 20px;
+      height: 20px;
+      
+      ion-icon {
+        font-size: 18px;
+        color: #595959; // Gris oscuro para el X
+      }
       
       &:hover {
         opacity: 0.7;
@@ -37,11 +52,14 @@
   }
 
   .message {
-    color: var(--sn-color-text-primary, #191919);
-    font-size: 14px;
+    color: #191919;
+    font-size: 12px; // Aumentado de 10px para mejor legibilidad
     font-weight: 400;
+    font-style: normal;
     line-height: 150%;
+    letter-spacing: 0px;
     flex: 1;
+    text-align: left;
   }
 }
 

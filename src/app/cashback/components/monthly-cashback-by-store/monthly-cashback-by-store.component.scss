@@ -87,28 +87,28 @@
   }
 }
 
-// Colores de categorías para los iconos (coinciden con los del proyecto anterior)
+// Colores de categorías para los iconos (según la imagen)
 .category-theme-restaurants {
-  background: var(--sn-color-category-restaurant, #4db6ac);
+  background: #00cbd1; // Teal/Cyan para Restaurantes
 }
 
 .category-theme-pharmacy {
-  background: var(--sn-color-category-pharmacy, #f48fb1);
+  background: #d23984; // Magenta/Rosa para Farmacias
 }
 
 .category-theme-gas-station {
-  background: var(--sn-color-category-gas, #d23984);
+  background: #d23984; // Magenta (si se usa)
 }
 
 .category-theme-entertainment {
-  background: var(--sn-color-category-entertainment, #00cbd1);
+  background: #00cbd1; // Cyan (si se usa)
 }
 
 .category-theme-supermarket {
-  background: var(--sn-color-category-supermarket, #ef0000);
+  background: #ef0000; // Rojo para Supermercados
 }
 
 .category-theme-telecom {
-  background: var(--sn-color-category-telecom, #81d4fa);
+  background: #a0b4ff; // Azul claro/Lavanda para Telecomunicaciones
 }
 

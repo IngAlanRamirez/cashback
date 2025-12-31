@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--sn-color-santander, #ec0000);
+    border: none;
 
     ion-icon {
       font-size: 20px;
@@ -107,12 +107,22 @@
   justify-content: center;
   align-items: center;
   margin: 16px 0 32px;
+  padding-top: 8px;
 
   .btn-more {
-    --color: var(--sn-color-santander, #ec0000);
+    color: var(--sn-color-santander, #ec0000);
     font-weight: 400;
-    text-transform: none;
     font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+    
+    &:active {
+      opacity: 0.6;
+    }
   }
 }
 

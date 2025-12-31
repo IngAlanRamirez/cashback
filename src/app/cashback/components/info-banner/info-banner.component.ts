@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { informationCircle, close } from 'ionicons/icons';
+import { close } from 'ionicons/icons';
 
 @Component({
   selector: 'app-info-banner',
@@ -32,8 +32,8 @@ export class InfoBannerComponent {
   @Output() close = new EventEmitter<void>();
 
   constructor() {
-    // Registrar iconos de ionicons
-    addIcons({ informationCircle, close });
+    // Registrar iconos de ionicons (solo close, el info usa SVG personalizado)
+    addIcons({ close });
   }
 
   /**

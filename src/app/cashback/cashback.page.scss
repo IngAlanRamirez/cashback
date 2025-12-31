@@ -9,31 +9,77 @@
 // Tabs Container
 .tabs-container {
   margin: 24px 16px 0;
-  margin-top: 68px; // Espacio debajo del header fijo
   
   .custom-segment {
     background-color: var(--sn-color-mercury, #e5e5e5);
     border-radius: 12px;
     padding: 4px;
+    display: flex;
+    gap: 0;
     
     ion-segment-button {
       --indicator-color: transparent;
+      --background: transparent;
       --background-checked: var(--sn-color-clear, #ffffff);
       --color: var(--sn-color-text-secondary, #92949c);
       --color-checked: var(--sn-color-text-primary, #191919);
       font-size: 16px;
       font-weight: 400;
-      border-radius: 8px;
-      margin: 0 4px;
+      margin: 0;
       min-height: 36px;
+      flex: 1;
       
       &::part(indicator) {
         display: none;
       }
       
+      &::part(native) {
+        border-radius: 0;
+        transition: border-radius 0.2s ease, background-color 0.2s ease;
+      }
+      
+      // Tab activo - bordes redondeados en los 4 lados
       &.segment-button-checked {
         font-weight: 700;
+        border-radius: 8px !important;
         background-color: var(--sn-color-clear, #ffffff);
+        
+        &::part(native) {
+          border-radius: 8px !important;
+          background-color: var(--sn-color-clear, #ffffff);
+        }
+      }
+      
+      // Tab inactivo - sin bordes redondeados
+      &:not(.segment-button-checked) {
+        &::part(native) {
+          border-radius: 0;
+        }
+      }
+      
+      // Estados hover y active - mantener bordes redondeados igual que el activo
+      &:hover:not(.segment-button-checked) {
+        &::part(native) {
+          border-radius: 8px;
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+      }
+      
+      &:active:not(.segment-button-checked),
+      &:focus:not(.segment-button-checked) {
+        &::part(native) {
+          border-radius: 8px;
+          background-color: rgba(255, 255, 255, 0.7);
+        }
+      }
+      
+      // Asegurar que el estado activo siempre tenga bordes redondeados
+      &.segment-button-checked:hover,
+      &.segment-button-checked:active,
+      &.segment-button-checked:focus {
+        &::part(native) {
+          border-radius: 8px !important;
+        }
       }
     }
   }
