@@ -1,0 +1,48 @@
+<div class="head-movements">
+  <div class="title-section">
+    <h3>Movimientos</h3>
+    <p>Montos en MXN</p>
+  </div>
+  @if (showFilter) {
+    <div class="btn-filter" (click)="onFilterClick()">
+      <ion-icon name="options"></ion-icon>
+    </div>
+  }
+</div>
+
+@if (isCurrentPeriod()) {
+  <div class="disclaimer-container">
+    <ion-icon name="warning"></ion-icon>
+    <span>Tus compras se reflejarán en 24 a 48 h hábiles.</span>
+  </div>
+}
+
+@if (purchases.length === 0) {
+  <div class="empty-state">
+    <p>No hay movimientos disponibles</p>
+  </div>
+} @else {
+  <div class="movements-container">
+    @for (purchase of purchases; track purchase.cardTransactionId) {
+      <app-transaction-item
+        [description]="purchase.merchant.name || ''"
+        [date]="purchase.orderDate"
+        [amount]="purchase.amount.amount"
+        [cashback_amount]="purchase.clearing.cashBackAmount.amount"
+        [category]="purchase.merchant.categoryCode || ''">
+      </app-transaction-item>
+    }
+  </div>
+  
+  @if (hasMorePages()) {
+    <div class="btn-more-container">
+      <ion-button 
+        fill="clear" 
+        (click)="onLoadMore()"
+        class="btn-more">
+        Ver más
+      </ion-button>
+    </div>
+  }
+}
+

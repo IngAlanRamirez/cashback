@@ -1,0 +1,20 @@
+<div class="movement">
+  <div class="movement-info">
+    <div class="icon">
+      <ion-icon [name]="getIconName(category)"></ion-icon>
+    </div>
+    <div class="movement-data">
+      <div class="description">{{ description }}</div>
+      <div class="date">{{ getDateValid() }}</div>
+    </div>
+  </div>
+  <div class="right-info">
+    <div class="cashback-amount">
+      <strong>+</strong>{{ formatCashbackAmount() }}
+    </div>
+    <div class="amount">
+      <strong>-</strong>{{ formatPurchaseAmount() }}
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  width: 100%;
+  margin: 24px 0;
+  margin-bottom: 0;
+}
+
+.head-movements {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .title-section {
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h3 {
+      color: var(--sn-color-text-primary, #191919);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 125%;
+      margin-bottom: 4px;
+    }
+
+    p {
+      color: var(--sn-color-text-secondary, #4c4c4c);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 150%;
+    }
+  }
+
+  .btn-filter {
+    background-color: var(--sn-color-clear, #ffffff);
+    color: var(--sn-color-santander, #ec0000);
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--sn-color-santander, #ec0000);
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.disclaimer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: var(--sn-color-clear, #ffffff);
+  border-radius: 6px;
+  padding: 8px 12px;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  ion-icon {
+    color: var(--sn-color-santander, #ec0000);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--sn-color-text-primary, #191919);
+  }
+}
+
+.movements-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  background-color: var(--sn-color-clear, #ffffff);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: var(--sn-color-clear, #ffffff);
+  border-radius: 16px;
+
+  p {
+    color: var(--sn-color-text-secondary, #92949c);
+    font-size: 14px;
+  }
+}
+
+.btn-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 32px;
+
+  .btn-more {
+    --color: var(--sn-color-santander, #ec0000);
+    font-weight: 400;
+    text-transform: none;
+    font-size: 16px;
+  }
+}
+
