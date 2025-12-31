@@ -1,0 +1,17 @@
+@if (cashbackAmounts) {
+  <div class="accumulated-cashback">
+    <div class="title">
+      El Cashback acumulado de {{ getMonth() }} del {{ getYear() }} es de:
+    </div>
+    <div class="monthly-amount">
+      {{ formatMonthlyAmount() }}
+    </div>
+    <div class="annual-info">
+      <div class="annual-amount">
+        {{ formatAnnualAmount() }}
+      </div>
+      <div class="annual-message">es tu acumulado este año.</div>
+    </div>
+  </div>
+}
+

@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.accumulated-cashback {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 16px;
+  background-color: var(--sn-color-clear, #ffffff);
+  border-radius: 16px;
+  text-align: center;
+  margin: 24px 0;
+
+  .title {
+    color: var(--sn-color-text-primary, #000000);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
+  .monthly-amount {
+    color: var(--sn-color-text-primary, #191919);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 125%;
+    letter-spacing: 1.2px;
+  }
+
+  .annual-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .annual-amount {
+      color: var(--sn-color-text-secondary, #595959);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 150%;
+      letter-spacing: 0.7px;
+    }
+
+    .annual-message {
+      color: var(--sn-color-text-primary, #191919);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 150%;
+    }
+  }
+}
+

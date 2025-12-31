@@ -34,7 +34,24 @@
     <!-- Tab Resumen -->
     @if (selectedTab() === 'resumen') {
       <div class="tab-content">
-        <!-- Aquí se integrarán los componentes de Resumen -->
+        <!-- Info Banner -->
+        <app-info-banner 
+          [isOpen]="isBannerOpen()"
+          [dismissible]="true"
+          (close)="onBannerClose()">
+        </app-info-banner>
+
+        <!-- Card Info -->
+        <app-card-info 
+          [product]="mockProduct"
+          [products]="mockProducts"
+          (cardClick)="onCardClick()">
+        </app-card-info>
+
+        <!-- Accumulated Cashback -->
+        <app-accumulated-cashback 
+          [cashbackAmounts]="mockCashbackAmounts">
+        </app-accumulated-cashback>
       </div>
     }
 

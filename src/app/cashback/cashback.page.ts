@@ -12,6 +12,11 @@ import {
   IonSegmentButton,
   IonLabel
 } from '@ionic/angular/standalone';
+import { InfoBannerComponent } from './components/info-banner/info-banner.component';
+import { CardInfoComponent } from './components/card-info/card-info.component';
+import { AccumulatedCashbackComponent } from './components/accumulated-cashback/accumulated-cashback.component';
+import { Product } from './models/product';
+import { CashBackAmounts } from './models/cashback-amounts';
 
 @Component({
   selector: 'app-cashback',
@@ -29,12 +34,49 @@ import {
     IonSegmentButton,
     IonLabel,
     CommonModule, 
-    FormsModule
+    FormsModule,
+    InfoBannerComponent,
+    CardInfoComponent,
+    AccumulatedCashbackComponent
   ]
 })
 export class CashbackPage {
   // Signal para controlar el tab activo
   selectedTab = signal<'resumen' | 'promo'>('resumen');
+  
+  // Signal para controlar la visibilidad del banner
+  isBannerOpen = signal<boolean>(true);
+  
+  // Datos mock para desarrollo
+  mockProduct: Product = {
+    type: 'CREDIT',
+    cardIdentification: {
+      displayNumber: '1234567890122930'
+    },
+    image: {
+      imageNumber: '74141001253'
+    },
+    product: {
+      name: 'LikeU'
+    }
+  };
+  
+  mockProducts: Product[] = [this.mockProduct];
+  
+  mockCashbackAmounts: CashBackAmounts = {
+    monthAmount: {
+      amount: 346.80,
+      currency: 'MXN'
+    },
+    annualAmount: {
+      amount: 1250.50,
+      currency: 'MXN'
+    },
+    cashbackPeriod: {
+      month: '4', // Abril
+      year: '2025'
+    }
+  };
 
   constructor() { }
 
@@ -44,5 +86,20 @@ export class CashbackPage {
   onTabChange(event: CustomEvent) {
     const value = event.detail.value;
     this.selectedTab.set(value as 'resumen' | 'promo');
+  }
+
+  /**
+   * Maneja el cierre del banner
+   */
+  onBannerClose(): void {
+    this.isBannerOpen.set(false);
+  }
+
+  /**
+   * Maneja el click en la tarjeta
+   */
+  onCardClick(): void {
+    console.log('Card clicked - Abrir modal de selección de tarjetas');
+    // TODO: Implementar modal para seleccionar tarjeta
   }
 }

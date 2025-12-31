@@ -1,0 +1,28 @@
+@if (product) {
+  <div class="card" [class.clickable]="hasMultipleProducts()" (click)="onCardClick()">
+    <p>En tu tarjeta</p>
+    <div class="item">
+      <div class="info">
+        <div class="card-icon">
+          <ion-icon name="card"></ion-icon>
+        </div>
+        <div class="data">
+          <div class="title">
+            {{ formatProductName(product.product?.name || '', product) }}
+          </div>
+          <div class="desc">
+            {{ getCardType(product) }} - *{{ getLastFourDigits(product) }}
+          </div>
+        </div>
+      </div>
+      @if (hasMultipleProducts()) {
+        <div class="chevron">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+      } @else {
+        <div></div>
+      }
+    </div>
+  </div>
+}
+

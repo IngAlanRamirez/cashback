@@ -1,0 +1,90 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--sn-color-clear, #ffffff);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin: 24px 0;
+
+  &.clickable {
+    cursor: pointer;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0 0 12px;
+    color: var(--sn-color-text-primary, #191919);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .info {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+
+      .card-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: var(--sn-color-santander, #ec0000);
+        border-radius: 8px;
+        flex-shrink: 0;
+
+        ion-icon {
+          font-size: 24px;
+          color: #ffffff;
+        }
+      }
+
+      .data {
+        flex: 1;
+        min-width: 0;
+
+        .title {
+          font-size: 16px;
+          font-weight: 700;
+          color: var(--sn-color-text-primary, #191919);
+        }
+
+        .desc {
+          font-size: 14px;
+          letter-spacing: 0.7px;
+          color: var(--sn-color-text-secondary, #92949c);
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .chevron {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      ion-icon {
+        font-size: 20px;
+        color: var(--sn-color-text-secondary, #92949c);
+      }
+    }
+  }
+}
+

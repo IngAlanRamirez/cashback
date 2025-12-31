@@ -1,0 +1,16 @@
+@if (isOpen) {
+  <div class="info-banner">
+    <div class="icon">
+      <ion-icon name="information-circle"></ion-icon>
+    </div>
+    <div class="message">
+      {{ message }}
+    </div>
+    @if (dismissible) {
+      <div class="icon close-icon" (click)="closeBanner()">
+        <ion-icon name="close"></ion-icon>
+      </div>
+    }
+  </div>
+}
+
