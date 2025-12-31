@@ -3,6 +3,9 @@
 
 // Variables de colores Santander
 :root {
+  // Color de fondo de la aplicación
+  --sn-color-background: #F2F2F2;
+  
   // Colores principales Santander
   --sn-color-santander: #ec0000;
   --sn-color-concrete: #f4f5f8;
@@ -13,13 +16,13 @@
   --sn-color-text-primary: #191919;
   --sn-color-text-secondary: #92949c;
   
-  // Colores de categorías
-  --sn-color-category-restaurant: #4db6ac; // Teal
-  --sn-color-category-pharmacy: #f48fb1; // Rosa
-  --sn-color-category-gas: #90caf9; // Azul claro
-  --sn-color-category-entertainment: #ce93d8; // Morado
-  --sn-color-category-supermarket: #ef5350; // Rojo
-  --sn-color-category-telecom: #81d4fa; // Azul claro
+  // Colores de categorías (basados en la imagen y proyecto anterior)
+  --sn-color-category-restaurant: #4db6ac; // Teal (Restaurantes)
+  --sn-color-category-pharmacy: #f48fb1; // Rosa (Farmacias)
+  --sn-color-category-gas: #d23984; // Magenta (Gasolineras)
+  --sn-color-category-entertainment: #00cbd1; // Cyan (Entretenimiento)
+  --sn-color-category-supermarket: #ef0000; // Rojo (Supermercados)
+  --sn-color-category-telecom: #81d4fa; // Azul claro (Telecomunicaciones)
   
   // Colores de cashback
   --sn-color-cashback-positive: #4caf50; // Verde

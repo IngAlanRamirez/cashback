@@ -1,0 +1,10 @@
+<div class="progressbar">
+  @for (item of activityAmountCashBacks; track item.categoryCode) {
+    <div
+      class="item"
+      [ngStyle]="{ width: getPercentByMCC(item) + '%' }"
+      [ngClass]="getCategoryClass(item.categoryCode)">
+    </div>
+  }
+</div>
+

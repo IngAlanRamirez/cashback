@@ -3,6 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--sn-color-background, #F2F2F2);
 }
 
 // Tabs Container
@@ -39,9 +40,15 @@
 }
 
 // Content Container
+ion-content {
+  --background: var(--sn-color-background, #F2F2F2);
+  background-color: var(--sn-color-background, #F2F2F2);
+}
+
 .container {
   padding: 0 16px;
   flex: 1;
+  background-color: var(--sn-color-background, #F2F2F2);
   
   .tab-content {
     padding-bottom: 20px;

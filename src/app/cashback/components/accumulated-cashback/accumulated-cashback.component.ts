@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { CashBackAmounts } from '../../models/cashback-amounts';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -9,7 +9,7 @@ import { es } from 'date-fns/locale';
   templateUrl: './accumulated-cashback.component.html',
   styleUrls: ['./accumulated-cashback.component.scss'],
   standalone: true,
-  imports: [CommonModule, CurrencyPipe]
+  imports: [CommonModule]
 })
 export class AccumulatedCashbackComponent {
   @Input() cashbackAmounts: CashBackAmounts | null = null;

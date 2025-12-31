@@ -35,3 +35,13 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Color de fondo global de la aplicación */
+ion-app {
+  --background: #F2F2F2;
+  background-color: #F2F2F2;
+}
+
+html, body {
+  background-color: #F2F2F2;
+}

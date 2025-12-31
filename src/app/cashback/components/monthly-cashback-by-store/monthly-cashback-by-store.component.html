@@ -1,0 +1,24 @@
+<h3 class="title">Cashback mensual por establecimiento</h3>
+<div class="container">
+  <app-progress-bar
+    [activityAmountCashBacks]="activityAmountCashBacks">
+  </app-progress-bar>
+  
+  @for (item of activityAmountCashBacks; track item.categoryCode) {
+    <div class="category">
+      <div class="detail">
+        <div class="icon" [ngClass]="getCategoryClass(item.categoryCode)">
+          <ion-icon [name]="getIconName(item.categoryCode)"></ion-icon>
+        </div>
+        <div class="percent">{{ getPercent(item.categoryCode) }}</div>
+        <div class="description">{{ item.categoryDescription }}</div>
+      </div>
+      <div class="right-info">
+        <div class="amount">
+          +{{ formatAmount(item.cashBackAmount.amount, item.cashBackAmount.currency) }}
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

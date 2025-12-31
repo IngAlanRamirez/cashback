@@ -52,6 +52,13 @@
         <app-accumulated-cashback 
           [cashbackAmounts]="mockCashbackAmounts">
         </app-accumulated-cashback>
+
+        <!-- Monthly Cashback by Store -->
+        @if (mockActivityAmountCashBacks.length > 0) {
+          <app-monthly-cashback-by-store 
+            [activityAmountCashBacks]="mockActivityAmountCashBacks">
+          </app-monthly-cashback-by-store>
+        }
       </div>
     }
 

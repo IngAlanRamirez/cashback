@@ -15,8 +15,10 @@ import {
 import { InfoBannerComponent } from './components/info-banner/info-banner.component';
 import { CardInfoComponent } from './components/card-info/card-info.component';
 import { AccumulatedCashbackComponent } from './components/accumulated-cashback/accumulated-cashback.component';
+import { MonthlyCashbackByStoreComponent } from './components/monthly-cashback-by-store/monthly-cashback-by-store.component';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
+import { ActivityAmountCashBack } from './models/activity-amount-cashback';
 
 @Component({
   selector: 'app-cashback',
@@ -37,7 +39,8 @@ import { CashBackAmounts } from './models/cashback-amounts';
     FormsModule,
     InfoBannerComponent,
     CardInfoComponent,
-    AccumulatedCashbackComponent
+    AccumulatedCashbackComponent,
+    MonthlyCashbackByStoreComponent
   ]
 })
 export class CashbackPage {
@@ -77,6 +80,49 @@ export class CashbackPage {
       year: '2025'
     }
   };
+
+  mockActivityAmountCashBacks: ActivityAmountCashBack[] = [
+    {
+      name: 'Supermercados',
+      categoryCode: 'Sup',
+      categoryDescription: 'Supermercados',
+      cashBackAmount: {
+        amount: 77.00,
+        currency: 'MXN'
+      },
+      cashBackPercentage: 1
+    },
+    {
+      name: 'Restaurantes',
+      categoryCode: 'Res',
+      categoryDescription: 'Restaurantes',
+      cashBackAmount: {
+        amount: 30.50,
+        currency: 'MXN'
+      },
+      cashBackPercentage: 5
+    },
+    {
+      name: 'Farmacias',
+      categoryCode: 'Far',
+      categoryDescription: 'Farmacias',
+      cashBackAmount: {
+        amount: 27.00,
+        currency: 'MXN'
+      },
+      cashBackPercentage: 6
+    },
+    {
+      name: 'Telecomunicaciones',
+      categoryCode: 'Tel',
+      categoryDescription: 'Telecomunicaciones',
+      cashBackAmount: {
+        amount: 15.00,
+        currency: 'MXN'
+      },
+      cashBackPercentage: 4
+    }
+  ];
 
   constructor() { }
 
