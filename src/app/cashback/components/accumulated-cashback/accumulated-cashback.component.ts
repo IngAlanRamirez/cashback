@@ -16,6 +16,16 @@ export class AccumulatedCashbackComponent {
   @Input() cashbackAmounts: CashBackAmounts | null = null;
 
   /**
+   * Verifica si los datos de cashback son válidos
+   */
+  isValid(): boolean {
+    return this.cashbackAmounts !== null && 
+           this.cashbackAmounts !== undefined &&
+           this.cashbackAmounts.monthAmount !== undefined &&
+           this.cashbackAmounts.annualAmount !== undefined;
+  }
+
+  /**
    * Obtiene el nombre del mes formateado en español (minúscula)
    */
   getMonth(): string {

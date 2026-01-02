@@ -26,6 +26,21 @@ export class TransactionsListComponent {
   @Output() filterClick = new EventEmitter<void>();
   @Output() loadMore = new EventEmitter<void>();
 
+  /**
+   * Verifica si las compras son válidas
+   */
+  isValidPurchases(): boolean {
+    return Array.isArray(this.purchases);
+  }
+
+  /**
+   * Verifica si el periodo es válido
+   */
+  isValidPeriod(): boolean {
+    return typeof this.period === 'string' && 
+           ['current', 'previous', 'previous-2'].includes(this.period);
+  }
+
   constructor() {
     // Registrar iconos de ionicons
     addIcons({ options, warning });

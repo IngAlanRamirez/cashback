@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, shareReplay } from 'rxjs/operators';
+import { LoggerService } from './logger.service';
 import { Product } from '../models/product';
+import { isValidCashbackData } from '../utils/validators';
 import { CashBackAmounts } from '../models/cashback-amounts';
 import { ActivityAmountCashBack } from '../models/activity-amount-cashback';
 import { Purchase } from '../models/purchase';
@@ -23,6 +25,7 @@ export interface CashbackData {
 })
 export class CashbackDataService {
   private dataUrl = '/assets/data/cashback-data.json';
+  private logger = inject(LoggerService);
   
   // Caché de datos usando shareReplay para evitar múltiples llamadas HTTP
   private dataCache$: Observable<CashbackData> | null = null;
@@ -38,8 +41,16 @@ export class CashbackDataService {
     if (!this.dataCache$) {
       this.dataCache$ = this.http.get<CashbackData>(this.dataUrl).pipe(
         shareReplay(1), // Cachea el último valor y lo comparte entre suscriptores
+        map((data) => {
+          // Validar estructura de datos
+          if (!isValidCashbackData(data)) {
+            this.logger.error('Estructura de datos de cashback inválida:', data);
+            throw new Error('Estructura de datos de cashback inválida');
+          }
+          return data;
+        }),
         catchError((error) => {
-          console.error('Error al cargar datos de cashback:', error);
+          this.logger.error('Error al cargar datos de cashback:', error);
           // Retornar datos vacíos en caso de error
           return of(this.getEmptyData());
         })

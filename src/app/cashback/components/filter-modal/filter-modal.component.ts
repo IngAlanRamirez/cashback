@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, computed } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { 
   IonModal,
@@ -17,8 +17,7 @@ import {
   medicalOutline, 
   callOutline 
 } from 'ionicons/icons';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { PeriodService } from '../../services/period.service';
 
 export interface FilterPeriod {
   label: string;
@@ -52,6 +51,8 @@ const BREAKPOINT_OFFSET = 0.15;
   ]
 })
 export class FilterModalComponent {
+  private periodService = inject(PeriodService);
+  
   @Input() 
   set isOpen(value: boolean) {
     this._isOpen.set(value);
@@ -77,36 +78,10 @@ export class FilterModalComponent {
 
   /**
    * Calcula los periodos dinámicamente basados en la fecha actual
+   * Usa PeriodService para centralizar la lógica
    */
   readonly periods = computed<FilterPeriod[]>(() => {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0-11
-
-    // Mes actual
-    const currentMonthDate = new Date(currentYear, currentMonth, 1);
-    const currentMonthName = format(currentMonthDate, 'MMMM', { locale: es });
-    const currentMonthCapitalized = currentMonthName.charAt(0).toUpperCase() + currentMonthName.slice(1);
-
-    // Mes anterior
-    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-    const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    const previousMonthDate = new Date(previousYear, previousMonth, 1);
-    const previousMonthName = format(previousMonthDate, 'MMMM', { locale: es });
-    const previousMonthCapitalized = previousMonthName.charAt(0).toUpperCase() + previousMonthName.slice(1);
-
-    // Mes anterior al anterior
-    const previousMonth2 = previousMonth === 0 ? 11 : previousMonth - 1;
-    const previousYear2 = previousMonth === 0 ? previousYear - 1 : previousYear;
-    const previousMonth2Date = new Date(previousYear2, previousMonth2, 1);
-    const previousMonth2Name = format(previousMonth2Date, 'MMMM', { locale: es });
-    const previousMonth2Capitalized = previousMonth2Name.charAt(0).toUpperCase() + previousMonth2Name.slice(1);
-
-    return [
-      { label: currentMonthCapitalized, value: 'current' },
-      { label: previousMonthCapitalized, value: 'previous' },
-      { label: previousMonth2Capitalized, value: 'previous-2' }
-    ];
+    return this.periodService.getAvailablePeriods();
   });
 
   readonly categories: readonly FilterCategory[] = [

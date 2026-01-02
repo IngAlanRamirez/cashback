@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of, delay, throwError } from 'rxjs';
 import { Purchase } from '../models/purchase';
 import { CashBackAmounts } from '../models/cashback-amounts';
 import { ActivityAmountCashBack } from '../models/activity-amount-cashback';
+import { PeriodService } from './period.service';
+import { validateTransactionFilters, isValidPage } from '../utils/validators';
+import { CashbackPeriod, CategoryCode } from '../models/enums';
 
 export interface TransactionFilters {
-  period: string;
-  category: string;
+  period: CashbackPeriod | string; // Permite string para compatibilidad
+  category: CategoryCode | string; // Permite string para compatibilidad
 }
 
 export interface TransactionPagination {
@@ -25,8 +28,28 @@ interface CacheEntry {
   providedIn: 'root'
 })
 export class TransactionsService {
-  private readonly pageSize = 10;
+  private periodService = inject(PeriodService);
+  
+  // Constantes para paginación
+  static readonly DEFAULT_PAGE_SIZE = 10;
+  private readonly pageSize = TransactionsService.DEFAULT_PAGE_SIZE;
   private readonly cacheExpirationTime = 5 * 60 * 1000; // 5 minutos en milisegundos
+  
+  // Constantes para simulación de delay de red
+  private static readonly MIN_DELAY_MS = 200;
+  private static readonly MAX_DELAY_MS = 700;
+  private static readonly MIN_DELAY_MS_FAST = 100;
+  private static readonly MAX_DELAY_MS_FAST = 400;
+  
+  // Constantes para generación de transacciones
+  private static readonly MIN_TRANSACTIONS = 15;
+  private static readonly MAX_TRANSACTIONS = 50;
+  private static readonly MIN_TRANSACTIONS_FAST = 10;
+  private static readonly MAX_TRANSACTIONS_FAST = 40;
+  
+  // Constantes para cálculo de cashback anual
+  private static readonly ANNUAL_MULTIPLIER_MIN = 2;
+  private static readonly ANNUAL_MULTIPLIER_MAX = 5;
   
   // Caché de transacciones filtradas
   private transactionsCache = new Map<string, CacheEntry>();
@@ -114,44 +137,10 @@ export class TransactionsService {
 
   /**
    * Obtiene el rango de fechas según el periodo
+   * @deprecated Usar PeriodService.getDateRange() en su lugar
    */
   private getDateRange(period: string): { start: Date; end: Date } {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0-11
-
-    switch (period) {
-      case 'current':
-        // Mes actual
-        return {
-          start: new Date(currentYear, currentMonth, 1),
-          end: new Date(currentYear, currentMonth + 1, 0, 23, 59, 59)
-        };
-      case 'previous':
-        // Mes anterior
-        const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-        return {
-          start: new Date(previousYear, previousMonth, 1),
-          end: new Date(previousYear, previousMonth + 1, 0, 23, 59, 59)
-        };
-      case 'previous-2':
-        // Mes anterior al anterior
-        const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-        const previousMonth2 = prevMonth === 0 ? 11 : prevMonth - 1;
-        const previousYear2 = prevMonth === 0 ? prevYear - 1 : prevYear;
-        return {
-          start: new Date(previousYear2, previousMonth2, 1),
-          end: new Date(previousYear2, previousMonth2 + 1, 0, 23, 59, 59)
-        };
-      default:
-        // Por defecto, mes actual
-        return {
-          start: new Date(currentYear, currentMonth, 1),
-          end: new Date(currentYear, currentMonth + 1, 0, 23, 59, 59)
-        };
-    }
+    return this.periodService.getDateRange(period as 'current' | 'previous' | 'previous-2');
   }
 
   /**
@@ -210,11 +199,21 @@ export class TransactionsService {
     filters: TransactionFilters,
     page: number = 1
   ): Observable<{ transactions: Purchase[]; total: number; hasMore: boolean }> {
-    // Simular delay de red
-    const delayTime = Math.random() * 500 + 200; // 200-700ms
+    // Validar filtros
+    if (!validateTransactionFilters(filters)) {
+      return throwError(() => new Error('Filtros de transacciones inválidos'));
+    }
 
-    // Generar un total aleatorio de transacciones (entre 15 y 50)
-    const totalTransactions = Math.floor(Math.random() * 35) + 15;
+    // Validar página
+    if (!isValidPage(page)) {
+      return throwError(() => new Error('Número de página inválido'));
+    }
+
+    // Simular delay de red
+    const delayTime = Math.random() * (TransactionsService.MAX_DELAY_MS - TransactionsService.MIN_DELAY_MS) + TransactionsService.MIN_DELAY_MS;
+
+    // Generar un total aleatorio de transacciones
+    const totalTransactions = Math.floor(Math.random() * (TransactionsService.MAX_TRANSACTIONS - TransactionsService.MIN_TRANSACTIONS)) + TransactionsService.MIN_TRANSACTIONS;
     
     // Calcular cuántas transacciones generar para esta página
     const startIndex = (page - 1) * this.pageSize;
@@ -245,10 +244,15 @@ export class TransactionsService {
    * Obtiene todas las transacciones filtradas (sin paginación, para filtrado completo)
    */
   getAllFilteredTransactions(filters: TransactionFilters): Observable<Purchase[]> {
-    const delayTime = Math.random() * 300 + 100; // 100-400ms
+    // Validar filtros
+    if (!validateTransactionFilters(filters)) {
+      return throwError(() => new Error('Filtros de transacciones inválidos'));
+    }
+
+    const delayTime = Math.random() * (TransactionsService.MAX_DELAY_MS_FAST - TransactionsService.MIN_DELAY_MS_FAST) + TransactionsService.MIN_DELAY_MS_FAST;
     
     // Generar un número aleatorio de transacciones
-    const count = Math.floor(Math.random() * 30) + 10; // 10-40 transacciones
+    const count = Math.floor(Math.random() * (TransactionsService.MAX_TRANSACTIONS_FAST - TransactionsService.MIN_TRANSACTIONS_FAST)) + TransactionsService.MIN_TRANSACTIONS_FAST;
     const transactions = this.generateTransactions(filters, count);
     
     return of(transactions).pipe(delay(delayTime));
@@ -261,35 +265,20 @@ export class TransactionsService {
     transactions: Purchase[],
     period: string
   ): CashBackAmounts {
-    // Calcular el mes y año del periodo
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    let month: number;
-    let year: number;
-
-    switch (period) {
-      case 'current':
-        month = now.getMonth() + 1; // Mes actual (1-12)
-        year = currentYear;
-        break;
-      case 'previous':
-        // Mes anterior
-        const previousMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
-        month = previousMonth + 1;
-        year = now.getMonth() === 0 ? currentYear - 1 : currentYear;
-        break;
-      case 'previous-2':
-        // Mes anterior al anterior
-        const prevMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
-        const prevYear = now.getMonth() === 0 ? currentYear - 1 : currentYear;
-        const previousMonth2 = prevMonth === 0 ? 11 : prevMonth - 1;
-        month = previousMonth2 + 1;
-        year = prevMonth === 0 ? prevYear - 1 : prevYear;
-        break;
-      default:
-        month = now.getMonth() + 1;
-        year = currentYear;
+    // Validar transacciones
+    if (!Array.isArray(transactions)) {
+      throw new Error('Las transacciones deben ser un array');
     }
+
+    // Validar periodo
+    if (typeof period !== 'string' || !['current', 'previous', 'previous-2'].includes(period)) {
+      throw new Error('Periodo inválido');
+    }
+
+    // Usar PeriodService para obtener información del periodo
+    const periodInfo = this.periodService.getPeriodInfo(period as 'current' | 'previous' | 'previous-2');
+    const month = periodInfo.month;
+    const year = periodInfo.year;
 
     // Calcular cashback mensual (suma de todas las transacciones del periodo)
     const monthAmount = transactions.reduce((sum, transaction) => {
@@ -298,7 +287,8 @@ export class TransactionsService {
 
     // Para el cashback anual, generar un monto aleatorio basado en el mensual
     // (simulando que hay más meses en el año)
-    const annualAmount = monthAmount * (Math.random() * 3 + 2); // Entre 2x y 5x el mensual
+    const multiplier = Math.random() * (TransactionsService.ANNUAL_MULTIPLIER_MAX - TransactionsService.ANNUAL_MULTIPLIER_MIN) + TransactionsService.ANNUAL_MULTIPLIER_MIN;
+    const annualAmount = monthAmount * multiplier;
 
     return {
       monthAmount: {
@@ -321,6 +311,11 @@ export class TransactionsService {
    * Solo incluye las categorías permitidas: Sup, Res, Far, Tel
    */
   calculateActivityAmountCashBacks(transactions: Purchase[]): ActivityAmountCashBack[] {
+    // Validar transacciones
+    if (!Array.isArray(transactions)) {
+      throw new Error('Las transacciones deben ser un array');
+    }
+
     // Categorías permitidas (las que están en el modal de filtros)
     const allowedCategories = ['Sup', 'Res', 'Far', 'Tel'];
     

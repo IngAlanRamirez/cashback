@@ -19,6 +19,16 @@ export class CardInfoComponent {
   
   @Output() cardClick = new EventEmitter<void>();
 
+  /**
+   * Verifica si el producto es válido
+   */
+  isValidProduct(): boolean {
+    return this.product !== null && 
+           this.product !== undefined &&
+           this.product.product !== undefined &&
+           typeof this.product.product?.name === 'string';
+  }
+
   constructor() {
     // Registrar iconos de ionicons
     addIcons({ chevronForward, card });

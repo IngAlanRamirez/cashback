@@ -20,10 +20,10 @@
       [value]="selectedTab()" 
       (ionChange)="onTabChange($event)"
       class="custom-segment">
-      <ion-segment-button value="resumen">
+      <ion-segment-button [value]="CashbackTab.RESUMEN">
         <ion-label>Resumen</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="promo">
+      <ion-segment-button [value]="CashbackTab.PROMOCIONES">
         <ion-label>Promociones</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -32,7 +32,7 @@
   <!-- Content Container -->
   <div class="container">
     <!-- Tab Resumen -->
-    @if (selectedTab() === 'resumen') {
+    @if (selectedTab() === CashbackTab.RESUMEN) {
       <div class="tab-content">
         <!-- Info Banner -->
         <app-info-banner 
@@ -95,7 +95,7 @@
     }
 
     <!-- Tab Promociones -->
-    @if (selectedTab() === 'promo') {
+    @if (selectedTab() === CashbackTab.PROMOCIONES) {
       <div class="tab-content">
         <!-- Promociones exclusivas -->
         @if (mockPromotions().length > 0) {
