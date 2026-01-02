@@ -126,3 +126,25 @@
   }
 }
 
+.loading-more-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0 32px;
+  padding-top: 8px;
+
+  ion-spinner {
+    --color: var(--sn-color-rockstar, #ec0000);
+    width: 32px;
+    height: 32px;
+  }
+
+  span {
+    color: var(--sn-color-text-secondary, #92949c);
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+

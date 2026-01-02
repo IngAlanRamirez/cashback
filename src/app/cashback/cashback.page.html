@@ -49,28 +49,48 @@
         </app-card-info>
 
         <!-- Accumulated Cashback -->
-        <app-accumulated-cashback 
-          [cashbackAmounts]="mockCashbackAmounts()">
-        </app-accumulated-cashback>
+        @if (isLoadingCashbackCalculations()) {
+          <div class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Cargando cashback acumulado...</p>
+          </div>
+        } @else {
+          <app-accumulated-cashback 
+            [cashbackAmounts]="mockCashbackAmounts()">
+          </app-accumulated-cashback>
+        }
 
         <!-- Monthly Cashback by Store -->
-        @if (mockActivityAmountCashBacks().length > 0) {
+        @if (isLoadingCashbackCalculations()) {
+          <div class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Cargando cashback por establecimiento...</p>
+          </div>
+        } @else if (mockActivityAmountCashBacks().length > 0) {
           <app-monthly-cashback-by-store 
             [activityAmountCashBacks]="mockActivityAmountCashBacks()">
           </app-monthly-cashback-by-store>
         }
 
         <!-- Transactions List -->
-        <app-transactions-list
-          [purchases]="filteredPurchases()"
-          [accountId]="mockProduct().associatedAccounts?.[0]?.account?.contract?.contractId"
-          [period]="currentFilters().period"
-          [showFilter]="true"
-          [startPage]="currentPage()"
-          [totalPages]="totalPages()"
-          (filterClick)="onFilterClick()"
-          (loadMore)="onLoadMore()">
-        </app-transactions-list>
+        @if (isLoadingTransactions() && filteredPurchases().length === 0) {
+          <div class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Cargando transacciones...</p>
+          </div>
+        } @else {
+          <app-transactions-list
+            [purchases]="filteredPurchases()"
+            [accountId]="mockProduct().associatedAccounts?.[0]?.account?.contract?.contractId"
+            [period]="currentFilters().period"
+            [showFilter]="true"
+            [startPage]="currentPage()"
+            [totalPages]="totalPages()"
+            [isLoading]="isLoadingTransactions()"
+            (filterClick)="onFilterClick()"
+            (loadMore)="onLoadMore()">
+          </app-transactions-list>
+        }
       </div>
     }
 

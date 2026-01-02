@@ -10,7 +10,8 @@ import {
   IonButtons,
   IonSegment,
   IonSegmentButton,
-  IonLabel
+  IonLabel,
+  IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -46,6 +47,7 @@ import { Promotion } from './models/promotion';
     IonSegment,
     IonSegmentButton,
     IonLabel,
+    IonSpinner,
     CommonModule, 
     FormsModule,
     InfoBannerComponent,
@@ -184,6 +186,10 @@ export class CashbackPage implements OnInit {
   isLoadingTransactions = signal<boolean>(false);
   hasMoreTransactions = signal<boolean>(false);
   
+  // Estados de carga
+  isLoadingInitialData = signal<boolean>(true);
+  isLoadingCashbackCalculations = signal<boolean>(false);
+  
   // Datos iniciales (se reemplazarán al cargar desde JSON)
   private initialPurchases: Purchase[] = [
     {
@@ -286,6 +292,7 @@ export class CashbackPage implements OnInit {
    * Carga los datos desde el servicio
    */
   loadData(): void {
+    this.isLoadingInitialData.set(true);
     this.cashbackDataService.getCashbackData().subscribe({
       next: (data) => {
         this.mockProduct.set(data.product);
@@ -297,6 +304,7 @@ export class CashbackPage implements OnInit {
         
         // Cargar transacciones dinámicas
         this.loadTransactions();
+        this.isLoadingInitialData.set(false);
       },
       error: (error) => {
         console.error('Error al cargar datos:', error);
@@ -304,6 +312,7 @@ export class CashbackPage implements OnInit {
         this.mockActivityAmountCashBacks.set(this.initialActivityAmountCashBacks);
         // Cargar transacciones dinámicas incluso si hay error
         this.loadTransactions();
+        this.isLoadingInitialData.set(false);
       }
     });
   }
@@ -348,6 +357,7 @@ export class CashbackPage implements OnInit {
    * Actualiza los cálculos de cashback acumulado y por categoría
    */
   updateCashbackCalculations(): void {
+    this.isLoadingCashbackCalculations.set(true);
     const filters = this.currentFilters();
 
     // Para el cashback acumulado, obtener TODAS las transacciones del periodo (sin filtro de categoría)
@@ -377,6 +387,7 @@ export class CashbackPage implements OnInit {
             allTransactionsForAccumulated
           );
           this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+          this.isLoadingCashbackCalculations.set(false);
         } else {
           // Obtener transacciones filtradas por categoría para el cashback por categoría
           this.transactionsService.getAllFilteredTransactions(filtersForCategory).subscribe({
@@ -385,15 +396,18 @@ export class CashbackPage implements OnInit {
                 filteredTransactions
               );
               this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+              this.isLoadingCashbackCalculations.set(false);
             },
             error: (error) => {
               console.error('Error al calcular cashback por categoría:', error);
+              this.isLoadingCashbackCalculations.set(false);
             }
           });
         }
       },
       error: (error) => {
         console.error('Error al calcular cashback acumulado:', error);
+        this.isLoadingCashbackCalculations.set(false);
       }
     });
   }

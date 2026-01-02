@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonIcon } from '@ionic/angular/standalone';
+import { IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { options, warning } from 'ionicons/icons';
 import { Purchase } from '../../models/purchase';
@@ -11,7 +11,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, TransactionItemComponent],
+  imports: [CommonModule, IonIcon, IonSpinner, TransactionItemComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionsListComponent {
@@ -21,6 +21,7 @@ export class TransactionsListComponent {
   @Input() showFilter: boolean = true;
   @Input() startPage: number = 1;
   @Input() totalPages: number = 1;
+  @Input() isLoading: boolean = false;
 
   @Output() filterClick = new EventEmitter<void>();
   @Output() loadMore = new EventEmitter<void>();
