@@ -19,10 +19,12 @@ import { MonthlyCashbackByStoreComponent } from './components/monthly-cashback-b
 import { TransactionsListComponent } from './components/transactions-list/transactions-list.component';
 import { CardSelectionComponent } from './components/card-selection/card-selection.component';
 import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
+import { PromotionsSliderComponent } from './components/promotions-slider/promotions-slider.component';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
 import { Purchase } from './models/purchase';
+import { Promotion } from './models/promotion';
 
 @Component({
   selector: 'app-cashback',
@@ -47,7 +49,8 @@ import { Purchase } from './models/purchase';
     MonthlyCashbackByStoreComponent,
     TransactionsListComponent,
     CardSelectionComponent,
-    FilterModalComponent
+    FilterModalComponent,
+    PromotionsSliderComponent
   ]
 })
 export class CashbackPage {
@@ -358,5 +361,115 @@ export class CashbackPage {
   onLoadMore(): void {
     console.log('Load more clicked - Cargar más transacciones');
     // TODO: Implementar carga de más transacciones
+  }
+
+  // Datos mock de promociones
+  mockPromotions: Promotion[] = [
+    {
+      promotionId: '1',
+      description: 'Obtén 1% de cashback al hacer tu despensa con tu Crédito LikeU.',
+      percentage: 1,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 1,
+      image: {
+        imageNumber: '' // Se puede agregar una imagen base64 aquí
+      },
+      merchant: {
+        name: 'Supermercados',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '2',
+      description: 'Cumple ese antojo y obtén 2% de cashback con tu tarjeta Nómina.',
+      percentage: 2,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 2,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Restaurantes',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    }
+  ];
+
+  // Datos mock de Unique Rewards
+  mockUniqueRewards: Promotion[] = [
+    {
+      promotionId: '3',
+      description: 'El programa de lealtad que te premia con hasta 5 Unique Points por todas tus compras.',
+      percentage: 5,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 1,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Acerca de Unique Rewards',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    },
+    {
+      promotionId: '4',
+      description: 'Conoce todas las tarjetas participantes del programa Unique Rewards.',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 2,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Tarjetas Unique',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    }
+  ];
+
+  /**
+   * Maneja el click en "Ver más" de promociones
+   */
+  onPromotionsViewMore(): void {
+    window.open('https://www.santander.com.mx/cashback/promociones-unicas/', '_blank');
+  }
+
+  /**
+   * Maneja el click en "Ver más" de Unique Rewards
+   */
+  onUniqueRewardsViewMore(): void {
+    window.open('https://www.santander.com.mx/cashback/promociones-unicas/', '_blank');
   }
 }

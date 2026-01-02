@@ -17,4 +17,6 @@ export * from './purchase';
 export * from './activity-amount-cashback';
 export * from './cashback-amounts';
 export * from './product';
+export * from './promotion';
+export * from './period';
 

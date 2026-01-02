@@ -1,0 +1,23 @@
+<div class="promotions-slider-container">
+  <h3 class="section-title">{{ title }}</h3>
+  
+  <div class="slider-wrapper">
+    <swiper-container
+      slides-per-view="auto"
+      space-between="12"
+      class="promotions-swiper">
+      @for (promotion of promotions; track promotion.promotionId) {
+        <swiper-slide>
+          <app-promotion-card [promotion]="promotion"></app-promotion-card>
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+  
+  @if (showViewMore && promotions.length > 0) {
+    <span class="view-more-link" (click)="onViewMore()">
+      Ver más
+    </span>
+  }
+</div>
+

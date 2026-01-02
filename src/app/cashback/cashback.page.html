@@ -77,8 +77,25 @@
     <!-- Tab Promo Cashback -->
     @if (selectedTab() === 'promo') {
       <div class="tab-content">
-        <!-- Aquí se integrarán los componentes de Promo Cashback -->
-        <p>Contenido de Promo Cashback (pendiente de implementar)</p>
+        <!-- Promociones exclusivas Cashback -->
+        @if (mockPromotions.length > 0) {
+          <app-promotions-slider
+            [promotions]="mockPromotions"
+            title="Promociones exclusivas Cashback"
+            [showViewMore]="true"
+            (viewMoreClick)="onPromotionsViewMore()">
+          </app-promotions-slider>
+        }
+
+        <!-- Santander Unique Rewards -->
+        @if (mockUniqueRewards.length > 0) {
+          <app-promotions-slider
+            [promotions]="mockUniqueRewards"
+            title="Santander Unique Rewards"
+            [showViewMore]="true"
+            (viewMoreClick)="onUniqueRewardsViewMore()">
+          </app-promotions-slider>
+        }
       </div>
     }
   </div>

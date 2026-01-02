@@ -1,0 +1,22 @@
+<div class="promotion-card">
+  <img 
+    class="promotion-image" 
+    [src]="getImageUrl()" 
+    [alt]="promotion.merchant.name || 'Promoción'" />
+  
+  <div class="promotion-content">
+    <div class="promotion-title">{{ promotion.merchant.name || '' }}</div>
+    <div 
+      class="promotion-description" 
+      [innerHTML]="promotion.description">
+    </div>
+  </div>
+  
+  <button 
+    class="learn-more-btn" 
+    (click)="onLearnMore()"
+    type="button">
+    Conocer más
+  </button>
+</div>
+
