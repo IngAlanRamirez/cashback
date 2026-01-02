@@ -504,11 +504,11 @@ export class CashbackPage {
     }
   ];
 
-  // Datos mock de Unique Rewards
-  mockUniqueRewards: Promotion[] = [
+  // Datos mock de RockStar Rewards
+  mockRockStarRewards: Promotion[] = [
     {
       promotionId: '7',
-      description: 'El programa de lealtad que te premia con hasta 5 Unique Points por todas tus compras.',
+      description: 'El programa de lealtad que te premia con hasta 5 RockStar Points por todas tus compras.',
       percentage: 5,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -520,17 +520,17 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 1,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/rockstar-rewards.png'
       },
       merchant: {
-        name: 'Acerca de Unique Rewards',
+        name: 'Acerca de RockStar Rewards',
         url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
     {
       promotionId: '8',
-      description: 'Conoce todas las tarjetas participantes del programa Unique Rewards.',
+      description: 'Conoce todas las tarjetas participantes del programa RockStar Rewards.',
       percentage: 0,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -542,17 +542,17 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 2,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/rockstar-cards.png'
       },
       merchant: {
-        name: 'Tarjetas Unique',
+        name: 'Tarjetas Rockstar',
         url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
     {
       promotionId: '9',
-      description: 'Canjea tus Unique Points por productos exclusivos y experiencias únicas.',
+      description: 'Canjea tus RockStar Points por productos exclusivos y experiencias únicas.',
       percentage: 0,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -564,54 +564,10 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 3,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/rockstar-products.png'
       },
       merchant: {
         name: 'Catálogo de Premios',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    },
-    {
-      promotionId: '10',
-      description: 'Acumula puntos más rápido con promociones especiales y bonificaciones.',
-      percentage: 0,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 4,
-      image: {
-        imageNumber: ''
-      },
-      merchant: {
-        name: 'Promociones Especiales',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    },
-    {
-      promotionId: '11',
-      description: 'Consulta tu saldo de Unique Points y canjea cuando quieras desde la app.',
-      percentage: 0,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 5,
-      image: {
-        imageNumber: ''
-      },
-      merchant: {
-        name: 'Consulta de Puntos',
         url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
@@ -630,7 +586,7 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 6,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/rockstar-unete.png'
       },
       merchant: {
         name: 'Únete Ahora',
@@ -648,9 +604,9 @@ export class CashbackPage {
   }
 
   /**
-   * Maneja el click en "Ver más" de Unique Rewards
+   * Maneja el click en "Ver más" de RockStar Rewards
    */
-  onUniqueRewardsViewMore(): void {
+  onRockStarRewardsViewMore(): void {
     window.open('https://www.rockstar.com.mx/cashback/promociones-unicas/', '_blank');
   }
 }

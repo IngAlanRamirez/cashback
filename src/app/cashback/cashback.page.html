@@ -87,13 +87,13 @@
           </app-promotions-slider>
         }
 
-        <!-- Rewards Program -->
-        @if (mockUniqueRewards.length > 0) {
+        <!-- RockStar Rewards -->
+        @if (mockRockStarRewards.length > 0) {
           <app-promotions-slider
-            [promotions]="mockUniqueRewards"
-            title="Rewards Program"
+            [promotions]="mockRockStarRewards"
+            title="RockStar Rewards"
             [showViewMore]="true"
-            (viewMoreClick)="onUniqueRewardsViewMore()">
+            (viewMoreClick)="onRockStarRewardsViewMore()">
           </app-promotions-slider>
         }
       </div>
