@@ -18,6 +18,7 @@ import { AccumulatedCashbackComponent } from './components/accumulated-cashback/
 import { MonthlyCashbackByStoreComponent } from './components/monthly-cashback-by-store/monthly-cashback-by-store.component';
 import { TransactionsListComponent } from './components/transactions-list/transactions-list.component';
 import { CardSelectionComponent } from './components/card-selection/card-selection.component';
+import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
@@ -45,7 +46,8 @@ import { Purchase } from './models/purchase';
     AccumulatedCashbackComponent,
     MonthlyCashbackByStoreComponent,
     TransactionsListComponent,
-    CardSelectionComponent
+    CardSelectionComponent,
+    FilterModalComponent
   ]
 })
 export class CashbackPage {
@@ -57,6 +59,9 @@ export class CashbackPage {
   
   // Signal para controlar la visibilidad del modal de selección de tarjetas
   isCardSelectionOpen = signal<boolean>(false);
+  
+  // Signal para controlar la visibilidad del modal de filtros
+  isFilterModalOpen = signal<boolean>(false);
   
   // Datos mock para desarrollo
   mockProduct: Product = {
@@ -328,8 +333,23 @@ export class CashbackPage {
    * Maneja el click en el botón de filtro
    */
   onFilterClick(): void {
-    console.log('Filter clicked - Abrir modal de filtros');
-    // TODO: Implementar modal de filtros
+    this.isFilterModalOpen.set(true);
+  }
+
+  /**
+   * Maneja el cierre del modal de filtros
+   */
+  onFilterModalClose(): void {
+    this.isFilterModalOpen.set(false);
+  }
+
+  /**
+   * Maneja la aplicación de filtros
+   */
+  onFiltersApplied(filters: { period: string; category: string }): void {
+    console.log('Filtros aplicados:', filters);
+    // TODO: Aplicar filtros a la lista de transacciones
+    this.isFilterModalOpen.set(false);
   }
 
   /**

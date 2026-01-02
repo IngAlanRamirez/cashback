@@ -91,4 +91,11 @@
     (close)="onCardSelectionClose()"
     (productSelected)="onProductSelected($event)">
   </app-card-selection>
+
+  <!-- Modal de Filtros -->
+  <app-filter-modal
+    [isOpen]="isFilterModalOpen()"
+    (close)="onFilterModalClose()"
+    (filtersApplied)="onFiltersApplied($event)">
+  </app-filter-modal>
 </ion-content>
