@@ -24,7 +24,7 @@ import { FilterModalComponent } from './components/filter-modal/filter-modal.com
 import { PromotionsSliderComponent } from './components/promotions-slider/promotions-slider.component';
 import { PromotionDetailModalComponent } from './components/promotion-detail-modal/promotion-detail-modal.component';
 import { CashbackDataService } from './services/cashback-data.service';
-import { TransactionsService } from './services/transactions.service';
+import { TransactionsService, TransactionFilters } from './services/transactions.service';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
@@ -349,26 +349,51 @@ export class CashbackPage implements OnInit {
    */
   updateCashbackCalculations(): void {
     const filters = this.currentFilters();
-    const allTransactions = this.filteredPurchases();
 
-    // Obtener todas las transacciones filtradas para calcular correctamente
-    this.transactionsService.getAllFilteredTransactions(filters).subscribe({
-      next: (allFilteredTransactions) => {
-        // Calcular cashback acumulado
+    // Para el cashback acumulado, obtener TODAS las transacciones del periodo (sin filtro de categoría)
+    const filtersForAccumulated: TransactionFilters = {
+      period: filters.period,
+      category: 'all' // Siempre usar 'all' para el acumulado
+    };
+
+    // Para el cashback por categoría, usar los filtros actuales (puede incluir filtro de categoría)
+    const filtersForCategory = filters;
+
+    // Obtener transacciones para el acumulado (todas las categorías)
+    this.transactionsService.getAllFilteredTransactions(filtersForAccumulated).subscribe({
+      next: (allTransactionsForAccumulated) => {
+        // Calcular cashback acumulado con TODAS las transacciones del periodo
         const cashbackAmounts = this.transactionsService.calculateCashbackAmounts(
-          allFilteredTransactions,
+          allTransactionsForAccumulated,
           filters.period
         );
         this.mockCashbackAmounts.set(cashbackAmounts);
 
-        // Calcular cashback por categoría
-        const activityAmountCashBacks = this.transactionsService.calculateActivityAmountCashBacks(
-          allFilteredTransactions
-        );
-        this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+        // Si el filtro de categoría es 'all', usar las mismas transacciones para el cashback por categoría
+        // Si hay un filtro de categoría específico, obtener solo esas transacciones
+        if (filters.category === 'all') {
+          // Calcular cashback por categoría con todas las transacciones
+          const activityAmountCashBacks = this.transactionsService.calculateActivityAmountCashBacks(
+            allTransactionsForAccumulated
+          );
+          this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+        } else {
+          // Obtener transacciones filtradas por categoría para el cashback por categoría
+          this.transactionsService.getAllFilteredTransactions(filtersForCategory).subscribe({
+            next: (filteredTransactions) => {
+              const activityAmountCashBacks = this.transactionsService.calculateActivityAmountCashBacks(
+                filteredTransactions
+              );
+              this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+            },
+            error: (error) => {
+              console.error('Error al calcular cashback por categoría:', error);
+            }
+          });
+        }
       },
       error: (error) => {
-        console.error('Error al calcular cashback:', error);
+        console.error('Error al calcular cashback acumulado:', error);
       }
     });
   }
