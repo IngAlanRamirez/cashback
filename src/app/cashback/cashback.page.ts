@@ -12,6 +12,8 @@ import {
   IonSegmentButton,
   IonLabel
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 import { InfoBannerComponent } from './components/info-banner/info-banner.component';
 import { CardInfoComponent } from './components/card-info/card-info.component';
 import { AccumulatedCashbackComponent } from './components/accumulated-cashback/accumulated-cashback.component';
@@ -54,6 +56,11 @@ import { Promotion } from './models/promotion';
   ]
 })
 export class CashbackPage {
+  constructor() {
+    // Registrar iconos de ionicons
+    addIcons({ chevronBackOutline });
+  }
+
   // Signal para controlar el tab activo
   selectedTab = signal<'resumen' | 'promo'>('resumen');
   
@@ -288,8 +295,6 @@ export class CashbackPage {
       }
     }
   ];
-
-  constructor() { }
 
   /**
    * Cambia el tab activo
