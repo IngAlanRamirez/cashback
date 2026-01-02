@@ -73,8 +73,12 @@
     font-size: 16px;
     text-align: left;
     padding: 16px;
+    padding-left: 16px;
     border-bottom: 1px solid #e0e0e0;
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     
     &:last-child {
       border-bottom: none;
@@ -83,6 +87,43 @@
     &.action-sheet-cancel {
       --color: #ec0000;
       font-weight: 400;
+    }
+    
+    &.card-selection-button {
+      .card-image {
+        width: 48px;
+        height: 30px;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 6px;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        // Eliminar fondo blanco
+        mix-blend-mode: multiply;
+        filter: brightness(1.1) contrast(1.1);
+        background: transparent;
+      }
+      
+      .button-inner {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        background: transparent;
+        
+        .action-sheet-button-inner {
+          flex: 1;
+          min-width: 0;
+          margin-left: 0;
+          padding-left: 0;
+        }
+        
+        ion-icon {
+          font-size: 20px;
+          color: #92949c;
+          flex-shrink: 0;
+        }
+      }
     }
   }
 }

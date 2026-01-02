@@ -5,7 +5,7 @@ import {
   ActionSheetButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cardOutline } from 'ionicons/icons';
+import { cardOutline, chevronForward } from 'ionicons/icons';
 import { Product } from '../../models/product';
 
 @Component({
@@ -25,7 +25,7 @@ export class CardSelectionComponent {
 
   constructor() {
     // Registrar iconos de ionicons
-    addIcons({ cardOutline });
+    addIcons({ cardOutline, chevronForward });
   }
 
   @Input() 
@@ -96,14 +96,25 @@ export class CardSelectionComponent {
       return;
     }
 
-    const buttons: ActionSheetButton[] = products.map(product => ({
-      text: this.getCardDisplayText(product),
-      icon: 'card-outline',
-      handler: () => {
-        this.onProductSelect(product);
-        return true;
-      }
-    }));
+    const buttons: ActionSheetButton[] = products.map(product => {
+      const cardText = this.getCardDisplayText(product);
+      const cardImage = this.getCardImage(product);
+      
+      return {
+        text: cardText,
+        icon: 'card-outline',
+        cssClass: 'card-selection-button',
+        handler: () => {
+          this.onProductSelect(product);
+          return true;
+        },
+        // Agregar datos personalizados para la imagen
+        data: {
+          image: cardImage,
+          product: product
+        }
+      } as ActionSheetButton;
+    });
 
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Selecciona tu tarjeta',
@@ -114,6 +125,58 @@ export class CardSelectionComponent {
     });
 
     await actionSheet.present();
+
+    // Agregar imágenes de tarjetas a los botones después de presentar
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('.card-selection-action-sheet .action-sheet-button.card-selection-button');
+      buttons.forEach((button, index) => {
+        const product = products[index];
+        if (product && !button.querySelector('.card-image')) {
+          const cardImage = this.getCardImage(product);
+          const buttonInner = button.querySelector('.button-inner') || button;
+          
+          // Crear elemento de imagen
+          const img = document.createElement('img');
+          img.className = 'card-image';
+          img.src = cardImage;
+          img.alt = this.getCardDisplayText(product);
+          img.width = 48;
+          img.height = 30;
+          img.loading = 'lazy';
+          img.style.cssText = 'width: 48px; height: 30px; object-fit: contain; object-position: center; border-radius: 6px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); mix-blend-mode: multiply; filter: brightness(1.1) contrast(1.1); background: transparent;';
+          
+          // Insertar imagen antes del texto y agregar chevron después del texto
+          const textElement = button.querySelector('.action-sheet-button-inner');
+          if (textElement) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'button-inner';
+            wrapper.style.cssText = 'display: flex; align-items: center; gap: 6px; width: 100%;';
+            wrapper.appendChild(img);
+            
+            // Clonar el elemento de texto y hacer que ocupe el espacio disponible
+            const clonedText = textElement.cloneNode(true) as HTMLElement;
+            clonedText.style.cssText = 'flex: 1; min-width: 0; margin-left: 0; padding-left: 0;';
+            wrapper.appendChild(clonedText);
+            
+            // Crear y agregar el icono chevron-forward después del texto, alineado a la derecha
+            const chevronIcon = document.createElement('ion-icon');
+            chevronIcon.setAttribute('name', 'chevron-forward');
+            chevronIcon.style.cssText = 'font-size: 20px; color: #92949c; flex-shrink: 0;';
+            wrapper.appendChild(chevronIcon);
+            
+            textElement.replaceWith(wrapper);
+          } else {
+            button.insertBefore(img, button.firstChild);
+            
+            // Si no hay textElement, agregar chevron al final del botón
+            const chevronIcon = document.createElement('ion-icon');
+            chevronIcon.setAttribute('name', 'chevron-forward');
+            chevronIcon.style.cssText = 'font-size: 20px; color: #92949c; flex-shrink: 0; margin-left: auto;';
+            button.appendChild(chevronIcon);
+          }
+        }
+      });
+    }, 100);
 
     // Agregar botón cancelar al header después de presentar
     setTimeout(() => {
@@ -130,7 +193,7 @@ export class CardSelectionComponent {
         headerElement.style.position = 'relative';
         headerElement.appendChild(cancelBtn);
       }
-    }, 100);
+    }, 150);
 
     // Escuchar cuando se cierra el action sheet
     const { role } = await actionSheet.onDidDismiss();
@@ -150,11 +213,32 @@ export class CardSelectionComponent {
   }
 
   /**
+   * Obtiene la ruta de la imagen de la tarjeta basada en el tipo y nombre
+   */
+  getCardImage(product: Product): string {
+    const productName = product.product?.name?.toLowerCase() || '';
+    const type = product.type?.toUpperCase() || '';
+    
+    // Mapeo de tarjetas a imágenes
+    // Las imágenes deben estar en src/assets/images/cards/
+    if (type === 'CREDIT' && (productName.includes('cashback') || productName.includes('stars'))) {
+      return '/assets/images/cards/card-1.png'; // Tarjeta negra con efectos dorados
+    } else if (type === 'CREDIT' && (productName.includes('nomina') || productName.includes('nómina'))) {
+      return '/assets/images/cards/card-2.png'; // Tarjeta con gradiente teal-naranja
+    } else if (type === 'DEBIT') {
+      return '/assets/images/cards/card-3.png'; // Tarjeta con gradiente azul-magenta
+    }
+    
+    // Imagen por defecto
+    return '/assets/images/cards/card-1.png';
+  }
+
+  /**
    * Formatea el nombre del producto
    */
   formatProductName(name: string, product: Product): string {
     if (product.type?.toUpperCase() === 'CREDIT') {
-      return 'LikeU';
+      return 'Cashback Stars';
     } else {
       return name.length > 22 ? name.substring(0, 22) + '...' : name;
     }

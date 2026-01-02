@@ -3,8 +3,14 @@
     <p>En tu tarjeta</p>
     <div class="item">
       <div class="info">
-        <div class="card-icon">
-          <ion-icon name="card"></ion-icon>
+        <div class="card-image-container">
+          <img 
+            [src]="getCardImage(product)" 
+            [alt]="formatProductName(product.product?.name || '', product)"
+            class="card-image"
+            width="56"
+            height="36"
+            loading="lazy" />
         </div>
         <div class="data">
           <div class="title">

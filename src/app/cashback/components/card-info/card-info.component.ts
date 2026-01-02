@@ -25,11 +25,11 @@ export class CardInfoComponent {
 
   /**
    * Formatea el nombre del producto
-   * Si es tipo CREDIT, retorna "LikeU", sino retorna el nombre truncado
+   * Si es tipo CREDIT, retorna "Cashback Stars", sino retorna el nombre truncado
    */
   formatProductName(name: string, product: Product): string {
     if (product.type?.toUpperCase() === 'CREDIT') {
-      return 'LikeU';
+      return 'Cashback Stars';
     } else {
       return name.length > 22 ? name.substring(0, 22) + '...' : name;
     }
@@ -63,6 +63,31 @@ export class CardInfoComponent {
    */
   hasMultipleProducts(): boolean {
     return this.products.length > 1;
+  }
+
+  /**
+   * Obtiene la ruta de la imagen de la tarjeta basada en el tipo y nombre
+   */
+  getCardImage(product: Product | null): string {
+    if (!product) {
+      return '/assets/images/cards/card-1.png';
+    }
+    
+    const productName = product.product?.name?.toLowerCase() || '';
+    const type = product.type?.toUpperCase() || '';
+    
+    // Mapeo de tarjetas a imágenes
+    // Las imágenes deben estar en src/assets/images/cards/
+    if (type === 'CREDIT' && (productName.includes('cashback') || productName.includes('stars'))) {
+      return '/assets/images/cards/card-1.png'; // Tarjeta negra con efectos dorados
+    } else if (type === 'CREDIT' && (productName.includes('nomina') || productName.includes('nómina'))) {
+      return '/assets/images/cards/card-2.png'; // Tarjeta con gradiente teal-naranja
+    } else if (type === 'DEBIT') {
+      return '/assets/images/cards/card-3.png'; // Tarjeta con gradiente azul-magenta
+    }
+    
+    // Imagen por defecto
+    return '/assets/images/cards/card-1.png';
   }
 }
 

@@ -76,7 +76,7 @@ export class CashbackPage {
       imageNumber: '74141001253'
     },
     product: {
-      name: 'LikeU'
+      name: 'Cashback Stars'
     },
     associatedAccounts: [{
       account: {
@@ -103,7 +103,7 @@ export class CashbackPage {
         imageNumber: '06001402555'
       },
       product: {
-        name: 'Débito LikeU'
+        name: 'Débito Cashback Stars'
       },
       associatedAccounts: [{
         account: {
@@ -367,7 +367,7 @@ export class CashbackPage {
   mockPromotions: Promotion[] = [
     {
       promotionId: '1',
-      description: 'Obtén 1% de cashback al hacer tu despensa con tu Crédito LikeU.',
+      description: 'Obtén 1% de cashback al hacer tu despensa con tu Crédito Cashback Stars.',
       percentage: 1,
       statusInfo: {
         statusCode: 'ACTIVE'
