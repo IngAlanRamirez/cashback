@@ -4,15 +4,20 @@
     <p>Montos en MXN</p>
   </div>
   @if (showFilter) {
-    <div class="btn-filter" (click)="onFilterClick()">
-      <ion-icon name="options"></ion-icon>
-    </div>
+    <button 
+      class="btn-filter" 
+      (click)="onFilterClick()"
+      type="button"
+      aria-label="Filtrar movimientos"
+      title="Filtrar movimientos">
+      <ion-icon name="options" aria-hidden="true"></ion-icon>
+    </button>
   }
 </div>
 
-@if (isCurrentPeriod()) {
-  <div class="disclaimer-container">
-    <ion-icon name="warning"></ion-icon>
+  @if (isCurrentPeriod()) {
+  <div class="disclaimer-container" role="alert" aria-live="polite">
+    <ion-icon name="warning" aria-hidden="true"></ion-icon>
     <span>Tus compras se reflejarán en 24 a 48 h hábiles.</span>
   </div>
 }
@@ -41,11 +46,13 @@
     </div>
   } @else if (hasMorePages()) {
     <div class="btn-more-container">
-      <span 
+      <button 
         class="btn-more"
-        (click)="onLoadMore()">
+        (click)="onLoadMore()"
+        type="button"
+        aria-label="Cargar más movimientos">
         Ver más
-      </span>
+      </button>
     </div>
   }
 }

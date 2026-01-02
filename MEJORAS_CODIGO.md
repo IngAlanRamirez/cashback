@@ -231,8 +231,8 @@ ngOnDestroy(): void {
 - ✅ Métodos del componente ahora delegan al servicio (`loadInitialData()`, `applyFilters()`, `selectProduct()`, etc.)
 - ✅ Eliminadas dependencias innecesarias del componente (ya no necesita `CashbackDataService`, `TransactionsService`, `NotificationService`, `LoggerService` directamente)
 
-### 11. **Accesibilidad (A11y)**
-**Problema**: Falta mejorar accesibilidad en varios componentes.
+### 11. **Accesibilidad (A11y)** ✅ COMPLETADO
+**Problema**: Faltaba mejorar accesibilidad en varios componentes.
 
 **Ubicación**:
 - Botones sin `aria-label`
@@ -240,11 +240,27 @@ ngOnDestroy(): void {
 - Elementos interactivos sin `role` apropiado
 - Falta soporte para navegación por teclado
 
-**Solución**:
-- Agregar `aria-label` a todos los botones iconos
-- Agregar `aria-labelledby` a modales
-- Mejorar navegación por teclado
-- Agregar `role` donde sea necesario
+**Solución Implementada**:
+- ✅ Agregado `aria-label` a todos los botones con iconos
+- ✅ Agregado `aria-labelledby` y `aria-describedby` a modales
+- ✅ Mejorada navegación por teclado (Enter, Space, tabindex)
+- ✅ Agregado `role` apropiado donde sea necesario
+- ✅ Agregado `aria-live` para regiones dinámicas
+- ✅ Agregado `aria-hidden="true"` a iconos decorativos
+- ✅ Convertidos divs clickeables a botones reales
+- ✅ Agregado soporte para lectores de pantalla (sr-only)
+
+**Cambios realizados**:
+- ✅ `info-banner.component.html`: Agregado `role="alert"`, `aria-live`, `aria-label` al botón de cerrar
+- ✅ `card-info.component.html`: Agregado `role="button"`, `tabindex`, `aria-label`, manejo de eventos de teclado
+- ✅ `transactions-list.component.html`: Convertido botón de filtro a `<button>`, agregado `aria-label`, `role="alert"` al disclaimer
+- ✅ `transaction-item.component.html`: Agregado `role="listitem"`, `aria-label` a montos y fechas
+- ✅ `promotion-card.component.html`: Agregado `aria-label` descriptivo al botón
+- ✅ `filter-modal.component.html`: Agregado `aria-labelledby`, `aria-describedby`, convertidos chips a `<button>`, agregado `aria-pressed`, `role="group"`
+- ✅ `promotion-detail-modal.component.html`: Agregado `aria-labelledby`, `aria-describedby`, `aria-label` a botones
+- ✅ `promotions-slider.component.html`: Agregado `role="region"`, `role="list"`, `role="listitem"`, convertido "Ver más" a `<button>`
+- ✅ `cashback.page.html`: Agregado `aria-label` al botón de retroceso
+- ✅ Agregada clase `.sr-only` para texto accesible pero oculto visualmente
 
 ### 12. **Testing**
 **Problema**: Solo existe un archivo de test (`cashback.page.spec.ts`) y probablemente está vacío o incompleto.
@@ -255,17 +271,37 @@ ngOnDestroy(): void {
 - Implementar tests de integración
 - Aumentar cobertura de código
 
-### 13. **Documentación**
-**Problema**: Algunos métodos complejos no tienen documentación suficiente.
+### 13. **Documentación** ✅ COMPLETADO
+**Problema**: Algunos métodos complejos no tenían documentación suficiente.
 
 **Ubicación**:
-- `updateCashbackCalculations()`: Método complejo que necesita mejor documentación
+- `updateCashbackCalculations()`: Método complejo que necesitaba mejor documentación
 - `generateFakeTransaction()`: Lógica compleja sin documentación detallada
+- `calculateCashbackAmounts()`: Método de cálculo sin documentación completa
+- `calculateActivityAmountCashBacks()`: Método de agrupación sin documentación
+- Otros métodos públicos importantes
 
-**Solución**:
-- Agregar JSDoc completo a métodos complejos
-- Documentar parámetros y valores de retorno
-- Agregar ejemplos de uso donde sea necesario
+**Solución Implementada**:
+- ✅ Agregado JSDoc completo a todos los métodos complejos
+- ✅ Documentados parámetros con `@param` y tipos
+- ✅ Documentados valores de retorno con `@returns` y tipos
+- ✅ Agregados ejemplos de uso con `@example`
+- ✅ Documentado flujo de ejecución y comportamiento
+- ✅ Documentadas validaciones y manejo de errores
+- ✅ Documentadas constantes y valores importantes
+
+**Cambios realizados**:
+- ✅ `cashback-state.service.ts`:
+  - `loadInitialData()`: Documentación completa del flujo de carga inicial
+  - `loadTransactions()`: Documentación de parámetros, comportamiento y estados
+  - `updateCashbackCalculations()`: Documentación detallada del flujo complejo con switchMap
+- ✅ `transactions.service.ts`:
+  - `generateFakeTransaction()`: Documentación completa con categorías soportadas y ejemplos
+  - `calculateCashbackAmounts()`: Documentación de cálculos mensual y anual
+  - `calculateActivityAmountCashBacks()`: Documentación de agrupación por categoría
+  - `getTransactions()`: Documentación de paginación, caché y validaciones
+  - `getAllFilteredTransactions()`: Documentación de diferencias con método paginado
+  - `generateTransactions()`: Documentación de distribución y ordenamiento
 
 ### 14. **Optimización de Imágenes**
 **Problema**: Las imágenes pueden no estar optimizadas.

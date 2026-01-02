@@ -17,7 +17,8 @@
 <button 
   class="learn-more-btn" 
   (click)="onLearnMore()"
-  type="button">
+  type="button"
+  [attr.aria-label]="'Conocer más sobre ' + (promotion.merchant.name || 'esta promoción')">
   Conocer más
 </button>
 

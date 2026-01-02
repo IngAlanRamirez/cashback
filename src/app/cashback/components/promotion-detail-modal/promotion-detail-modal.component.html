@@ -5,16 +5,18 @@
     class="promotion-detail-modal"
     [breakpoints]="[0, 0.7, 0.85]"
     [initialBreakpoint]="0.7"
-    [backdropDismiss]="true">
+    [backdropDismiss]="true"
+    aria-labelledby="promotion-modal-title"
+    aria-describedby="promotion-modal-description">
     <ng-template>
       <ion-header class="modal-header">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="closeModal()" class="close-btn">
+            <ion-button (click)="closeModal()" class="close-btn" aria-label="Cerrar modal de promoción">
               Cerrar
             </ion-button>
           </ion-buttons>
-          <ion-title>Cashback</ion-title>
+          <ion-title id="promotion-modal-title">Cashback</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -22,23 +24,24 @@
         <div class="promotion-detail-content">
           <img 
             src="/assets/images/promotions/rockstar-exit.png" 
-            alt="RockStar Exit"
+            alt="Logo RockStar Cashback"
             class="cashback-logo"
             loading="lazy"
             width="200"
             height="200" />
           
           <div class="promotion-body">
-            <h2 class="exit-message">Estás por salir del sitio</h2>
+            <h2 class="exit-message" id="promotion-modal-description">Estás por salir del sitio</h2>
             
-            <div class="disclaimer">
+            <div class="disclaimer" role="alert">
               Por tu seguridad, cerraremos tu sesión en el sitio para dirigirte al sitio de promociones RockStar Cashback.
             </div>
             
             <button 
               class="continue-btn" 
               (click)="navigateToUrl()"
-              type="button">
+              type="button"
+              aria-label="Continuar al sitio de promociones RockStar Cashback">
               Continuar
             </button>
           </div>

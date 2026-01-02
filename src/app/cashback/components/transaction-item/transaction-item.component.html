@@ -1,18 +1,18 @@
-<div class="movement">
+<div class="movement" role="listitem">
   <div class="movement-info">
-    <div class="icon">
-      <ion-icon [name]="getIconName(category)"></ion-icon>
+    <div class="icon" aria-hidden="true">
+      <ion-icon [name]="getIconName(category)" aria-hidden="true"></ion-icon>
     </div>
     <div class="movement-data">
       <div class="description">{{ description }}</div>
-      <div class="date">{{ getDateValid() }}</div>
+      <div class="date" aria-label="Fecha de la transacción: {{ getDateValid() }}">{{ getDateValid() }}</div>
     </div>
   </div>
   <div class="right-info">
-    <div class="cashback-amount">
+    <div class="cashback-amount" aria-label="Cashback ganado: {{ formatCashbackAmount() }}">
       + {{ formatCashbackAmount() }}
     </div>
-    <div class="amount">
+    <div class="amount" aria-label="Monto de la compra: {{ formatPurchaseAmount() }}">
       - {{ formatPurchaseAmount() }}
     </div>
   </div>

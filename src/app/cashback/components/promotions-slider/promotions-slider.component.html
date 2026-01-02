@@ -1,13 +1,15 @@
 <div class="promotions-slider-container">
-  <h3 class="section-title">{{ title }}</h3>
+  <h3 class="section-title" [id]="getTitleId()">{{ title }}</h3>
   
-  <div class="slider-wrapper">
+  <div class="slider-wrapper" role="region" [attr.aria-labelledby]="getTitleId()">
     <swiper-container
       slides-per-view="auto"
       space-between="12"
-      class="promotions-swiper">
+      class="promotions-swiper"
+      role="list"
+      [attr.aria-label]="'Lista de promociones: ' + title">
       @for (promotion of promotions; track trackByPromotionId($index, promotion)) {
-        <swiper-slide>
+        <swiper-slide role="listitem">
           <app-promotion-card 
             [promotion]="promotion"
             (learnMoreClick)="onPromotionClick($event)">
@@ -18,9 +20,13 @@
   </div>
   
   @if (showViewMore && promotions.length > 0) {
-    <span class="view-more-link" (click)="onViewMore()">
+    <button 
+      class="view-more-link" 
+      (click)="onViewMore()"
+      type="button"
+      [attr.aria-label]="'Ver más promociones de ' + title">
       Ver más
-    </span>
+    </button>
   }
 </div>
 

@@ -41,5 +41,12 @@ export class PromotionsSliderComponent {
   onPromotionClick(promotion: Promotion): void {
     this.promotionClick.emit(promotion);
   }
+
+  /**
+   * Genera un ID único para el título para uso en aria-labelledby
+   */
+  getTitleId(): string {
+    return 'promotions-title-' + this.title.toLowerCase().replace(/\s+/g, '-');
+  }
 }
 

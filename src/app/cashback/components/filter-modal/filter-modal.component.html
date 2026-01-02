@@ -5,52 +5,63 @@
     class="filter-modal"
     [breakpoints]="[0, modalBreakpoint(), maxBreakpoint()]"
     [initialBreakpoint]="modalBreakpoint()"
-    [backdropDismiss]="true">
+    [backdropDismiss]="true"
+    aria-labelledby="filter-modal-title"
+    aria-describedby="filter-modal-description">
     <ng-template>
       <ion-header class="modal-header">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="closeModal()" class="cancel-btn">
+            <ion-button (click)="closeModal()" class="cancel-btn" aria-label="Cerrar modal de filtros">
               Cancelar
             </ion-button>
           </ion-buttons>
-          <ion-title>Filtrar</ion-title>
+          <ion-title id="filter-modal-title">Filtrar</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <ion-content class="modal-content">
         <div class="filter-content">
+          <p id="filter-modal-description" class="sr-only">
+            Selecciona un período y un tipo de establecimiento para filtrar tus movimientos de cashback
+          </p>
           <div class="filter-section">
-            <h3 class="filter-section-title">Periodo</h3>
-            <div class="filter-chips">
+            <h3 class="filter-section-title" id="period-section-title">Periodo</h3>
+            <div class="filter-chips" role="group" aria-labelledby="period-section-title">
               @for (period of periods(); track period.value) {
-                <div 
+                <button 
                   class="filter-chip" 
                   [class.selected]="selectedPeriod() === period.value"
                   (click)="selectPeriod(period.value)"
-                  role="button"
-                  tabindex="0">
+                  (keydown.enter)="selectPeriod(period.value)"
+                  (keydown.space)="selectPeriod(period.value); $event.preventDefault()"
+                  type="button"
+                  [attr.aria-label]="'Seleccionar período: ' + period.label"
+                  [attr.aria-pressed]="selectedPeriod() === period.value">
                   {{ period.label }}
-                </div>
+                </button>
               }
             </div>
           </div>
 
           <div class="filter-section">
-            <h3 class="filter-section-title">Establecimiento</h3>
-            <div class="filter-chips">
+            <h3 class="filter-section-title" id="category-section-title">Establecimiento</h3>
+            <div class="filter-chips" role="group" aria-labelledby="category-section-title">
               @for (category of categories; track category.value) {
-                <div 
+                <button 
                   class="filter-chip" 
                   [class.selected]="selectedCategory() === category.value"
                   (click)="selectCategory(category.value)"
-                  role="button"
-                  tabindex="0">
+                  (keydown.enter)="selectCategory(category.value)"
+                  (keydown.space)="selectCategory(category.value); $event.preventDefault()"
+                  type="button"
+                  [attr.aria-label]="'Seleccionar establecimiento: ' + category.label"
+                  [attr.aria-pressed]="selectedCategory() === category.value">
                   @if (category.icon) {
-                    <ion-icon [name]="category.icon"></ion-icon>
+                    <ion-icon [name]="category.icon" aria-hidden="true"></ion-icon>
                   }
                   {{ category.label }}
-                </div>
+                </button>
               }
             </div>
           </div>
@@ -59,7 +70,8 @@
             <button 
               class="apply-filters-btn" 
               (click)="applyFilters()"
-              type="button">
+              type="button"
+              aria-label="Aplicar filtros seleccionados">
               Aplicar filtros
             </button>
           </div>

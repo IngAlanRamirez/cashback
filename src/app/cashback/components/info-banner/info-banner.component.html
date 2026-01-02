@@ -1,21 +1,27 @@
 @if (isOpen) {
-  <div class="info-banner">
-    <div class="icon">
+  <div class="info-banner" role="alert" aria-live="polite">
+    <div class="icon" aria-hidden="true">
       <img 
         src="assets/icons/info-circle.svg" 
-        alt="Información" 
+        alt="" 
         class="info-icon"
         loading="lazy"
         width="20"
-        height="20">
+        height="20"
+        aria-hidden="true">
     </div>
-    <div class="message">
+    <div class="message" id="info-banner-message">
       {{ message }}
     </div>
     @if (dismissible) {
-      <div class="icon close-icon" (click)="closeBanner()">
-        <ion-icon name="close"></ion-icon>
-      </div>
+      <button 
+        class="icon close-icon" 
+        (click)="closeBanner()"
+        type="button"
+        aria-label="Cerrar banner informativo"
+        aria-describedby="info-banner-message">
+        <ion-icon name="close" aria-hidden="true"></ion-icon>
+      </button>
     }
   </div>
 }

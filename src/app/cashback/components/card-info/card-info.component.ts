@@ -81,6 +81,16 @@ export class CardInfoComponent {
   }
 
   /**
+   * Maneja eventos de teclado para accesibilidad
+   */
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onCardClick();
+    }
+  }
+
+  /**
    * Verifica si hay múltiples productos
    */
   hasMultipleProducts(): boolean {

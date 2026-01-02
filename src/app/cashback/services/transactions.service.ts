@@ -82,7 +82,38 @@ export class TransactionsService {
   }
 
   /**
-   * Genera una transacción fake
+   * Genera una transacción fake con datos aleatorios pero realistas.
+   * 
+   * Este método crea una transacción simulada con la siguiente estructura:
+   * - ID único basado en timestamp e índice
+   * - Establecimiento aleatorio de la categoría especificada
+   * - Fecha dentro del rango proporcionado
+   * - Monto aleatorio entre 50 y 2000 pesos
+   * - Porcentaje de cashback según la categoría
+   * - Cálculo automático del monto de cashback
+   * 
+   * **Categorías soportadas**:
+   * - `Sup`: Supermercados (1% cashback)
+   * - `Res`: Restaurantes (2% cashback)
+   * - `Far`: Farmacias (1.5% cashback)
+   * - `Tel`: Telecomunicaciones (2% cashback)
+   * - `Gas`: Gasolineras (1% cashback)
+   * - `Ent`: Entretenimiento (1% cashback)
+   * 
+   * **Parámetros**:
+   * - `categoryCode`: Código de categoría (Sup, Res, Far, Tel, etc.)
+   * - `date`: Fecha de la transacción
+   * - `index`: Índice único para generar IDs únicos
+   * 
+   * **Retorna**: Un objeto `Purchase` completo con todos los campos requeridos.
+   * 
+   * @param {string} categoryCode - Código de categoría del establecimiento
+   * @param {Date} date - Fecha de la transacción
+   * @param {number} index - Índice único para generar IDs
+   * @returns {Purchase} Objeto Purchase con datos simulados
+   * @example
+   * const transaction = this.generateFakeTransaction('Sup', new Date(), 0);
+   * // Retorna: { cardTransactionId: 'TXN-1234567890-0', merchant: { name: 'WALMART', ... }, ... }
    */
   private generateFakeTransaction(
     categoryCode: string,
@@ -193,7 +224,45 @@ export class TransactionsService {
   }
 
   /**
-   * Obtiene transacciones con filtros y paginación
+   * Obtiene transacciones con filtros y paginación.
+   * 
+   * Este método simula una llamada a API para obtener transacciones paginadas.
+   * Utiliza un sistema de caché con expiración de 5 minutos para mejorar el rendimiento.
+   * 
+   * **Filtros aplicados**:
+   * - `period`: Período de tiempo ('current', 'previous', 'previous-2')
+   * - `category`: Categoría de establecimiento ('all', 'Sup', 'Res', 'Far', 'Tel')
+   * 
+   * **Paginación**:
+   * - Tamaño de página: `DEFAULT_PAGE_SIZE` (10 transacciones)
+   * - Calcula automáticamente el total de páginas basado en el total de transacciones
+   * - Retorna `hasMore: true` si hay más páginas disponibles
+   * 
+   * **Caché**:
+   * - Las transacciones se cachean por 5 minutos
+   * - La clave del caché incluye filtros y número de página
+   * - Si el caché está expirado o no existe, genera nuevas transacciones
+   * 
+   * **Simulación de red**:
+   * - Aplica un delay aleatorio entre `MIN_DELAY_MS` (200ms) y `MAX_DELAY_MS` (700ms)
+   * - Simula latencia de red realista
+   * 
+   * **Validaciones**:
+   * - Valida que los filtros sean válidos usando `validateTransactionFilters()`
+   * - Valida que el número de página sea válido usando `isValidPage()`
+   * - Retorna un Observable con error si las validaciones fallan
+   * 
+   * @param {TransactionFilters} filters - Filtros de período y categoría
+   * @param {number} page - Número de página a obtener (por defecto: 1)
+   * @returns {Observable<{transactions: Purchase[]; total: number; hasMore: boolean}>} Observable con transacciones paginadas
+   * @throws {Error} Si los filtros o la página son inválidos
+   * @example
+   * this.getTransactions({ period: 'current', category: 'all' }, 1)
+   *   .subscribe(response => {
+   *     console.log(response.transactions); // Array de 10 transacciones
+   *     console.log(response.total); // Total de transacciones disponibles
+   *     console.log(response.hasMore); // true si hay más páginas
+   *   });
    */
   getTransactions(
     filters: TransactionFilters,
@@ -241,7 +310,33 @@ export class TransactionsService {
   }
 
   /**
-   * Obtiene todas las transacciones filtradas (sin paginación, para filtrado completo)
+   * Obtiene todas las transacciones filtradas sin paginación.
+   * 
+   * Este método es útil cuando se necesitan todas las transacciones de un período
+   * para realizar cálculos (como el cashback acumulado o por categoría), sin importar
+   * cuántas sean.
+   * 
+   * **Diferencias con `getTransactions()`**:
+   * - No aplica paginación (retorna todas las transacciones)
+   * - Usa un delay más corto (`MIN_DELAY_MS_FAST` - `MAX_DELAY_MS_FAST`)
+   * - Genera menos transacciones por defecto (`MIN_TRANSACTIONS_FAST` - `MAX_TRANSACTIONS_FAST`)
+   * - También utiliza caché con expiración de 5 minutos
+   * 
+   * **Uso típico**:
+   * - Cálculo de cashback acumulado
+   * - Cálculo de cashback por categoría
+   * - Estadísticas generales
+   * 
+   * @param {TransactionFilters} filters - Filtros de período y categoría
+   * @returns {Observable<Purchase[]>} Observable con todas las transacciones filtradas
+   * @throws {Error} Si los filtros son inválidos
+   * @example
+   * // Obtener todas las transacciones del mes actual
+   * this.getAllFilteredTransactions({ period: 'current', category: 'all' })
+   *   .subscribe(transactions => {
+   *     const total = transactions.reduce((sum, t) => sum + t.clearing.cashBackAmount.amount, 0);
+   *     console.log('Total cashback:', total);
+   *   });
    */
   getAllFilteredTransactions(filters: TransactionFilters): Observable<Purchase[]> {
     // Validar filtros
@@ -259,7 +354,42 @@ export class TransactionsService {
   }
 
   /**
-   * Calcula el cashback acumulado (mensual y anual) basado en las transacciones
+   * Calcula el cashback acumulado (mensual y anual) basado en las transacciones.
+   * 
+   * Este método suma todos los montos de cashback de las transacciones proporcionadas
+   * para calcular el total mensual. Para el cashback anual, genera un monto simulado
+   * multiplicando el mensual por un factor aleatorio entre 2 y 5.
+   * 
+   * **Cálculo mensual**:
+   * - Suma todos los `cashBackAmount.amount` de las transacciones
+   * - Redondea a 2 decimales
+   * 
+   * **Cálculo anual**:
+   * - Multiplica el monto mensual por un factor aleatorio entre `ANNUAL_MULTIPLIER_MIN` (2)
+   *   y `ANNUAL_MULTIPLIER_MAX` (5)
+   * - Simula el cashback acumulado de varios meses del año
+   * - Redondea a 2 decimales
+   * 
+   * **Validaciones**:
+   * - Verifica que `transactions` sea un array
+   * - Verifica que `period` sea válido ('current', 'previous', 'previous-2')
+   * 
+   * **Parámetros**:
+   * - `transactions`: Array de transacciones a procesar
+   * - `period`: Período para el cual se calcula el cashback
+   * 
+   * **Retorna**: Objeto `CashBackAmounts` con:
+   * - `monthAmount`: Monto mensual calculado
+   * - `annualAmount`: Monto anual simulado
+   * - `cashbackPeriod`: Mes y año del período
+   * 
+   * @param {Purchase[]} transactions - Array de transacciones a procesar
+   * @param {string} period - Período del cashback ('current', 'previous', 'previous-2')
+   * @returns {CashBackAmounts} Objeto con montos mensual, anual y período
+   * @throws {Error} Si `transactions` no es un array o `period` es inválido
+   * @example
+   * const amounts = this.calculateCashbackAmounts(transactions, 'current');
+   * // Retorna: { monthAmount: { amount: 150.50, currency: 'MXN' }, ... }
    */
   calculateCashbackAmounts(
     transactions: Purchase[],
@@ -307,8 +437,44 @@ export class TransactionsService {
   }
 
   /**
-   * Calcula el cashback por categoría basado en las transacciones
-   * Solo incluye las categorías permitidas: Sup, Res, Far, Tel
+   * Calcula el cashback agrupado por categoría basado en las transacciones.
+   * 
+   * Este método agrupa las transacciones por categoría y calcula el total de cashback
+   * para cada una. Solo incluye las categorías permitidas en el modal de filtros:
+   * - `Sup`: Supermercados
+   * - `Res`: Restaurantes
+   * - `Far`: Farmacias
+   * - `Tel`: Telecomunicaciones
+   * 
+   * **Proceso**:
+   * 1. Filtra las transacciones para incluir solo las categorías permitidas
+   * 2. Agrupa las transacciones por `categoryCode`
+   * 3. Suma los montos de cashback para cada categoría
+   * 4. Calcula el porcentaje promedio de cashback para cada categoría
+   * 5. Retorna un array ordenado con los resultados
+   * 
+   * **Estructura de retorno**:
+   * Cada elemento contiene:
+   * - `name`: Nombre de la categoría (ej: "Supermercados")
+   * - `categoryCode`: Código de la categoría (ej: "Sup")
+   * - `categoryDescription`: Descripción completa
+   * - `cashBackAmount`: Monto total de cashback para esa categoría
+   * - `cashBackPercentage`: Porcentaje promedio de cashback
+   * 
+   * **Validaciones**:
+   * - Verifica que `transactions` sea un array
+   * - Ignora transacciones de categorías no permitidas
+   * 
+   * @param {Purchase[]} transactions - Array de transacciones a procesar
+   * @returns {ActivityAmountCashBack[]} Array de cashback agrupado por categoría
+   * @throws {Error} Si `transactions` no es un array
+   * @example
+   * const byCategory = this.calculateActivityAmountCashBacks(transactions);
+   * // Retorna: [
+   * //   { name: 'Supermercados', categoryCode: 'Sup', cashBackAmount: { amount: 77.00, ... }, ... },
+   * //   { name: 'Restaurantes', categoryCode: 'Res', cashBackAmount: { amount: 30.50, ... }, ... },
+   * //   ...
+   * // ]
    */
   calculateActivityAmountCashBacks(transactions: Purchase[]): ActivityAmountCashBack[] {
     // Validar transacciones

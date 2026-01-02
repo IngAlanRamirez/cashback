@@ -109,7 +109,34 @@ export class CashbackStateService implements OnDestroy {
   // ========== MÉTODOS PÚBLICOS ==========
   
   /**
-   * Carga todos los datos iniciales desde el JSON
+   * Carga todos los datos iniciales desde el JSON.
+   * 
+   * Este método es el punto de entrada principal para cargar todos los datos estáticos
+   * de la aplicación desde el archivo `cashback-data.json`. También dispara la carga
+   * de transacciones dinámicas.
+   * 
+   * **Datos cargados**:
+   * - Producto actual y lista de productos disponibles
+   * - Montos de cashback iniciales
+   * - Cashback por categoría inicial
+   * - Promociones exclusivas
+   * - Promociones RockStar Rewards
+   * 
+   * **Flujo de ejecución**:
+   * 1. Establece el estado de carga a `LOADING`
+   * 2. Obtiene los datos desde `CashbackDataService`
+   * 3. Actualiza todos los signals con los datos recibidos
+   * 4. Carga las transacciones dinámicas
+   * 5. Establece el estado de carga a `SUCCESS` o `ERROR`
+   * 
+   * **Manejo de errores**:
+   * - Si falla la carga, muestra una notificación de error al usuario
+   * - Usa datos iniciales por defecto para `activityAmountCashBacks`
+   * - Continúa cargando transacciones incluso si hay error
+   * 
+   * @example
+   * // Llamar al inicializar el componente
+   * this.stateService.loadInitialData();
    */
   loadInitialData(): void {
     this.loadingStateInitialData.set(LoadingState.LOADING);
@@ -138,7 +165,36 @@ export class CashbackStateService implements OnDestroy {
   }
   
   /**
-   * Carga las transacciones con los filtros actuales
+   * Carga las transacciones con los filtros actuales.
+   * 
+   * Este método obtiene transacciones paginadas desde el servicio, aplicando los filtros
+   * de período y categoría que están actualmente activos en el estado.
+   * 
+   * **Parámetros**:
+   * - `page`: Número de página a cargar (por defecto: 1)
+   * - `append`: Si es `true`, agrega las nuevas transacciones a las existentes.
+   *              Si es `false`, reemplaza todas las transacciones.
+   * 
+   * **Comportamiento**:
+   * - Si `append` es `false` y la carga es exitosa, también actualiza los cálculos de cashback
+   * - Actualiza el estado de paginación (página actual, total de páginas, si hay más páginas)
+   * - Maneja estados de carga y errores apropiadamente
+   * 
+   * **Estados actualizados**:
+   * - `filteredPurchases`: Lista de transacciones
+   * - `currentPage`: Página actual
+   * - `totalPages`: Total de páginas disponibles
+   * - `hasMoreTransactions`: Si hay más páginas disponibles
+   * - `loadingStateTransactions`: Estado de carga
+   * 
+   * @param {number} page - Número de página a cargar (por defecto: 1)
+   * @param {boolean} append - Si es true, agrega transacciones; si es false, las reemplaza (por defecto: false)
+   * @example
+   * // Cargar primera página (reemplaza transacciones existentes)
+   * this.stateService.loadTransactions(1, false);
+   * 
+   * // Cargar segunda página (agrega a las existentes)
+   * this.stateService.loadTransactions(2, true);
    */
   loadTransactions(page: number = 1, append: boolean = false): void {
     this.loadingStateTransactions.set(LoadingState.LOADING);
@@ -172,7 +228,32 @@ export class CashbackStateService implements OnDestroy {
   }
   
   /**
-   * Actualiza los cálculos de cashback acumulado y por categoría
+   * Actualiza los cálculos de cashback acumulado y por categoría.
+   * 
+   * Este método realiza dos cálculos principales:
+   * 1. **Cashback acumulado**: Calcula el total de cashback mensual y anual para TODAS las categorías
+   *    del período seleccionado, independientemente del filtro de categoría aplicado.
+   * 2. **Cashback por categoría**: Calcula el cashback agrupado por categoría. Si el filtro de categoría
+   *    es 'all', usa todas las transacciones del período. Si hay un filtro específico, solo usa
+   *    las transacciones de esa categoría.
+   * 
+   * **Flujo de ejecución**:
+   * 1. Obtiene todas las transacciones del período (sin filtro de categoría) para el acumulado
+   * 2. Calcula el cashback acumulado con esas transacciones
+   * 3. Si el filtro de categoría es 'all', calcula el cashback por categoría con las mismas transacciones
+   * 4. Si hay un filtro de categoría específico, obtiene solo esas transacciones y calcula el cashback por categoría
+   * 
+   * **Estados de carga**:
+   * - Establece `loadingStateCashbackCalculations` a `LOADING` al inicio
+   * - Establece a `SUCCESS` cuando los cálculos se completan
+   * - Establece a `ERROR` si ocurre un error durante el proceso
+   * 
+   * **Nota**: Este método usa `switchMap` para evitar nested subscribes y mejorar la legibilidad del código.
+   * 
+   * @throws {Error} Si ocurre un error al obtener las transacciones o calcular los montos
+   * @example
+   * // Se llama automáticamente cuando se cargan transacciones o se aplican filtros
+   * this.stateService.updateCashbackCalculations();
    */
   updateCashbackCalculations(): void {
     this.loadingStateCashbackCalculations.set(LoadingState.LOADING);

@@ -1,5 +1,12 @@
 @if (product) {
-  <div class="card" [class.clickable]="hasMultipleProducts()" (click)="onCardClick()">
+  <div 
+    class="card" 
+    [class.clickable]="hasMultipleProducts()" 
+    (click)="onCardClick()"
+    [attr.role]="hasMultipleProducts() ? 'button' : null"
+    [attr.tabindex]="hasMultipleProducts() ? '0' : null"
+    [attr.aria-label]="hasMultipleProducts() ? 'Seleccionar tarjeta. ' + formatProductName(product.product?.name || '', product) + ', ' + getCardType(product) + ', terminada en ' + getLastFourDigits(product) : null"
+    (keydown)="onKeyDown($event)">
     <p>En tu tarjeta</p>
     <div class="item">
       <div class="info">
@@ -22,8 +29,8 @@
         </div>
       </div>
       @if (hasMultipleProducts()) {
-        <div class="chevron">
-          <ion-icon name="chevron-forward"></ion-icon>
+        <div class="chevron" aria-hidden="true">
+          <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
         </div>
       } @else {
         <div></div>
