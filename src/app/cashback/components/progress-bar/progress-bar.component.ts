@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivityAmountCashBack } from '../../models/activity-amount-cashback';
 
@@ -7,7 +7,8 @@ import { ActivityAmountCashBack } from '../../models/activity-amount-cashback';
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressBarComponent {
   @Input() activityAmountCashBacks: ActivityAmountCashBack[] = [];

@@ -6,7 +6,7 @@
       slides-per-view="auto"
       space-between="12"
       class="promotions-swiper">
-      @for (promotion of promotions; track promotion.promotionId) {
+      @for (promotion of promotions; track trackByPromotionId($index, promotion)) {
         <swiper-slide>
           <app-promotion-card 
             [promotion]="promotion"

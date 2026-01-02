@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -19,7 +19,8 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   templateUrl: './monthly-cashback-by-store.component.html',
   styleUrls: ['./monthly-cashback-by-store.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, ProgressBarComponent]
+  imports: [CommonModule, IonIcon, ProgressBarComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonthlyCashbackByStoreComponent {
   @Input() activityAmountCashBacks: ActivityAmountCashBack[] = [];

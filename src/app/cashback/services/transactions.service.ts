@@ -15,11 +15,21 @@ export interface TransactionPagination {
   total: number;
 }
 
+interface CacheEntry {
+  data: Purchase[];
+  timestamp: number;
+  filters: TransactionFilters;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsService {
   private readonly pageSize = 10;
+  private readonly cacheExpirationTime = 5 * 60 * 1000; // 5 minutos en milisegundos
+  
+  // Caché de transacciones filtradas
+  private transactionsCache = new Map<string, CacheEntry>();
   
   // Nombres de establecimientos por categoría
   private readonly merchantNames: Record<string, string[]> = {

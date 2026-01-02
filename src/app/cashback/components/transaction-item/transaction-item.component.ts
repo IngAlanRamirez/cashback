@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -19,7 +19,8 @@ import { es } from 'date-fns/locale';
   templateUrl: './transaction-item.component.html',
   styleUrls: ['./transaction-item.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon]
+  imports: [CommonModule, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionItemComponent {
   @Input() description: string = '';

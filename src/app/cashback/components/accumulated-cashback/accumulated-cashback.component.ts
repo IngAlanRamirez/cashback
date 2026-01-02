@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CashBackAmounts } from '../../models/cashback-amounts';
 import { format } from 'date-fns';
@@ -9,7 +9,8 @@ import { es } from 'date-fns/locale';
   templateUrl: './accumulated-cashback.component.html',
   styleUrls: ['./accumulated-cashback.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccumulatedCashbackComponent {
   @Input() cashbackAmounts: CashBackAmounts | null = null;

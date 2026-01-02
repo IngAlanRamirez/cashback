@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, shareReplay } from 'rxjs/operators';
 import { Product } from '../models/product';
 import { CashBackAmounts } from '../models/cashback-amounts';
 import { ActivityAmountCashBack } from '../models/activity-amount-cashback';
@@ -23,20 +23,36 @@ export interface CashbackData {
 })
 export class CashbackDataService {
   private dataUrl = '/assets/data/cashback-data.json';
+  
+  // Caché de datos usando shareReplay para evitar múltiples llamadas HTTP
+  private dataCache$: Observable<CashbackData> | null = null;
 
   constructor(private http: HttpClient) {}
 
   /**
    * Obtiene todos los datos de cashback desde el archivo JSON
+   * Usa caché para evitar múltiples llamadas HTTP
    */
   getCashbackData(): Observable<CashbackData> {
-    return this.http.get<CashbackData>(this.dataUrl).pipe(
-      catchError((error) => {
-        console.error('Error al cargar datos de cashback:', error);
-        // Retornar datos vacíos en caso de error
-        return of(this.getEmptyData());
-      })
-    );
+    // Si ya existe caché, retornarlo
+    if (!this.dataCache$) {
+      this.dataCache$ = this.http.get<CashbackData>(this.dataUrl).pipe(
+        shareReplay(1), // Cachea el último valor y lo comparte entre suscriptores
+        catchError((error) => {
+          console.error('Error al cargar datos de cashback:', error);
+          // Retornar datos vacíos en caso de error
+          return of(this.getEmptyData());
+        })
+      );
+    }
+    return this.dataCache$;
+  }
+
+  /**
+   * Limpia el caché de datos (útil para forzar recarga)
+   */
+  clearCache(): void {
+    this.dataCache$ = null;
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Promotion } from '../../models/promotion';
 
@@ -7,17 +7,25 @@ import { Promotion } from '../../models/promotion';
   templateUrl: './promotion-card.component.html',
   styleUrls: ['./promotion-card.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PromotionCardComponent {
   @Input() promotion!: Promotion;
   @Output() learnMoreClick = new EventEmitter<Promotion>();
 
+  // Cache de URL de imagen para evitar recalcular
+  private imageUrlCache: string | null = null;
+
   /**
    * Obtiene la URL de la imagen
    * Soporta tanto imágenes base64 como rutas de archivos
+   * Usa caché para evitar recalcular la misma URL
    */
   getImageUrl(): string {
+    if (this.imageUrlCache) {
+      return this.imageUrlCache;
+    }
     if (!this.promotion.image || !this.promotion.image.imageNumber) {
       return '';
     }
@@ -28,25 +36,31 @@ export class PromotionCardComponent {
     if (imageValue.includes('images/') || imageValue.includes('assets/')) {
       // Si ya empieza con /assets, usarla directamente
       if (imageValue.startsWith('/assets/')) {
+        this.imageUrlCache = imageValue;
         return imageValue;
       }
       // Si empieza con assets/, agregar la barra inicial
       if (imageValue.startsWith('assets/')) {
-        return `/${imageValue}`;
+        this.imageUrlCache = `/${imageValue}`;
+        return this.imageUrlCache;
       }
       // Si solo tiene images/, agregar /assets/
-      return `/assets/${imageValue}`;
+      this.imageUrlCache = `/assets/${imageValue}`;
+      return this.imageUrlCache;
     }
     
     // Si es base64 (muy largo o empieza con caracteres base64), retornar como data URL
     if (imageValue.length > 100 || /^[A-Za-z0-9+/=]/.test(imageValue)) {
       // Verificar si ya es un data URL
       if (imageValue.startsWith('data:')) {
+        this.imageUrlCache = imageValue;
         return imageValue;
       }
-      return `data:image/jpg;base64,${imageValue}`;
+      this.imageUrlCache = `data:image/jpg;base64,${imageValue}`;
+      return this.imageUrlCache;
     }
     
+    this.imageUrlCache = '';
     return '';
   }
 

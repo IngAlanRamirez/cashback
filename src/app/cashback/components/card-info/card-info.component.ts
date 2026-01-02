@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -10,7 +10,8 @@ import { Product } from '../../models/product';
   templateUrl: './card-info.component.html',
   styleUrls: ['./card-info.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon]
+  imports: [CommonModule, IonIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardInfoComponent {
   @Input() product: Product | null = null;
@@ -76,29 +77,48 @@ export class CardInfoComponent {
     return this.products.length > 1;
   }
 
+  // Cache de imágenes de tarjetas para evitar recalcular
+  private cardImageCache = new Map<string, string>();
+
   /**
    * Obtiene la ruta de la imagen de la tarjeta basada en el tipo y nombre
+   * Usa caché para evitar recalcular la misma imagen
    */
   getCardImage(product: Product | null): string {
     if (!product) {
       return '/assets/images/cards/card-1.png';
     }
     
+    // Generar clave única para el caché
+    const cacheKey = `${product.type}-${product.product?.name || ''}`;
+    
+    // Si existe en caché, retornarlo
+    if (this.cardImageCache.has(cacheKey)) {
+      return this.cardImageCache.get(cacheKey)!;
+    }
+    
     const productName = product.product?.name?.toLowerCase() || '';
     const type = product.type?.toUpperCase() || '';
+    
+    let imagePath: string;
     
     // Mapeo de tarjetas a imágenes
     // Las imágenes deben estar en src/assets/images/cards/
     if (type === 'CREDIT' && productName.includes('famous')) {
-      return '/assets/images/cards/card-2.png'; // Rockstar Famous Credit - Tarjeta con gradiente teal-naranja
+      imagePath = '/assets/images/cards/card-2.png'; // Rockstar Famous Credit - Tarjeta con gradiente teal-naranja
     } else if (type === 'CREDIT') {
-      return '/assets/images/cards/card-1.png'; // Rockstar Credit - Tarjeta negra con efectos dorados
+      imagePath = '/assets/images/cards/card-1.png'; // Rockstar Credit - Tarjeta negra con efectos dorados
     } else if (type === 'DEBIT') {
-      return '/assets/images/cards/card-3.png'; // Rockstar Debit Plus - Tarjeta con gradiente azul-magenta
+      imagePath = '/assets/images/cards/card-3.png'; // Rockstar Debit Plus - Tarjeta con gradiente azul-magenta
+    } else {
+      // Imagen por defecto
+      imagePath = '/assets/images/cards/card-1.png';
     }
     
-    // Imagen por defecto
-    return '/assets/images/cards/card-1.png';
+    // Guardar en caché
+    this.cardImageCache.set(cacheKey, imagePath);
+    
+    return imagePath;
   }
 }
 

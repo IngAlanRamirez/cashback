@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PromotionCardComponent } from '../promotion-card/promotion-card.component';
@@ -10,7 +10,8 @@ import { Promotion } from '../../models/promotion';
   styleUrls: ['./promotions-slider.component.scss'],
   standalone: true,
   imports: [CommonModule, PromotionCardComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PromotionsSliderComponent {
   @Input() promotions: Promotion[] = [];
@@ -19,6 +20,13 @@ export class PromotionsSliderComponent {
   
   @Output() viewMoreClick = new EventEmitter<void>();
   @Output() promotionClick = new EventEmitter<Promotion>();
+
+  /**
+   * TrackBy function para optimizar el renderizado de promociones
+   */
+  trackByPromotionId(index: number, promotion: Promotion): string {
+    return promotion.promotionId;
+  }
 
   /**
    * Maneja el click en "Ver más"

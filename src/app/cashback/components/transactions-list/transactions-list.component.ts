@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -11,7 +11,8 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, TransactionItemComponent]
+  imports: [CommonModule, IonIcon, TransactionItemComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionsListComponent {
   @Input() purchases: Purchase[] = [];
@@ -27,6 +28,13 @@ export class TransactionsListComponent {
   constructor() {
     // Registrar iconos de ionicons
     addIcons({ options, warning });
+  }
+
+  /**
+   * TrackBy function para optimizar el renderizado de la lista de transacciones
+   */
+  trackByPurchaseId(index: number, purchase: Purchase): string {
+    return purchase.cardTransactionId;
   }
 
   /**

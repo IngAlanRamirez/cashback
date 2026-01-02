@@ -1,7 +1,13 @@
 @if (isOpen) {
   <div class="info-banner">
     <div class="icon">
-      <img src="assets/icons/info-circle.svg" alt="Información" class="info-icon">
+      <img 
+        src="assets/icons/info-circle.svg" 
+        alt="Información" 
+        class="info-icon"
+        loading="lazy"
+        width="20"
+        height="20">
     </div>
     <div class="message">
       {{ message }}

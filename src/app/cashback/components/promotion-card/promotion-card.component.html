@@ -1,7 +1,10 @@
 <img 
   class="promotion-image" 
   [src]="getImageUrl()" 
-  [alt]="promotion.merchant.name || 'Promoción'" />
+  [alt]="promotion.merchant.name || 'Promoción'"
+  loading="lazy"
+  width="300"
+  height="200" />
   
 <div class="promotion-content">
   <div class="promotion-title">{{ promotion.merchant.name || '' }}</div>

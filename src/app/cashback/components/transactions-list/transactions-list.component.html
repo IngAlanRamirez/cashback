@@ -23,7 +23,7 @@
   </div>
 } @else {
   <div class="movements-container">
-    @for (purchase of purchases; track purchase.cardTransactionId) {
+    @for (purchase of purchases; track trackByPurchaseId($index, purchase)) {
       <app-transaction-item
         [description]="purchase.merchant.name || ''"
         [date]="purchase.orderDate"
