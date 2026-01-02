@@ -367,7 +367,7 @@ export class CashbackPage {
   mockPromotions: Promotion[] = [
     {
       promotionId: '1',
-      description: 'Obtén 1% de cashback al hacer tu despensa con tu Rockstar Credit.',
+      description: 'Llena tu tanque y obtén 1% de cashback en gasolineras participantes.',
       percentage: 1,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -379,17 +379,17 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 1,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/pemex-gas-station.png'
       },
       merchant: {
-        name: 'Supermercados',
+        name: 'Gasolineras',
         url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
     {
       promotionId: '2',
-      description: 'Cumple ese antojo y obtén 2% de cashback con tu Rockstar Famous Credit.',
+      description: 'Recarga tu celular y obtén 2% de cashback en servicios de telecomunicaciones.',
       percentage: 2,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -401,51 +401,7 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 2,
       image: {
-        imageNumber: ''
-      },
-      merchant: {
-        name: 'Restaurantes',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '3',
-      description: 'Ahorra en medicamentos y productos de salud con 1.5% de cashback en farmacias participantes.',
-      percentage: 1.5,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 3,
-      image: {
-        imageNumber: ''
-      },
-      merchant: {
-        name: 'Farmacias',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '4',
-      description: 'Recarga tu celular y obtén 2% de cashback en servicios de telecomunicaciones.',
-      percentage: 2,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 4,
-      image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/mobile-cashback.png'
       },
       merchant: {
         name: 'Telecomunicaciones',
@@ -454,7 +410,7 @@ export class CashbackPage {
       isUniqueRewards: false
     },
     {
-      promotionId: '5',
+      promotionId: '3',
       description: 'Disfruta de entretenimiento y obtén 1% de cashback en cines, teatros y eventos.',
       percentage: 1,
       statusInfo: {
@@ -465,9 +421,9 @@ export class CashbackPage {
       },
       creationDate: '2025-01-01',
       expirationDate: '2025-12-31',
-      position: 5,
+      position: 3,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/entertainment.png'
       },
       merchant: {
         name: 'Entretenimiento',
@@ -476,9 +432,53 @@ export class CashbackPage {
       isUniqueRewards: false
     },
     {
-      promotionId: '6',
-      description: 'Llena tu tanque y obtén 1% de cashback en gasolineras participantes.',
+      promotionId: '4',
+      description: 'Obtén 1% de cashback al hacer tu despensa con tu Rockstar Credit.',
       percentage: 1,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 4,
+      image: {
+        imageNumber: 'images/promotions/supermarket.jpeg'
+      },
+      merchant: {
+        name: 'Supermercados',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '5',
+      description: 'Cumple ese antojo y obtén 2% de cashback con tu Rockstar Famous Credit.',
+      percentage: 2,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 5,
+      image: {
+        imageNumber: 'images/promotions/restaurant.jpeg'
+      },
+      merchant: {
+        name: 'Restaurantes',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '6',
+      description: 'Ahorra en medicamentos y productos de salud con 1.5% de cashback en farmacias participantes.',
+      percentage: 1.5,
       statusInfo: {
         statusCode: 'ACTIVE'
       },
@@ -489,10 +489,10 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 6,
       image: {
-        imageNumber: ''
+        imageNumber: 'images/promotions/pharmacy.jpeg'
       },
       merchant: {
-        name: 'Gasolineras',
+        name: 'Farmacias',
         url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
