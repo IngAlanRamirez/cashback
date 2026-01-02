@@ -115,13 +115,23 @@
     font-size: 16px;
     cursor: pointer;
     text-align: center;
+    background: transparent;
+    border: none;
+    padding: 0;
     
     &:hover {
       opacity: 0.8;
+      background: transparent;
     }
     
     &:active {
       opacity: 0.6;
+      background: transparent;
+    }
+    
+    &:focus {
+      background: transparent;
+      outline: none;
     }
   }
 }

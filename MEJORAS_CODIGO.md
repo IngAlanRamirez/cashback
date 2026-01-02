@@ -329,13 +329,28 @@ ngOnDestroy(): void {
 - ✅ Computed signals `isLoadingTransactions`, `isLoadingInitialData`, `isLoadingCashbackCalculations` para compatibilidad
 - ✅ Estados se actualizan correctamente: `LOADING` → `SUCCESS` o `ERROR`
 
-### 16. **Cache Inconsistente**
+### 16. **Cache Inconsistente** ✅ COMPLETADO
 **Problema**: `TransactionsService` tiene caché pero no se invalida cuando cambian los filtros de manera significativa.
 
-**Solución**:
-- Implementar invalidación de caché cuando sea necesario
-- Agregar método para limpiar caché específico
-- Considerar usar un sistema de caché más robusto
+**Solución Implementada**:
+- ✅ Implementado sistema de caché con dos tipos: paginado y no paginado
+- ✅ Caché con expiración automática (5 minutos)
+- ✅ Invalidación inteligente cuando cambian filtros (período o categoría)
+- ✅ Métodos para limpiar caché específico: `invalidateCache()`, `invalidateCacheByPeriod()`, `invalidateCacheByCategory()`
+- ✅ Método para limpiar todo el caché: `clearAllCache()`
+- ✅ Limpieza automática de caché expirado antes de cada búsqueda
+- ✅ Invalidación automática en `applyFilters()` cuando cambian los filtros
+- ✅ Limpieza completa del caché en `selectProduct()` al cambiar de tarjeta
+
+**Cambios realizados**:
+- ✅ Creado `PaginatedCacheEntry` interface para caché paginado
+- ✅ Implementado `getCacheKey()` para generar claves únicas basadas en filtros y página
+- ✅ Implementado `isCacheValid()` para verificar expiración
+- ✅ Implementado `cleanExpiredCache()` para limpiar entradas expiradas automáticamente
+- ✅ Implementado `invalidateCache()`, `invalidateCacheByPeriod()`, `invalidateCacheByCategory()`, `clearAllCache()`
+- ✅ Integrado caché en `getTransactions()` y `getAllFilteredTransactions()`
+- ✅ Invalidación automática en `CashbackStateService.applyFilters()`
+- ✅ Limpieza completa en `CashbackStateService.selectProduct()`
 
 ### 17. **Error Boundaries / Fallback UI**
 **Problema**: Si un componente falla, toda la aplicación puede romperse.

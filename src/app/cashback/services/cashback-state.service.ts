@@ -311,6 +311,22 @@ export class CashbackStateService implements OnDestroy {
    */
   applyFilters(filters: { period: CashbackPeriod | string; category: CategoryCode | string }): void {
     this.logger.log('Filtros aplicados:', filters);
+    
+    const previousFilters = this.currentFilters();
+    
+    // Invalidar caché si los filtros cambiaron significativamente
+    if (previousFilters.period !== filters.period || previousFilters.category !== filters.category) {
+      // Invalidar caché del período anterior si cambió
+      if (previousFilters.period !== filters.period) {
+        this.transactionsService.invalidateCacheByPeriod(previousFilters.period);
+      }
+      
+      // Invalidar caché de la categoría anterior si cambió
+      if (previousFilters.category !== filters.category) {
+        this.transactionsService.invalidateCacheByCategory(previousFilters.category);
+      }
+    }
+    
     this.currentFilters.set(filters);
     this.loadTransactions(1, false);
   }
@@ -331,6 +347,11 @@ export class CashbackStateService implements OnDestroy {
   selectProduct(product: Product): void {
     this.currentProduct.set(product);
     this.logger.log('Tarjeta seleccionada:', product);
+    
+    // Limpiar todo el caché cuando se cambia de tarjeta
+    // ya que las transacciones pueden ser diferentes por tarjeta
+    this.transactionsService.clearAllCache();
+    
     // Recargar datos para la nueva tarjeta
     this.loadInitialData();
   }

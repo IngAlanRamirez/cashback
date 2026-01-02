@@ -22,6 +22,16 @@ interface CacheEntry {
   data: Purchase[];
   timestamp: number;
   filters: TransactionFilters;
+  page?: number; // Para caché paginado
+}
+
+interface PaginatedCacheEntry {
+  transactions: Purchase[];
+  total: number;
+  hasMore: boolean;
+  timestamp: number;
+  filters: TransactionFilters;
+  page: number;
 }
 
 @Injectable({
@@ -51,8 +61,11 @@ export class TransactionsService {
   private static readonly ANNUAL_MULTIPLIER_MIN = 2;
   private static readonly ANNUAL_MULTIPLIER_MAX = 5;
   
-  // Caché de transacciones filtradas
+  // Caché de transacciones filtradas (sin paginación)
   private transactionsCache = new Map<string, CacheEntry>();
+  
+  // Caché de transacciones paginadas
+  private paginatedCache = new Map<string, PaginatedCacheEntry>();
   
   // Nombres de establecimientos por categoría
   private readonly merchantNames: Record<string, string[]> = {
@@ -278,6 +291,23 @@ export class TransactionsService {
       return throwError(() => new Error('Número de página inválido'));
     }
 
+    // Limpiar caché expirado antes de buscar
+    this.cleanExpiredCache();
+    
+    // Generar clave de caché
+    const cacheKey = this.getCacheKey(filters, page);
+    
+    // Verificar si hay datos en caché válidos
+    const cached = this.paginatedCache.get(cacheKey);
+    if (cached && this.isCacheValid(cached.timestamp)) {
+      // Retornar datos del caché con un delay mínimo para simular red
+      return of({
+        transactions: cached.transactions,
+        total: cached.total,
+        hasMore: cached.hasMore
+      }).pipe(delay(TransactionsService.MIN_DELAY_MS));
+    }
+
     // Simular delay de red
     const delayTime = Math.random() * (TransactionsService.MAX_DELAY_MS - TransactionsService.MIN_DELAY_MS) + TransactionsService.MIN_DELAY_MS;
 
@@ -291,22 +321,42 @@ export class TransactionsService {
     const countForPage = remaining > 0 ? Math.min(this.pageSize, remaining) : 0;
 
     if (countForPage <= 0) {
-      return of({
+      const result = {
         transactions: [],
         total: totalTransactions,
         hasMore: false
-      }).pipe(delay(delayTime));
+      };
+      
+      // Guardar en caché
+      this.paginatedCache.set(cacheKey, {
+        ...result,
+        timestamp: Date.now(),
+        filters,
+        page
+      });
+      
+      return of(result).pipe(delay(delayTime));
     }
 
     // Generar transacciones para esta página
     const transactions = this.generateTransactions(filters, totalTransactions);
     const pageTransactions = transactions.slice(startIndex, endIndex);
 
-    return of({
+    const result = {
       transactions: pageTransactions,
       total: totalTransactions,
       hasMore: endIndex < totalTransactions
-    }).pipe(delay(delayTime));
+    };
+    
+    // Guardar en caché
+    this.paginatedCache.set(cacheKey, {
+      ...result,
+      timestamp: Date.now(),
+      filters,
+      page
+    });
+
+    return of(result).pipe(delay(delayTime));
   }
 
   /**
@@ -344,11 +394,31 @@ export class TransactionsService {
       return throwError(() => new Error('Filtros de transacciones inválidos'));
     }
 
+    // Limpiar caché expirado antes de buscar
+    this.cleanExpiredCache();
+    
+    // Generar clave de caché (sin página para todas las transacciones)
+    const cacheKey = this.getCacheKey(filters);
+    
+    // Verificar si hay datos en caché válidos
+    const cached = this.transactionsCache.get(cacheKey);
+    if (cached && this.isCacheValid(cached.timestamp)) {
+      // Retornar datos del caché con un delay mínimo para simular red
+      return of(cached.data).pipe(delay(TransactionsService.MIN_DELAY_MS_FAST));
+    }
+
     const delayTime = Math.random() * (TransactionsService.MAX_DELAY_MS_FAST - TransactionsService.MIN_DELAY_MS_FAST) + TransactionsService.MIN_DELAY_MS_FAST;
     
     // Generar un número aleatorio de transacciones
     const count = Math.floor(Math.random() * (TransactionsService.MAX_TRANSACTIONS_FAST - TransactionsService.MIN_TRANSACTIONS_FAST)) + TransactionsService.MIN_TRANSACTIONS_FAST;
     const transactions = this.generateTransactions(filters, count);
+    
+    // Guardar en caché
+    this.transactionsCache.set(cacheKey, {
+      data: transactions,
+      timestamp: Date.now(),
+      filters
+    });
     
     return of(transactions).pipe(delay(delayTime));
   }
@@ -537,6 +607,153 @@ export class TransactionsService {
 
     // Ordenar por monto descendente
     return result.sort((a, b) => b.cashBackAmount.amount - a.cashBackAmount.amount);
+  }
+
+  /**
+   * Genera una clave única para el caché basada en los filtros y opcionalmente la página
+   * 
+   * @param filters - Filtros de transacciones
+   * @param page - Número de página (opcional)
+   * @returns Clave única para el caché
+   */
+  private getCacheKey(filters: TransactionFilters, page?: number): string {
+    const period = filters.period || 'current';
+    const category = filters.category || 'all';
+    return page !== undefined 
+      ? `transactions:${period}:${category}:page:${page}`
+      : `transactions:${period}:${category}:all`;
+  }
+  
+  /**
+   * Verifica si una entrada de caché es válida (no ha expirado)
+   * 
+   * @param timestamp - Timestamp de cuando se creó la entrada
+   * @returns true si el caché es válido, false si ha expirado
+   */
+  private isCacheValid(timestamp: number): boolean {
+    const now = Date.now();
+    return (now - timestamp) < this.cacheExpirationTime;
+  }
+  
+  /**
+   * Limpia todas las entradas de caché expiradas
+   * 
+   * Este método recorre todos los cachés y elimina las entradas que han expirado.
+   * Útil para limpiar memoria periódicamente.
+   */
+  private cleanExpiredCache(): void {
+    const now = Date.now();
+    
+    // Limpiar caché de transacciones sin paginación
+    for (const [key, entry] of this.transactionsCache.entries()) {
+      if ((now - entry.timestamp) >= this.cacheExpirationTime) {
+        this.transactionsCache.delete(key);
+      }
+    }
+    
+    // Limpiar caché paginado
+    for (const [key, entry] of this.paginatedCache.entries()) {
+      if ((now - entry.timestamp) >= this.cacheExpirationTime) {
+        this.paginatedCache.delete(key);
+      }
+    }
+  }
+  
+  /**
+   * Invalida el caché para un conjunto específico de filtros
+   * 
+   * Elimina todas las entradas de caché (paginadas y no paginadas) que coincidan
+   * con los filtros proporcionados. Útil cuando se sabe que los datos han cambiado
+   * para un período o categoría específica.
+   * 
+   * @param filters - Filtros para los cuales invalidar el caché
+   * @example
+   * // Invalidar caché para el período actual y todas las categorías
+   * this.invalidateCache({ period: 'current', category: 'all' });
+   */
+  invalidateCache(filters: TransactionFilters): void {
+    const baseKey = this.getCacheKey(filters);
+    
+    // Eliminar todas las entradas que comiencen con la clave base
+    // Esto incluye entradas paginadas y no paginadas
+    for (const key of this.transactionsCache.keys()) {
+      if (key.startsWith(baseKey)) {
+        this.transactionsCache.delete(key);
+      }
+    }
+    
+    for (const key of this.paginatedCache.keys()) {
+      if (key.startsWith(baseKey)) {
+        this.paginatedCache.delete(key);
+      }
+    }
+  }
+  
+  /**
+   * Invalida todo el caché de transacciones
+   * 
+   * Elimina todas las entradas de caché, tanto paginadas como no paginadas.
+   * Útil cuando se necesita forzar una recarga completa de datos.
+   * 
+   * @example
+   * // Limpiar todo el caché
+   * this.clearAllCache();
+   */
+  clearAllCache(): void {
+    this.transactionsCache.clear();
+    this.paginatedCache.clear();
+  }
+  
+  /**
+   * Invalida el caché para un período específico (todas las categorías)
+   * 
+   * Útil cuando se cambia de período y se quiere limpiar todos los datos
+   * relacionados con ese período.
+   * 
+   * @param period - Período para el cual invalidar el caché
+   * @example
+   * // Invalidar todo el caché del período actual
+   * this.invalidateCacheByPeriod('current');
+   */
+  invalidateCacheByPeriod(period: string): void {
+    const periodKey = `transactions:${period}:`;
+    
+    for (const key of this.transactionsCache.keys()) {
+      if (key.startsWith(periodKey)) {
+        this.transactionsCache.delete(key);
+      }
+    }
+    
+    for (const key of this.paginatedCache.keys()) {
+      if (key.startsWith(periodKey)) {
+        this.paginatedCache.delete(key);
+      }
+    }
+  }
+  
+  /**
+   * Invalida el caché para una categoría específica (todos los períodos)
+   * 
+   * Útil cuando se cambia de categoría y se quiere limpiar todos los datos
+   * relacionados con esa categoría.
+   * 
+   * @param category - Categoría para la cual invalidar el caché
+   * @example
+   * // Invalidar todo el caché de supermercados
+   * this.invalidateCacheByCategory('Sup');
+   */
+  invalidateCacheByCategory(category: string): void {
+    for (const key of this.transactionsCache.keys()) {
+      if (key.includes(`:${category}:`) || key.endsWith(`:${category}:all`)) {
+        this.transactionsCache.delete(key);
+      }
+    }
+    
+    for (const key of this.paginatedCache.keys()) {
+      if (key.includes(`:${category}:`)) {
+        this.paginatedCache.delete(key);
+      }
+    }
   }
 
   /**
