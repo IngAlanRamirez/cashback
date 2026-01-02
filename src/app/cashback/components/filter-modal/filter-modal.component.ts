@@ -18,6 +18,7 @@ import {
   callOutline 
 } from 'ionicons/icons';
 import { PeriodService } from '../../services/period.service';
+import { TranslationService } from '../../i18n/translation.service';
 
 export interface FilterPeriod {
   label: string;
@@ -52,6 +53,7 @@ const BREAKPOINT_OFFSET = 0.15;
 })
 export class FilterModalComponent {
   private periodService = inject(PeriodService);
+  readonly translate = inject(TranslationService);
   
   @Input() 
   set isOpen(value: boolean) {
@@ -84,13 +86,17 @@ export class FilterModalComponent {
     return this.periodService.getAvailablePeriods();
   });
 
-  readonly categories: readonly FilterCategory[] = [
-    { label: 'Todos', value: 'all' },
-    { label: 'Supermercados', value: 'Sup', icon: 'cart-outline' },
-    { label: 'Restaurantes', value: 'Res', icon: 'restaurant-outline' },
-    { label: 'Farmacias', value: 'Far', icon: 'medical-outline' },
-    { label: 'Telecomunicaciones', value: 'Tel', icon: 'call-outline' }
-  ] as const;
+  /**
+   * Categorías disponibles para filtrar
+   * Las etiquetas se obtienen del servicio de traducción
+   */
+  readonly categories = computed<FilterCategory[]>(() => [
+    { label: this.translate.t('filters.todos'), value: 'all' },
+    { label: this.translate.t('filters.supermercados'), value: 'Sup', icon: 'cart-outline' },
+    { label: this.translate.t('filters.restaurantes'), value: 'Res', icon: 'restaurant-outline' },
+    { label: this.translate.t('filters.farmacias'), value: 'Far', icon: 'medical-outline' },
+    { label: this.translate.t('filters.telecomunicaciones'), value: 'Tel', icon: 'call-outline' }
+  ]);
 
   modalBreakpoint = computed(() => {
     if (typeof window === 'undefined') return 0.55;

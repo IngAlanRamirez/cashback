@@ -28,6 +28,7 @@ import { CashbackStateService } from './services/cashback-state.service';
 import { Product } from './models/product';
 import { Promotion } from './models/promotion';
 import { CashbackTab, CashbackPeriod, CategoryCode } from './models/enums';
+import { TranslationService } from './i18n/translation.service';
 
 @Component({
   selector: 'app-cashback',
@@ -61,6 +62,9 @@ import { CashbackTab, CashbackPeriod, CategoryCode } from './models/enums';
 export class CashbackPage implements OnInit, OnDestroy {
   // Servicio de estado que maneja toda la lógica de negocio
   readonly stateService = inject(CashbackStateService);
+  
+  // Servicio de traducción
+  readonly translate = inject(TranslationService);
   
   // Exponer enums para uso en template
   readonly CashbackTab = CashbackTab;

@@ -12,21 +12,21 @@
       <ion-header class="modal-header">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="closeModal()" class="cancel-btn" aria-label="Cerrar modal de filtros">
-              Cancelar
+            <ion-button (click)="closeModal()" class="cancel-btn" [attr.aria-label]="translate.t('common.cancelar')">
+              {{ translate.t('common.cancelar') }}
             </ion-button>
           </ion-buttons>
-          <ion-title id="filter-modal-title">Filtrar</ion-title>
+          <ion-title id="filter-modal-title">{{ translate.t('common.filtrar') }}</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <ion-content class="modal-content">
         <div class="filter-content">
           <p id="filter-modal-description" class="sr-only">
-            Selecciona un período y un tipo de establecimiento para filtrar tus movimientos de cashback
+            {{ translate.t('filters.descripcion') }}
           </p>
           <div class="filter-section">
-            <h3 class="filter-section-title" id="period-section-title">Periodo</h3>
+            <h3 class="filter-section-title" id="period-section-title">{{ translate.t('filters.periodo') }}</h3>
             <div class="filter-chips" role="group" aria-labelledby="period-section-title">
               @for (period of periods(); track period.value) {
                 <button 
@@ -45,9 +45,9 @@
           </div>
 
           <div class="filter-section">
-            <h3 class="filter-section-title" id="category-section-title">Establecimiento</h3>
+            <h3 class="filter-section-title" id="category-section-title">{{ translate.t('filters.establecimiento') }}</h3>
             <div class="filter-chips" role="group" aria-labelledby="category-section-title">
-              @for (category of categories; track category.value) {
+              @for (category of categories(); track category.value) {
                 <button 
                   class="filter-chip" 
                   [class.selected]="selectedCategory() === category.value"
@@ -71,8 +71,8 @@
               class="apply-filters-btn" 
               (click)="applyFilters()"
               type="button"
-              aria-label="Aplicar filtros seleccionados">
-              Aplicar filtros
+              [attr.aria-label]="translate.t('common.aplicar')">
+              {{ translate.t('common.aplicar') }}
             </button>
           </div>
         </div>

@@ -345,13 +345,59 @@ ngOnDestroy(): void {
 - Mostrar UI de fallback cuando hay errores
 - Implementar retry logic para requests fallidos
 
-### 18. **Internacionalización (i18n)**
+### 18. **Internacionalización (i18n)** ✅ COMPLETADO
 **Problema**: Textos hardcodeados en español.
 
-**Solución**:
-- Implementar Angular i18n
-- Extraer todos los textos a archivos de traducción
-- Soporte para múltiples idiomas
+**Solución Implementada**:
+- ✅ Creado servicio de traducción `TranslationService` con soporte para múltiples idiomas
+- ✅ Extraídos todos los textos a archivos JSON de traducción
+- ✅ Archivos de traducción para español (es) e inglés (en)
+- ✅ Integrado en componentes principales
+- ✅ Sistema flexible que permite agregar más idiomas fácilmente
+
+**Cambios realizados**:
+- ✅ Creado `src/app/cashback/i18n/translation.service.ts` con:
+  - Carga de traducciones desde archivos JSON
+  - Caché de traducciones cargadas
+  - Método `t()` para obtener traducciones
+  - Soporte para cambio de idioma dinámico
+  - Fallback a español si falla la carga
+- ✅ Creados archivos de traducción:
+  - `src/assets/i18n/es.json` (español)
+  - `src/assets/i18n/en.json` (inglés)
+- ✅ Actualizado `cashback.page.ts` y `.html`:
+  - Título, tabs, mensajes de carga
+  - Títulos de promociones
+- ✅ Actualizado `info-banner.component.ts` y `.html`:
+  - Mensaje del banner desde traducciones
+- ✅ Actualizado `transactions-list.component.ts` y `.html`:
+  - Títulos, mensajes, botones
+- ✅ Actualizado `filter-modal.component.ts` y `.html`:
+  - Títulos, categorías, botones
+  - Categorías ahora usan computed signal para reactividad
+
+**Estructura de traducciones**:
+- `common`: Textos comunes (Cashback, Resumen, Promociones, etc.)
+- `banner`: Mensajes del banner informativo
+- `card`: Textos relacionados con tarjetas
+- `cashback`: Textos de cashback acumulado
+- `transactions`: Textos de transacciones y movimientos
+- `filters`: Textos del modal de filtros
+- `promotions`: Textos de promociones
+- `errors`: Mensajes de error
+- `categories`: Nombres de categorías
+
+**Uso**:
+```typescript
+// En componentes
+readonly translate = inject(TranslationService);
+
+// En templates
+{{ translate.t('common.cashback') }}
+
+// Cambiar idioma
+this.translate.setLanguage('en').subscribe();
+```
 
 ### 19. **Performance: Virtual Scrolling**
 **Problema**: La lista de transacciones puede ser larga y renderizar todo puede ser lento.

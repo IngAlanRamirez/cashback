@@ -4,10 +4,10 @@
       <ion-back-button 
         defaultHref="/" 
         icon="chevron-back-outline"
-        aria-label="Volver atrás">
+        [aria-label]="translate.t('common.volver')">
       </ion-back-button>
     </ion-buttons>
-    <ion-title>Cashback</ion-title>
+    <ion-title>{{ translate.t('common.cashback') }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,10 +25,10 @@
       (ionChange)="onTabChange($event)"
       class="custom-segment">
       <ion-segment-button [value]="CashbackTab.RESUMEN">
-        <ion-label>Resumen</ion-label>
+        <ion-label>{{ translate.t('common.resumen') }}</ion-label>
       </ion-segment-button>
       <ion-segment-button [value]="CashbackTab.PROMOCIONES">
-        <ion-label>Promociones</ion-label>
+        <ion-label>{{ translate.t('common.promociones') }}</ion-label>
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -56,7 +56,7 @@
         @if (isLoadingCashbackCalculations()) {
           <div class="loading-container">
             <ion-spinner name="crescent"></ion-spinner>
-            <p>Cargando cashback acumulado...</p>
+            <p>{{ translate.t('cashback.cargandoAcumulado') }}</p>
           </div>
         } @else {
           <app-accumulated-cashback 
@@ -68,7 +68,7 @@
         @if (isLoadingCashbackCalculations()) {
           <div class="loading-container">
             <ion-spinner name="crescent"></ion-spinner>
-            <p>Cargando cashback por establecimiento...</p>
+            <p>{{ translate.t('cashback.cargandoPorEstablecimiento') }}</p>
           </div>
         } @else if (mockActivityAmountCashBacks().length > 0) {
           <app-monthly-cashback-by-store 
@@ -80,7 +80,7 @@
         @if (isLoadingTransactions() && filteredPurchases().length === 0) {
           <div class="loading-container">
             <ion-spinner name="crescent"></ion-spinner>
-            <p>Cargando transacciones...</p>
+            <p>{{ translate.t('transactions.cargandoTransacciones') }}</p>
           </div>
         } @else {
           <app-transactions-list
@@ -105,7 +105,7 @@
         @if (mockPromotions().length > 0) {
           <app-promotions-slider
             [promotions]="mockPromotions()"
-            title="Promociones exclusivas"
+            [title]="translate.t('promotions.exclusivas')"
             [showViewMore]="true"
             (viewMoreClick)="onPromotionsViewMore()"
             (promotionClick)="onPromotionClick($event)">
@@ -116,7 +116,7 @@
         @if (mockRockStarRewards().length > 0) {
           <app-promotions-slider
             [promotions]="mockRockStarRewards()"
-            title="RockStar Rewards"
+            [title]="translate.t('promotions.rockstarRewards')"
             [showViewMore]="true"
             (viewMoreClick)="onRockStarRewardsViewMore()"
             (promotionClick)="onPromotionClick($event)">

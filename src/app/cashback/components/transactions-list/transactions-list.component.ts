@@ -1,10 +1,12 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { options, warning } from 'ionicons/icons';
 import { Purchase } from '../../models/purchase';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
+import { TranslationService } from '../../i18n/translation.service';
+import { LoggerService } from '../../services/logger.service';
 
 @Component({
   selector: 'app-transactions-list',
@@ -15,6 +17,9 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionsListComponent {
+  readonly translate = inject(TranslationService);
+  private logger = inject(LoggerService);
+  
   @Input() purchases: Purchase[] = [];
   @Input() accountId: string | undefined;
   @Input() period: string = 'current'; // 'current', 'past', 'before'

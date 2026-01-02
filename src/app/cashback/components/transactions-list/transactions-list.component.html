@@ -1,15 +1,15 @@
 <div class="head-movements">
   <div class="title-section">
-    <h3>Movimientos</h3>
-    <p>Montos en MXN</p>
+    <h3>{{ translate.t('transactions.movimientos') }}</h3>
+    <p>{{ translate.t('transactions.montosEnMXN') }}</p>
   </div>
   @if (showFilter) {
     <button 
       class="btn-filter" 
       (click)="onFilterClick()"
       type="button"
-      aria-label="Filtrar movimientos"
-      title="Filtrar movimientos">
+      [attr.aria-label]="translate.t('transactions.filtrarMovimientos')"
+      [attr.title]="translate.t('transactions.filtrarMovimientos')">
       <ion-icon name="options" aria-hidden="true"></ion-icon>
     </button>
   }
@@ -18,13 +18,13 @@
   @if (isCurrentPeriod()) {
   <div class="disclaimer-container" role="alert" aria-live="polite">
     <ion-icon name="warning" aria-hidden="true"></ion-icon>
-    <span>Tus compras se reflejarán en 24 a 48 h hábiles.</span>
+    <span>{{ translate.t('transactions.disclaimer') }}</span>
   </div>
 }
 
 @if (purchases.length === 0) {
   <div class="empty-state">
-    <p>No hay movimientos disponibles</p>
+    <p>{{ translate.t('transactions.noHayMovimientos') }}</p>
   </div>
 } @else {
   <div class="movements-container">
@@ -42,7 +42,7 @@
   @if (isLoading && purchases.length > 0) {
     <div class="loading-more-container">
       <ion-spinner name="crescent"></ion-spinner>
-      <span>Cargando más transacciones...</span>
+      <span>{{ translate.t('transactions.cargandoMas') }}</span>
     </div>
   } @else if (hasMorePages()) {
     <div class="btn-more-container">
@@ -50,8 +50,8 @@
         class="btn-more"
         (click)="onLoadMore()"
         type="button"
-        aria-label="Cargar más movimientos">
-        Ver más
+        [attr.aria-label]="translate.t('common.verMas')">
+        {{ translate.t('common.verMas') }}
       </button>
     </div>
   }

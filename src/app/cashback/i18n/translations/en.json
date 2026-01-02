@@ -1,0 +1,68 @@
+{
+  "common": {
+    "cashback": "Cashback",
+    "resumen": "Summary",
+    "promociones": "Promotions",
+    "filtrar": "Filter",
+    "cancelar": "Cancel",
+    "aplicar": "Apply filters",
+    "cerrar": "Close",
+    "continuar": "Continue",
+    "verMas": "See more",
+    "conocerMas": "Learn more",
+    "cargando": "Loading...",
+    "volver": "Go back"
+  },
+  "banner": {
+    "message": "Remember that the Cashback from your purchases will be deposited into your RockStar account before the 15th of each month."
+  },
+  "card": {
+    "enTuTarjeta": "On your card",
+    "seleccionarTarjeta": "Select card"
+  },
+  "cashback": {
+    "acumuladoMensual": "Monthly accumulated",
+    "acumuladoAnual": "Annual accumulated",
+    "mensualPorEstablecimiento": "Monthly by establishment",
+    "cargandoAcumulado": "Loading accumulated cashback...",
+    "cargandoPorEstablecimiento": "Loading cashback by establishment..."
+  },
+  "transactions": {
+    "movimientos": "Transactions",
+    "montosEnMXN": "Amounts in MXN",
+    "filtrarMovimientos": "Filter transactions",
+    "noHayMovimientos": "No transactions available",
+    "cargandoMas": "Loading more transactions...",
+    "cargandoTransacciones": "Loading transactions...",
+    "disclaimer": "Your purchases will be reflected within 24 to 48 business hours."
+  },
+  "filters": {
+    "periodo": "Period",
+    "establecimiento": "Establishment",
+    "todos": "All",
+    "supermercados": "Supermarkets",
+    "restaurantes": "Restaurants",
+    "farmacias": "Pharmacies",
+    "telecomunicaciones": "Telecommunications",
+    "descripcion": "Select a period and establishment type to filter your cashback transactions"
+  },
+  "promotions": {
+    "exclusivas": "Exclusive promotions",
+    "rockstarRewards": "RockStar Rewards",
+    "verMasPromociones": "See more promotions from",
+    "estasPorSalir": "You are about to leave the site",
+    "disclaimerExit": "For your security, we will close your session on the site to redirect you to the RockStar Cashback promotions site."
+  },
+  "errors": {
+    "errorCargarDatos": "Error loading data. Please try again.",
+    "errorCargarTransacciones": "Error loading transactions. Please try again.",
+    "errorCalculos": "Error calculating cashback. Please try again."
+  },
+  "categories": {
+    "supermercados": "Supermarkets",
+    "restaurantes": "Restaurants",
+    "farmacias": "Pharmacies",
+    "telecomunicaciones": "Telecommunications"
+  }
+}
+

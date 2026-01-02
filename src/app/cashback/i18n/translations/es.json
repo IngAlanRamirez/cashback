@@ -1,0 +1,68 @@
+{
+  "common": {
+    "cashback": "Cashback",
+    "resumen": "Resumen",
+    "promociones": "Promociones",
+    "filtrar": "Filtrar",
+    "cancelar": "Cancelar",
+    "aplicar": "Aplicar filtros",
+    "cerrar": "Cerrar",
+    "continuar": "Continuar",
+    "verMas": "Ver más",
+    "conocerMas": "Conocer más",
+    "cargando": "Cargando...",
+    "volver": "Volver atrás"
+  },
+  "banner": {
+    "message": "Recuerda que el Cashback de tus compras será depositado en tu cuenta RockStar antes del día 15 de cada mes."
+  },
+  "card": {
+    "enTuTarjeta": "En tu tarjeta",
+    "seleccionarTarjeta": "Seleccionar tarjeta"
+  },
+  "cashback": {
+    "acumuladoMensual": "Acumulado mensual",
+    "acumuladoAnual": "Acumulado anual",
+    "mensualPorEstablecimiento": "Mensual por establecimiento",
+    "cargandoAcumulado": "Cargando cashback acumulado...",
+    "cargandoPorEstablecimiento": "Cargando cashback por establecimiento..."
+  },
+  "transactions": {
+    "movimientos": "Movimientos",
+    "montosEnMXN": "Montos en MXN",
+    "filtrarMovimientos": "Filtrar movimientos",
+    "noHayMovimientos": "No hay movimientos disponibles",
+    "cargandoMas": "Cargando más transacciones...",
+    "cargandoTransacciones": "Cargando transacciones...",
+    "disclaimer": "Tus compras se reflejarán en 24 a 48 h hábiles."
+  },
+  "filters": {
+    "periodo": "Periodo",
+    "establecimiento": "Establecimiento",
+    "todos": "Todos",
+    "supermercados": "Supermercados",
+    "restaurantes": "Restaurantes",
+    "farmacias": "Farmacias",
+    "telecomunicaciones": "Telecomunicaciones",
+    "descripcion": "Selecciona un período y un tipo de establecimiento para filtrar tus movimientos de cashback"
+  },
+  "promotions": {
+    "exclusivas": "Promociones exclusivas",
+    "rockstarRewards": "RockStar Rewards",
+    "verMasPromociones": "Ver más promociones de",
+    "estasPorSalir": "Estás por salir del sitio",
+    "disclaimerExit": "Por tu seguridad, cerraremos tu sesión en el sitio para dirigirte al sitio de promociones RockStar Cashback."
+  },
+  "errors": {
+    "errorCargarDatos": "Error al cargar los datos. Por favor, intenta de nuevo.",
+    "errorCargarTransacciones": "Error al cargar las transacciones. Por favor, intenta de nuevo.",
+    "errorCalculos": "Error al calcular el cashback. Por favor, intenta de nuevo."
+  },
+  "categories": {
+    "supermercados": "Supermercados",
+    "restaurantes": "Restaurantes",
+    "farmacias": "Farmacias",
+    "telecomunicaciones": "Telecomunicaciones"
+  }
+}
+

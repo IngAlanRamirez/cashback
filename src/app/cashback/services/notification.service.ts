@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ToastController } from '@ionic/angular/standalone';
+import { TranslationService } from '../i18n/translation.service';
 
 export enum NotificationType {
   ERROR = 'error',
@@ -21,6 +22,7 @@ export interface NotificationOptions {
 })
 export class NotificationService {
   private toastController = inject(ToastController);
+  private translate = inject(TranslationService);
 
   /**
    * Muestra una notificación al usuario
@@ -42,7 +44,7 @@ export class NotificationService {
       buttons: showCloseButton
         ? [
             {
-              text: 'Cerrar',
+              text: this.translate.t('common.cerrar'),
               role: 'cancel'
             }
           ]
@@ -119,7 +121,7 @@ export class NotificationService {
    */
   async showDataLoadError(): Promise<void> {
     await this.showError(
-      'No se pudieron cargar los datos. Por favor, intenta nuevamente más tarde.',
+      this.translate.t('errors.errorCargarDatos'),
       { duration: 5000 }
     );
   }
@@ -129,7 +131,7 @@ export class NotificationService {
    */
   async showTransactionsLoadError(): Promise<void> {
     await this.showError(
-      'No se pudieron cargar las transacciones. Por favor, intenta nuevamente.',
+      this.translate.t('errors.errorCargarTransacciones'),
       { duration: 5000 }
     );
   }
@@ -139,7 +141,7 @@ export class NotificationService {
    */
   async showCalculationError(): Promise<void> {
     await this.showError(
-      'Ocurrió un error al calcular el cashback. Por favor, intenta nuevamente.',
+      this.translate.t('errors.errorCalculos'),
       { duration: 5000 }
     );
   }

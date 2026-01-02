@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close } from 'ionicons/icons';
+import { TranslationService } from '../../i18n/translation.service';
 
 @Component({
   selector: 'app-info-banner',
@@ -12,6 +13,9 @@ import { close } from 'ionicons/icons';
   imports: [CommonModule, IonIcon]
 })
 export class InfoBannerComponent {
+  // Servicio de traducción
+  readonly translate = inject(TranslationService);
+  
   // Estado interno del banner (visible/oculto)
   private _isOpen = signal<boolean>(true);
   
@@ -24,8 +28,14 @@ export class InfoBannerComponent {
     return this._isOpen();
   }
 
-  @Input() message: string = 
-    'Recuerda que el Cashback de tus compras será depositado en tu cuenta RockStar antes del día 15 de cada mes.';
+  @Input() message: string = '';
+  
+  /**
+   * Obtiene el mensaje del banner, usando el input si está definido o la traducción por defecto
+   */
+  get bannerMessage(): string {
+    return this.message || this.translate.t('banner.message');
+  }
 
   @Input() dismissible: boolean = true;
 
