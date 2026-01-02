@@ -24,10 +24,11 @@ import { CardSelectionComponent } from './components/card-selection/card-selecti
 import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
 import { PromotionsSliderComponent } from './components/promotions-slider/promotions-slider.component';
 import { PromotionDetailModalComponent } from './components/promotion-detail-modal/promotion-detail-modal.component';
+import { ErrorFallbackComponent } from './components/error-fallback/error-fallback.component';
 import { CashbackStateService } from './services/cashback-state.service';
 import { Product } from './models/product';
 import { Promotion } from './models/promotion';
-import { CashbackTab, CashbackPeriod, CategoryCode } from './models/enums';
+import { CashbackTab, CashbackPeriod, CategoryCode, LoadingState } from './models/enums';
 import { TranslationService } from './i18n/translation.service';
 
 @Component({
@@ -56,7 +57,8 @@ import { TranslationService } from './i18n/translation.service';
     CardSelectionComponent,
     FilterModalComponent,
     PromotionsSliderComponent,
-    PromotionDetailModalComponent
+    PromotionDetailModalComponent,
+    ErrorFallbackComponent
   ]
 })
 export class CashbackPage implements OnInit, OnDestroy {
@@ -68,6 +70,7 @@ export class CashbackPage implements OnInit, OnDestroy {
   
   // Exponer enums para uso en template
   readonly CashbackTab = CashbackTab;
+  readonly LoadingState = LoadingState;
 
   constructor() {
     // Registrar iconos de ionicons

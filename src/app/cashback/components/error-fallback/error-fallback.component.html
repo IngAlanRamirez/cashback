@@ -1,0 +1,19 @@
+<div class="error-fallback">
+  <div class="error-content">
+    <ion-icon [name]="icon" class="error-icon" aria-hidden="true"></ion-icon>
+    <h3 class="error-title">{{ translate.t('errors.titulo') }}</h3>
+    <p class="error-message">{{ message || translate.t('errors.mensajeGenerico') }}</p>
+    
+    @if (showRetry) {
+      <button 
+        class="retry-button"
+        (click)="onRetry()"
+        type="button"
+        [attr.aria-label]="retryLabel || translate.t('errors.reintentar')">
+        <ion-icon name="refresh-outline" aria-hidden="true"></ion-icon>
+        <span>{{ retryLabel || translate.t('errors.reintentar') }}</span>
+      </button>
+    }
+  </div>
+</div>
+

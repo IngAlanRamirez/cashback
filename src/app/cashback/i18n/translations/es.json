@@ -54,6 +54,9 @@
     "disclaimerExit": "Por tu seguridad, cerraremos tu sesión en el sitio para dirigirte al sitio de promociones RockStar Cashback."
   },
   "errors": {
+    "titulo": "Algo salió mal",
+    "mensajeGenerico": "Ha ocurrido un error. Por favor, intenta de nuevo.",
+    "reintentar": "Reintentar",
     "errorCargarDatos": "Error al cargar los datos. Por favor, intenta de nuevo.",
     "errorCargarTransacciones": "Error al cargar las transacciones. Por favor, intenta de nuevo.",
     "errorCalculos": "Error al calcular el cashback. Por favor, intenta de nuevo."

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, shareReplay } from 'rxjs/operators';
 import { LoggerService } from './logger.service';
+import { ErrorHandlerService } from './error-handler.service';
 import { Product } from '../models/product';
 import { isValidCashbackData } from '../utils/validators';
 import { CashBackAmounts } from '../models/cashback-amounts';
@@ -26,6 +27,7 @@ export interface CashbackData {
 export class CashbackDataService {
   private dataUrl = '/assets/data/cashback-data.json';
   private logger = inject(LoggerService);
+  private errorHandler = inject(ErrorHandlerService);
   
   // Caché de datos usando shareReplay para evitar múltiples llamadas HTTP
   private dataCache$: Observable<CashbackData> | null = null;
@@ -40,6 +42,8 @@ export class CashbackDataService {
     // Si ya existe caché, retornarlo
     if (!this.dataCache$) {
       this.dataCache$ = this.http.get<CashbackData>(this.dataUrl).pipe(
+        // Aplicar retry logic
+        this.errorHandler.retryWithBackoff({ maxRetries: 3, delayMs: 1000, backoff: true }),
         shareReplay(1), // Cachea el último valor y lo comparte entre suscriptores
         map((data) => {
           // Validar estructura de datos
@@ -50,7 +54,7 @@ export class CashbackDataService {
           return data;
         }),
         catchError((error) => {
-          this.logger.error('Error al cargar datos de cashback:', error);
+          this.logger.error('Error al cargar datos de cashback después de reintentos:', error);
           // Retornar datos vacíos en caso de error
           return of(this.getEmptyData());
         })

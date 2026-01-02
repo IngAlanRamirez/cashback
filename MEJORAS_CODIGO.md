@@ -352,13 +352,39 @@ ngOnDestroy(): void {
 - ✅ Invalidación automática en `CashbackStateService.applyFilters()`
 - ✅ Limpieza completa en `CashbackStateService.selectProduct()`
 
-### 17. **Error Boundaries / Fallback UI**
+### 17. **Error Boundaries / Fallback UI** ✅ COMPLETADO
 **Problema**: Si un componente falla, toda la aplicación puede romperse.
 
-**Solución**:
-- Implementar error boundaries (Angular no tiene nativo, pero se puede simular)
-- Mostrar UI de fallback cuando hay errores
-- Implementar retry logic para requests fallidos
+**Solución Implementada**:
+- ✅ Creado `ErrorHandlerService` con lógica de reintentos inteligente
+- ✅ Implementado componente `ErrorFallbackComponent` para mostrar UI de fallback
+- ✅ Integrado retry logic en `CashbackDataService` con backoff exponencial
+- ✅ Agregado manejo de errores en componentes principales con fallback UI
+- ✅ Sistema de reintentos que solo reintenta errores recuperables (red, 5xx, timeouts)
+- ✅ Mensajes de error amigables y traducidos
+
+**Cambios realizados**:
+- ✅ Creado `src/app/cashback/services/error-handler.service.ts` con:
+  - Método `retryWithBackoff()` para aplicar reintentos con backoff exponencial
+  - Detección automática de errores recuperables vs no recuperables
+  - Configuración flexible (maxRetries, delayMs, backoff)
+  - Métodos `shouldShowErrorToUser()` y `getErrorMessage()` para manejo de errores
+- ✅ Creado `src/app/cashback/components/error-fallback/` con:
+  - Componente reutilizable para mostrar errores
+  - Botón de reintentar opcional
+  - Iconos y mensajes personalizables
+  - Estilos consistentes con el diseño de la app
+- ✅ Integrado retry logic en `CashbackDataService.getCashbackData()`:
+  - Reintenta hasta 3 veces con backoff exponencial
+  - Delay inicial de 1 segundo, aumenta exponencialmente
+- ✅ Agregado fallback UI en `cashback.page.html`:
+  - Muestra `ErrorFallbackComponent` cuando hay errores en cálculos de cashback
+  - Muestra `ErrorFallbackComponent` cuando hay errores al cargar transacciones
+  - Botón de reintentar conectado a los métodos del servicio de estado
+- ✅ Agregadas traducciones para mensajes de error en `es.json`:
+  - `errors.titulo`: "Algo salió mal"
+  - `errors.mensajeGenerico`: "Ha ocurrido un error. Por favor, intenta de nuevo."
+  - `errors.reintentar`: "Reintentar"
 
 ### 18. **Internacionalización (i18n)** ✅ COMPLETADO
 **Problema**: Textos hardcodeados en español.
