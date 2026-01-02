@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -23,6 +23,8 @@ import { CardSelectionComponent } from './components/card-selection/card-selecti
 import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
 import { PromotionsSliderComponent } from './components/promotions-slider/promotions-slider.component';
 import { PromotionDetailModalComponent } from './components/promotion-detail-modal/promotion-detail-modal.component';
+import { CashbackDataService } from './services/cashback-data.service';
+import { TransactionsService } from './services/transactions.service';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
@@ -57,7 +59,10 @@ import { Promotion } from './models/promotion';
     PromotionDetailModalComponent
   ]
 })
-export class CashbackPage {
+export class CashbackPage implements OnInit {
+  private cashbackDataService = inject(CashbackDataService);
+  private transactionsService = inject(TransactionsService);
+
   constructor() {
     // Registrar iconos de ionicons
     addIcons({ chevronBackOutline });
@@ -81,8 +86,8 @@ export class CashbackPage {
   // Signal para la promoción seleccionada
   selectedPromotion = signal<Promotion | null>(null);
   
-  // Datos mock para desarrollo
-  mockProduct: Product = {
+  // Signals para los datos cargados desde JSON
+  mockProduct = signal<Product>({
     type: 'CREDIT',
     cardIdentification: {
       displayNumber: '1234567890127896'
@@ -105,76 +110,27 @@ export class CashbackPage {
         balances: []
       }
     }]
-  };
+  });
   
-  mockProducts: Product[] = [
-    this.mockProduct,
-    {
-      type: 'DEBIT',
-      cardIdentification: {
-        displayNumber: '1234567890124123'
-      },
-      image: {
-        imageNumber: '06001402555'
-      },
-      product: {
-        name: 'Rockstar Debit Plus'
-      },
-      associatedAccounts: [{
-        account: {
-          contract: {
-            contractId: 'contract-2'
-          },
-          typeCode: 'DEBIT',
-          statusInfo: {
-            statusCode: 'ACTIVE'
-          },
-          balances: []
-        }
-      }]
-    },
-    {
-      type: 'CREDIT',
-      cardIdentification: {
-        displayNumber: '1234567890125241'
-      },
-      image: {
-        imageNumber: 'other'
-      },
-      product: {
-        name: 'Rockstar Famous Credit'
-      },
-      associatedAccounts: [{
-        account: {
-          contract: {
-            contractId: 'contract-3'
-          },
-          typeCode: 'CREDIT',
-          statusInfo: {
-            statusCode: 'ACTIVE'
-          },
-          balances: []
-        }
-      }]
-    }
-  ];
-  
-  mockCashbackAmounts: CashBackAmounts = {
+  mockProducts = signal<Product[]>([]);
+  mockCashbackAmounts = signal<CashBackAmounts>({
     monthAmount: {
-      amount: 346.80,
+      amount: 0,
       currency: 'MXN'
     },
     annualAmount: {
-      amount: 1250.50,
+      amount: 0,
       currency: 'MXN'
     },
     cashbackPeriod: {
-      month: '4', // Abril
+      month: '1',
       year: '2025'
     }
-  };
-
-  mockActivityAmountCashBacks: ActivityAmountCashBack[] = [
+  });
+  mockActivityAmountCashBacks = signal<ActivityAmountCashBack[]>([]);
+  
+  // Datos iniciales (se reemplazarán al cargar desde JSON)
+  private initialActivityAmountCashBacks: ActivityAmountCashBack[] = [
     {
       name: 'Supermercados',
       categoryCode: 'Sup',
@@ -217,7 +173,19 @@ export class CashbackPage {
     }
   ];
 
-  mockPurchases: Purchase[] = [
+  // Transacciones dinámicas desde el servicio
+  filteredPurchases = signal<Purchase[]>([]);
+  currentFilters = signal<{ period: string; category: string }>({
+    period: 'current',
+    category: 'all'
+  });
+  currentPage = signal<number>(1);
+  totalPages = signal<number>(1);
+  isLoadingTransactions = signal<boolean>(false);
+  hasMoreTransactions = signal<boolean>(false);
+  
+  // Datos iniciales (se reemplazarán al cargar desde JSON)
+  private initialPurchases: Purchase[] = [
     {
       cardTransactionId: '1',
       acquirerReferenceNumber: 'ARN001',
@@ -304,6 +272,107 @@ export class CashbackPage {
     }
   ];
 
+  mockPromotions = signal<Promotion[]>([]);
+  mockRockStarRewards = signal<Promotion[]>([]);
+
+  /**
+   * Inicializa los datos desde el JSON
+   */
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  /**
+   * Carga los datos desde el servicio
+   */
+  loadData(): void {
+    this.cashbackDataService.getCashbackData().subscribe({
+      next: (data) => {
+        this.mockProduct.set(data.product);
+        this.mockProducts.set(data.products);
+        this.mockCashbackAmounts.set(data.cashbackAmounts);
+        this.mockActivityAmountCashBacks.set(data.activityAmountCashBacks);
+        this.mockPromotions.set(data.promotions);
+        this.mockRockStarRewards.set(data.rockStarRewards);
+        
+        // Cargar transacciones dinámicas
+        this.loadTransactions();
+      },
+      error: (error) => {
+        console.error('Error al cargar datos:', error);
+        // Usar datos iniciales en caso de error
+        this.mockActivityAmountCashBacks.set(this.initialActivityAmountCashBacks);
+        // Cargar transacciones dinámicas incluso si hay error
+        this.loadTransactions();
+      }
+    });
+  }
+
+  /**
+   * Carga las transacciones desde el servicio con los filtros actuales
+   */
+  loadTransactions(page: number = 1, append: boolean = false): void {
+    this.isLoadingTransactions.set(true);
+    const filters = this.currentFilters();
+    
+    this.transactionsService.getTransactions(filters, page).subscribe({
+      next: (response) => {
+        if (append) {
+          // Agregar nuevas transacciones a las existentes
+          this.filteredPurchases.update(purchases => [...purchases, ...response.transactions]);
+        } else {
+          // Reemplazar todas las transacciones
+          this.filteredPurchases.set(response.transactions);
+        }
+        
+        // Calcular total de páginas
+        const totalPages = Math.ceil(response.total / 10); // 10 es el pageSize del servicio
+        this.totalPages.set(totalPages);
+        this.currentPage.set(page);
+        this.hasMoreTransactions.set(response.hasMore);
+        this.isLoadingTransactions.set(false);
+
+        // Si no es append, actualizar los cálculos de cashback
+        if (!append) {
+          this.updateCashbackCalculations();
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar transacciones:', error);
+        this.isLoadingTransactions.set(false);
+      }
+    });
+  }
+
+  /**
+   * Actualiza los cálculos de cashback acumulado y por categoría
+   */
+  updateCashbackCalculations(): void {
+    const filters = this.currentFilters();
+    const allTransactions = this.filteredPurchases();
+
+    // Obtener todas las transacciones filtradas para calcular correctamente
+    this.transactionsService.getAllFilteredTransactions(filters).subscribe({
+      next: (allFilteredTransactions) => {
+        // Calcular cashback acumulado
+        const cashbackAmounts = this.transactionsService.calculateCashbackAmounts(
+          allFilteredTransactions,
+          filters.period
+        );
+        this.mockCashbackAmounts.set(cashbackAmounts);
+
+        // Calcular cashback por categoría
+        const activityAmountCashBacks = this.transactionsService.calculateActivityAmountCashBacks(
+          allFilteredTransactions
+        );
+        this.mockActivityAmountCashBacks.set(activityAmountCashBacks);
+      },
+      error: (error) => {
+        console.error('Error al calcular cashback:', error);
+      }
+    });
+  }
+
   /**
    * Cambia el tab activo
    */
@@ -323,7 +392,7 @@ export class CashbackPage {
    * Maneja el click en la tarjeta
    */
   onCardClick(): void {
-    if (this.mockProducts.length > 1) {
+    if (this.mockProducts().length > 1) {
       this.isCardSelectionOpen.set(true);
     }
   }
@@ -339,7 +408,7 @@ export class CashbackPage {
    * Maneja la selección de una tarjeta
    */
   onProductSelected(product: Product): void {
-    this.mockProduct = product;
+    this.mockProduct.set(product);
     this.isCardSelectionOpen.set(false);
     // TODO: Aquí se actualizarían los datos de cashback según la tarjeta seleccionada
     console.log('Tarjeta seleccionada:', product);
@@ -364,7 +433,10 @@ export class CashbackPage {
    */
   onFiltersApplied(filters: { period: string; category: string }): void {
     console.log('Filtros aplicados:', filters);
-    // TODO: Aplicar filtros a la lista de transacciones
+    // Actualizar filtros actuales
+    this.currentFilters.set(filters);
+    // Cargar transacciones con los nuevos filtros (resetear a página 1)
+    this.loadTransactions(1, false);
     this.isFilterModalOpen.set(false);
   }
 
@@ -372,237 +444,12 @@ export class CashbackPage {
    * Maneja la carga de más movimientos
    */
   onLoadMore(): void {
-    console.log('Load more clicked - Cargar más transacciones');
-    // TODO: Implementar carga de más transacciones
+    if (this.hasMoreTransactions() && !this.isLoadingTransactions()) {
+      const nextPage = this.currentPage() + 1;
+      this.loadTransactions(nextPage, true);
+    }
   }
 
-  // Datos mock de promociones
-  mockPromotions: Promotion[] = [
-    {
-      promotionId: '1',
-      description: 'Llena tu tanque y obtén 1% de cashback en gasolineras participantes.',
-      percentage: 1,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 1,
-      image: {
-        imageNumber: 'images/promotions/pemex-gas-station.png'
-      },
-      merchant: {
-        name: 'Gasolineras',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '2',
-      description: 'Recarga tu celular y obtén 2% de cashback en servicios de telecomunicaciones.',
-      percentage: 2,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 2,
-      image: {
-        imageNumber: 'images/promotions/mobile-cashback.png'
-      },
-      merchant: {
-        name: 'Telecomunicaciones',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '3',
-      description: 'Disfruta de entretenimiento y obtén 1% de cashback en cines, teatros y eventos.',
-      percentage: 1,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 3,
-      image: {
-        imageNumber: 'images/promotions/entertainment.png'
-      },
-      merchant: {
-        name: 'Entretenimiento',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '4',
-      description: 'Obtén 1% de cashback al hacer tu despensa con tu Rockstar Credit.',
-      percentage: 1,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 4,
-      image: {
-        imageNumber: 'images/promotions/supermarket.jpeg'
-      },
-      merchant: {
-        name: 'Supermercados',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '5',
-      description: 'Cumple ese antojo y obtén 2% de cashback con tu Rockstar Famous Credit.',
-      percentage: 2,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 5,
-      image: {
-        imageNumber: 'images/promotions/restaurant.jpeg'
-      },
-      merchant: {
-        name: 'Restaurantes',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    },
-    {
-      promotionId: '6',
-      description: 'Ahorra en medicamentos y productos de salud con 1.5% de cashback en farmacias participantes.',
-      percentage: 1.5,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 6,
-      image: {
-        imageNumber: 'images/promotions/pharmacy.jpeg'
-      },
-      merchant: {
-        name: 'Farmacias',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: false
-    }
-  ];
-
-  // Datos mock de RockStar Rewards
-  mockRockStarRewards: Promotion[] = [
-    {
-      promotionId: '7',
-      description: 'El programa de lealtad que te premia con hasta 5 RockStar Points por todas tus compras.',
-      percentage: 5,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 1,
-      image: {
-        imageNumber: 'images/promotions/rockstar-rewards.png'
-      },
-      merchant: {
-        name: 'Acerca de RockStar Rewards',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    },
-    {
-      promotionId: '8',
-      description: 'Conoce todas las tarjetas participantes del programa RockStar Rewards.',
-      percentage: 0,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 2,
-      image: {
-        imageNumber: 'images/promotions/rockstar-cards.png'
-      },
-      merchant: {
-        name: 'Tarjetas Rockstar',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    },
-    {
-      promotionId: '9',
-      description: 'Canjea tus RockStar Points por productos exclusivos y experiencias únicas.',
-      percentage: 0,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 3,
-      image: {
-        imageNumber: 'images/promotions/rockstar-products.png'
-      },
-      merchant: {
-        name: 'Catálogo de Premios',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    },
-    {
-      promotionId: '12',
-      description: 'Únete al programa y disfruta de beneficios exclusivos todo el año.',
-      percentage: 0,
-      statusInfo: {
-        statusCode: 'ACTIVE'
-      },
-      period: {
-        startDate: '2025-01-01'
-      },
-      creationDate: '2025-01-01',
-      expirationDate: '2025-12-31',
-      position: 6,
-      image: {
-        imageNumber: 'images/promotions/rockstar-unete.png'
-      },
-      merchant: {
-        name: 'Únete Ahora',
-        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
-      },
-      isUniqueRewards: true
-    }
-  ];
 
   /**
    * Maneja el click en "Ver más" de promociones

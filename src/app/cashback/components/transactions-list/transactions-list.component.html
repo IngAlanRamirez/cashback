@@ -34,12 +34,14 @@
     }
   </div>
   
-  <div class="btn-more-container">
-    <span 
-      class="btn-more"
-      (click)="onLoadMore()">
-      Ver más
-    </span>
-  </div>
+  @if (hasMorePages()) {
+    <div class="btn-more-container">
+      <span 
+        class="btn-more"
+        (click)="onLoadMore()">
+        Ver más
+      </span>
+    </div>
+  }
 }
 

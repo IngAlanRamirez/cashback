@@ -23,7 +23,7 @@
           <div class="filter-section">
             <h3 class="filter-section-title">Periodo</h3>
             <div class="filter-chips">
-              @for (period of periods; track period.value) {
+              @for (period of periods(); track period.value) {
                 <div 
                   class="filter-chip" 
                   [class.selected]="selectedPeriod() === period.value"

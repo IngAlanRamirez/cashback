@@ -43,31 +43,31 @@
 
         <!-- Card Info -->
         <app-card-info 
-          [product]="mockProduct"
-          [products]="mockProducts"
+          [product]="mockProduct()"
+          [products]="mockProducts()"
           (cardClick)="onCardClick()">
         </app-card-info>
 
         <!-- Accumulated Cashback -->
         <app-accumulated-cashback 
-          [cashbackAmounts]="mockCashbackAmounts">
+          [cashbackAmounts]="mockCashbackAmounts()">
         </app-accumulated-cashback>
 
         <!-- Monthly Cashback by Store -->
-        @if (mockActivityAmountCashBacks.length > 0) {
+        @if (mockActivityAmountCashBacks().length > 0) {
           <app-monthly-cashback-by-store 
-            [activityAmountCashBacks]="mockActivityAmountCashBacks">
+            [activityAmountCashBacks]="mockActivityAmountCashBacks()">
           </app-monthly-cashback-by-store>
         }
 
         <!-- Transactions List -->
         <app-transactions-list
-          [purchases]="mockPurchases"
-          [accountId]="mockProduct.associatedAccounts?.[0]?.account?.contract?.contractId"
-          [period]="'current'"
+          [purchases]="filteredPurchases()"
+          [accountId]="mockProduct().associatedAccounts?.[0]?.account?.contract?.contractId"
+          [period]="currentFilters().period"
           [showFilter]="true"
-          [startPage]="1"
-          [totalPages]="1"
+          [startPage]="currentPage()"
+          [totalPages]="totalPages()"
           (filterClick)="onFilterClick()"
           (loadMore)="onLoadMore()">
         </app-transactions-list>
@@ -78,9 +78,9 @@
     @if (selectedTab() === 'promo') {
       <div class="tab-content">
         <!-- Promociones exclusivas -->
-        @if (mockPromotions.length > 0) {
+        @if (mockPromotions().length > 0) {
           <app-promotions-slider
-            [promotions]="mockPromotions"
+            [promotions]="mockPromotions()"
             title="Promociones exclusivas"
             [showViewMore]="true"
             (viewMoreClick)="onPromotionsViewMore()"
@@ -89,9 +89,9 @@
         }
 
         <!-- RockStar Rewards -->
-        @if (mockRockStarRewards.length > 0) {
+        @if (mockRockStarRewards().length > 0) {
           <app-promotions-slider
-            [promotions]="mockRockStarRewards"
+            [promotions]="mockRockStarRewards()"
             title="RockStar Rewards"
             [showViewMore]="true"
             (viewMoreClick)="onRockStarRewardsViewMore()"
@@ -105,8 +105,8 @@
   <!-- Modal de Selección de Tarjetas -->
   <app-card-selection
     [isOpen]="isCardSelectionOpen()"
-    [products]="mockProducts"
-    [currentProduct]="mockProduct"
+    [products]="mockProducts()"
+    [currentProduct]="mockProduct()"
     (close)="onCardSelectionClose()"
     (productSelected)="onProductSelected($event)">
   </app-card-selection>
@@ -114,6 +114,8 @@
   <!-- Modal de Filtros -->
   <app-filter-modal
     [isOpen]="isFilterModalOpen()"
+    [currentPeriod]="currentFilters().period"
+    [currentCategory]="currentFilters().category"
     (close)="onFilterModalClose()"
     (filtersApplied)="onFiltersApplied($event)">
   </app-filter-modal>

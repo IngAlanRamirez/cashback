@@ -1,0 +1,431 @@
+{
+  "product": {
+    "type": "CREDIT",
+    "cardIdentification": {
+      "displayNumber": "1234567890127896"
+    },
+    "image": {
+      "imageNumber": "74141001253"
+    },
+    "product": {
+      "name": "Rockstar Credit"
+    },
+    "associatedAccounts": [
+      {
+        "account": {
+          "contract": {
+            "contractId": "contract-1"
+          },
+          "typeCode": "CREDIT",
+          "statusInfo": {
+            "statusCode": "ACTIVE"
+          },
+          "balances": []
+        }
+      }
+    ]
+  },
+  "products": [
+    {
+      "type": "CREDIT",
+      "cardIdentification": {
+        "displayNumber": "1234567890127896"
+      },
+      "image": {
+        "imageNumber": "74141001253"
+      },
+      "product": {
+        "name": "Rockstar Credit"
+      },
+      "associatedAccounts": [
+        {
+          "account": {
+            "contract": {
+              "contractId": "contract-1"
+            },
+            "typeCode": "CREDIT",
+            "statusInfo": {
+              "statusCode": "ACTIVE"
+            },
+            "balances": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "DEBIT",
+      "cardIdentification": {
+        "displayNumber": "1234567890124123"
+      },
+      "image": {
+        "imageNumber": "06001402555"
+      },
+      "product": {
+        "name": "Rockstar Debit Plus"
+      },
+      "associatedAccounts": [
+        {
+          "account": {
+            "contract": {
+              "contractId": "contract-2"
+            },
+            "typeCode": "DEBIT",
+            "statusInfo": {
+              "statusCode": "ACTIVE"
+            },
+            "balances": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "CREDIT",
+      "cardIdentification": {
+        "displayNumber": "1234567890125241"
+      },
+      "image": {
+        "imageNumber": "other"
+      },
+      "product": {
+        "name": "Rockstar Famous Credit"
+      },
+      "associatedAccounts": [
+        {
+          "account": {
+            "contract": {
+              "contractId": "contract-3"
+            },
+            "typeCode": "CREDIT",
+            "statusInfo": {
+              "statusCode": "ACTIVE"
+            },
+            "balances": []
+          }
+        }
+      ]
+    }
+  ],
+  "cashbackAmounts": {
+    "monthAmount": {
+      "amount": 346.80,
+      "currency": "MXN"
+    },
+    "annualAmount": {
+      "amount": 1250.50,
+      "currency": "MXN"
+    },
+    "cashbackPeriod": {
+      "month": "4",
+      "year": "2025"
+    }
+  },
+  "activityAmountCashBacks": [
+    {
+      "name": "Supermercados",
+      "categoryCode": "Sup",
+      "categoryDescription": "Supermercados",
+      "cashBackAmount": {
+        "amount": 77.00,
+        "currency": "MXN"
+      },
+      "cashBackPercentage": 1
+    },
+    {
+      "name": "Restaurantes",
+      "categoryCode": "Res",
+      "categoryDescription": "Restaurantes",
+      "cashBackAmount": {
+        "amount": 30.50,
+        "currency": "MXN"
+      },
+      "cashBackPercentage": 5
+    },
+    {
+      "name": "Farmacias",
+      "categoryCode": "Far",
+      "categoryDescription": "Farmacias",
+      "cashBackAmount": {
+        "amount": 27.00,
+        "currency": "MXN"
+      },
+      "cashBackPercentage": 6
+    },
+    {
+      "name": "Telecomunicaciones",
+      "categoryCode": "Tel",
+      "categoryDescription": "Telecomunicaciones",
+      "cashBackAmount": {
+        "amount": 15.00,
+        "currency": "MXN"
+      },
+      "cashBackPercentage": 4
+    }
+  ],
+  "purchases": [
+    {
+      "cardTransactionId": "1",
+      "acquirerReferenceNumber": "ARN001",
+      "orderDate": "2025-04-25T10:30:00Z",
+      "amount": {
+        "amount": 180.00,
+        "currency": "MXN"
+      },
+      "clearing": {
+        "cashBackPercentage": 2,
+        "cashBackAmount": {
+          "amount": 3.60,
+          "currency": "MXN"
+        }
+      },
+      "merchant": {
+        "name": "TELCEL",
+        "categoryCode": "Tel",
+        "categoryDescription": "Telecomunicaciones"
+      }
+    },
+    {
+      "cardTransactionId": "2",
+      "acquirerReferenceNumber": "ARN002",
+      "orderDate": "2025-04-23T14:20:00Z",
+      "amount": {
+        "amount": 340.00,
+        "currency": "MXN"
+      },
+      "clearing": {
+        "cashBackPercentage": 2,
+        "cashBackAmount": {
+          "amount": 6.80,
+          "currency": "MXN"
+        }
+      },
+      "merchant": {
+        "name": "FARMACIAS GUADALAJARA",
+        "categoryCode": "Far",
+        "categoryDescription": "Farmacias"
+      }
+    },
+    {
+      "cardTransactionId": "3",
+      "acquirerReferenceNumber": "ARN003",
+      "orderDate": "2025-04-20T19:15:00Z",
+      "amount": {
+        "amount": 220.00,
+        "currency": "MXN"
+      },
+      "clearing": {
+        "cashBackPercentage": 2,
+        "cashBackAmount": {
+          "amount": 4.40,
+          "currency": "MXN"
+        }
+      },
+      "merchant": {
+        "name": "VIPS",
+        "categoryCode": "Res",
+        "categoryDescription": "Restaurantes"
+      }
+    },
+    {
+      "cardTransactionId": "4",
+      "acquirerReferenceNumber": "ARN004",
+      "orderDate": "2025-04-19T12:00:00Z",
+      "amount": {
+        "amount": 620.00,
+        "currency": "MXN"
+      },
+      "clearing": {
+        "cashBackPercentage": 4,
+        "cashBackAmount": {
+          "amount": 24.80,
+          "currency": "MXN"
+        }
+      },
+      "merchant": {
+        "name": "WALMART",
+        "categoryCode": "Sup",
+        "categoryDescription": "Supermercados"
+      }
+    }
+  ],
+  "promotions": [
+    {
+      "promotionId": "2",
+      "description": "Recarga tu celular y obtén 2% de cashback en servicios de telecomunicaciones.",
+      "percentage": 2,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 1,
+      "image": {
+        "imageNumber": "images/promotions/mobile-cashback.png"
+      },
+      "merchant": {
+        "name": "Telecomunicaciones",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": false
+    },
+    {
+      "promotionId": "4",
+      "description": "Obtén 1% de cashback al hacer tu despensa con tu Rockstar Credit.",
+      "percentage": 1,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 2,
+      "image": {
+        "imageNumber": "images/promotions/supermarket.jpeg"
+      },
+      "merchant": {
+        "name": "Supermercados",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": false
+    },
+    {
+      "promotionId": "5",
+      "description": "Cumple ese antojo y obtén 2% de cashback con tu Rockstar Famous Credit.",
+      "percentage": 2,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 3,
+      "image": {
+        "imageNumber": "images/promotions/restaurant.jpeg"
+      },
+      "merchant": {
+        "name": "Restaurantes",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": false
+    },
+    {
+      "promotionId": "6",
+      "description": "Ahorra en medicamentos y productos de salud con 1.5% de cashback en farmacias participantes.",
+      "percentage": 1.5,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 4,
+      "image": {
+        "imageNumber": "images/promotions/pharmacy.jpeg"
+      },
+      "merchant": {
+        "name": "Farmacias",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": false
+    }
+  ],
+  "rockStarRewards": [
+    {
+      "promotionId": "7",
+      "description": "El programa de lealtad que te premia con hasta 5 RockStar Points por todas tus compras.",
+      "percentage": 5,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 1,
+      "image": {
+        "imageNumber": "images/promotions/rockstar-rewards.png"
+      },
+      "merchant": {
+        "name": "Acerca de RockStar Rewards",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": true
+    },
+    {
+      "promotionId": "8",
+      "description": "Conoce todas las tarjetas participantes del programa RockStar Rewards.",
+      "percentage": 0,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 2,
+      "image": {
+        "imageNumber": "images/promotions/rockstar-cards.png"
+      },
+      "merchant": {
+        "name": "Tarjetas Rockstar",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": true
+    },
+    {
+      "promotionId": "9",
+      "description": "Canjea tus RockStar Points por productos exclusivos y experiencias únicas.",
+      "percentage": 0,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 3,
+      "image": {
+        "imageNumber": "images/promotions/rockstar-products.png"
+      },
+      "merchant": {
+        "name": "Catálogo de Premios",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": true
+    },
+    {
+      "promotionId": "12",
+      "description": "Únete al programa y disfruta de beneficios exclusivos todo el año.",
+      "percentage": 0,
+      "statusInfo": {
+        "statusCode": "ACTIVE"
+      },
+      "period": {
+        "startDate": "2025-01-01"
+      },
+      "creationDate": "2025-01-01",
+      "expirationDate": "2025-12-31",
+      "position": 6,
+      "image": {
+        "imageNumber": "images/promotions/rockstar-unete.png"
+      },
+      "merchant": {
+        "name": "Únete Ahora",
+        "url": "https://www.rockstar.com.mx/cashback/promociones-unicas/"
+      },
+      "isUniqueRewards": true
+    }
+  ]
+}
+

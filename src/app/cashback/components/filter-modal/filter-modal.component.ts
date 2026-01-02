@@ -17,6 +17,8 @@ import {
   medicalOutline, 
   callOutline 
 } from 'ionicons/icons';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export interface FilterPeriod {
   label: string;
@@ -53,11 +55,19 @@ export class FilterModalComponent {
   @Input() 
   set isOpen(value: boolean) {
     this._isOpen.set(value);
+    // Cuando se abre el modal, inicializar con los filtros actuales si se proporcionan
+    if (value && this.currentPeriod && this.currentCategory) {
+      this.selectedPeriod.set(this.currentPeriod);
+      this.selectedCategory.set(this.currentCategory);
+    }
   }
   get isOpen(): boolean {
     return this._isOpen();
   }
   private _isOpen = signal<boolean>(false);
+
+  @Input() currentPeriod: string = 'current';
+  @Input() currentCategory: string = 'all';
 
   @Output() close = new EventEmitter<void>();
   @Output() filtersApplied = new EventEmitter<{ period: string; category: string }>();
@@ -65,11 +75,39 @@ export class FilterModalComponent {
   selectedPeriod = signal<string>('current');
   selectedCategory = signal<string>('all');
 
-  readonly periods: readonly FilterPeriod[] = [
-    { label: 'Mes actual', value: 'current' },
-    { label: 'Octubre', value: 'october' },
-    { label: 'Septiembre', value: 'september' }
-  ] as const;
+  /**
+   * Calcula los periodos dinámicamente basados en la fecha actual
+   */
+  readonly periods = computed<FilterPeriod[]>(() => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-11
+
+    // Mes actual
+    const currentMonthDate = new Date(currentYear, currentMonth, 1);
+    const currentMonthName = format(currentMonthDate, 'MMMM', { locale: es });
+    const currentMonthCapitalized = currentMonthName.charAt(0).toUpperCase() + currentMonthName.slice(1);
+
+    // Mes anterior
+    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const previousMonthDate = new Date(previousYear, previousMonth, 1);
+    const previousMonthName = format(previousMonthDate, 'MMMM', { locale: es });
+    const previousMonthCapitalized = previousMonthName.charAt(0).toUpperCase() + previousMonthName.slice(1);
+
+    // Mes anterior al anterior
+    const previousMonth2 = previousMonth === 0 ? 11 : previousMonth - 1;
+    const previousYear2 = previousMonth === 0 ? previousYear - 1 : previousYear;
+    const previousMonth2Date = new Date(previousYear2, previousMonth2, 1);
+    const previousMonth2Name = format(previousMonth2Date, 'MMMM', { locale: es });
+    const previousMonth2Capitalized = previousMonth2Name.charAt(0).toUpperCase() + previousMonth2Name.slice(1);
+
+    return [
+      { label: currentMonthCapitalized, value: 'current' },
+      { label: previousMonthCapitalized, value: 'previous' },
+      { label: previousMonth2Capitalized, value: 'previous-2' }
+    ];
+  });
 
   readonly categories: readonly FilterCategory[] = [
     { label: 'Todos', value: 'all' },
