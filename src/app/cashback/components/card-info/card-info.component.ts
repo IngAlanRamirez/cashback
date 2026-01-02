@@ -25,14 +25,25 @@ export class CardInfoComponent {
 
   /**
    * Formatea el nombre del producto
-   * Si es tipo CREDIT, retorna "Cashback Stars", sino retorna el nombre truncado
+   * Retorna el nombre formateado según el tipo y nombre del producto
    */
   formatProductName(name: string, product: Product): string {
-    if (product.type?.toUpperCase() === 'CREDIT') {
-      return 'Cashback Stars';
-    } else {
-      return name.length > 22 ? name.substring(0, 22) + '...' : name;
+    const productName = name.toLowerCase();
+    const type = product.type?.toUpperCase() || '';
+    
+    // Mapeo de nombres según el tipo y nombre del producto
+    if (type === 'CREDIT') {
+      if (productName.includes('famous')) {
+        return 'Rockstar Famous Credit';
+      } else {
+        return 'Rockstar Credit';
+      }
+    } else if (type === 'DEBIT') {
+      return 'Rockstar Debit Plus';
     }
+    
+    // Si no coincide, retornar el nombre original truncado
+    return name.length > 22 ? name.substring(0, 22) + '...' : name;
   }
 
   /**
@@ -78,12 +89,12 @@ export class CardInfoComponent {
     
     // Mapeo de tarjetas a imágenes
     // Las imágenes deben estar en src/assets/images/cards/
-    if (type === 'CREDIT' && (productName.includes('cashback') || productName.includes('stars'))) {
-      return '/assets/images/cards/card-1.png'; // Tarjeta negra con efectos dorados
-    } else if (type === 'CREDIT' && (productName.includes('nomina') || productName.includes('nómina'))) {
-      return '/assets/images/cards/card-2.png'; // Tarjeta con gradiente teal-naranja
+    if (type === 'CREDIT' && productName.includes('famous')) {
+      return '/assets/images/cards/card-2.png'; // Rockstar Famous Credit - Tarjeta con gradiente teal-naranja
+    } else if (type === 'CREDIT') {
+      return '/assets/images/cards/card-1.png'; // Rockstar Credit - Tarjeta negra con efectos dorados
     } else if (type === 'DEBIT') {
-      return '/assets/images/cards/card-3.png'; // Tarjeta con gradiente azul-magenta
+      return '/assets/images/cards/card-3.png'; // Rockstar Debit Plus - Tarjeta con gradiente azul-magenta
     }
     
     // Imagen por defecto

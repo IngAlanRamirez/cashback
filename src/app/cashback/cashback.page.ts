@@ -76,7 +76,7 @@ export class CashbackPage {
       imageNumber: '74141001253'
     },
     product: {
-      name: 'Cashback Stars'
+      name: 'Rockstar Credit'
     },
     associatedAccounts: [{
       account: {
@@ -103,7 +103,7 @@ export class CashbackPage {
         imageNumber: '06001402555'
       },
       product: {
-        name: 'Débito Cashback Stars'
+        name: 'Rockstar Debit Plus'
       },
       associatedAccounts: [{
         account: {
@@ -127,7 +127,7 @@ export class CashbackPage {
         imageNumber: 'other'
       },
       product: {
-        name: 'Santander Nómina'
+        name: 'Rockstar Famous Credit'
       },
       associatedAccounts: [{
         account: {
@@ -367,7 +367,7 @@ export class CashbackPage {
   mockPromotions: Promotion[] = [
     {
       promotionId: '1',
-      description: 'Obtén 1% de cashback al hacer tu despensa con tu Crédito Cashback Stars.',
+      description: 'Obtén 1% de cashback al hacer tu despensa con tu Rockstar Credit.',
       percentage: 1,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -379,7 +379,7 @@ export class CashbackPage {
       expirationDate: '2025-12-31',
       position: 1,
       image: {
-        imageNumber: '' // Se puede agregar una imagen base64 aquí
+        imageNumber: ''
       },
       merchant: {
         name: 'Supermercados',
@@ -389,7 +389,7 @@ export class CashbackPage {
     },
     {
       promotionId: '2',
-      description: 'Cumple ese antojo y obtén 2% de cashback con tu tarjeta Nómina.',
+      description: 'Cumple ese antojo y obtén 2% de cashback con tu Rockstar Famous Credit.',
       percentage: 2,
       statusInfo: {
         statusCode: 'ACTIVE'
@@ -408,13 +408,101 @@ export class CashbackPage {
         url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
+    },
+    {
+      promotionId: '3',
+      description: 'Ahorra en medicamentos y productos de salud con 1.5% de cashback en farmacias participantes.',
+      percentage: 1.5,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 3,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Farmacias',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '4',
+      description: 'Recarga tu celular y obtén 2% de cashback en servicios de telecomunicaciones.',
+      percentage: 2,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 4,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Telecomunicaciones',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '5',
+      description: 'Disfruta de entretenimiento y obtén 1% de cashback en cines, teatros y eventos.',
+      percentage: 1,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 5,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Entretenimiento',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    },
+    {
+      promotionId: '6',
+      description: 'Llena tu tanque y obtén 1% de cashback en gasolineras participantes.',
+      percentage: 1,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 6,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Gasolineras',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
     }
   ];
 
   // Datos mock de Unique Rewards
   mockUniqueRewards: Promotion[] = [
     {
-      promotionId: '3',
+      promotionId: '7',
       description: 'El programa de lealtad que te premia con hasta 5 Unique Points por todas tus compras.',
       percentage: 5,
       statusInfo: {
@@ -436,7 +524,7 @@ export class CashbackPage {
       isUniqueRewards: true
     },
     {
-      promotionId: '4',
+      promotionId: '8',
       description: 'Conoce todas las tarjetas participantes del programa Unique Rewards.',
       percentage: 0,
       statusInfo: {
@@ -453,6 +541,94 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Tarjetas Unique',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    },
+    {
+      promotionId: '9',
+      description: 'Canjea tus Unique Points por productos exclusivos y experiencias únicas.',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 3,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Catálogo de Premios',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    },
+    {
+      promotionId: '10',
+      description: 'Acumula puntos más rápido con promociones especiales y bonificaciones.',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 4,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Promociones Especiales',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    },
+    {
+      promotionId: '11',
+      description: 'Consulta tu saldo de Unique Points y canjea cuando quieras desde la app.',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 5,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Consulta de Puntos',
+        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    },
+    {
+      promotionId: '12',
+      description: 'Únete al programa y disfruta de beneficios exclusivos todo el año.',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 6,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Únete Ahora',
         url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true

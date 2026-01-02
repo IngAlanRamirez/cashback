@@ -24,7 +24,7 @@
         <ion-label>Resumen</ion-label>
       </ion-segment-button>
       <ion-segment-button value="promo">
-        <ion-label>Promo Cashback</ion-label>
+        <ion-label>Promociones</ion-label>
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -74,24 +74,24 @@
       </div>
     }
 
-    <!-- Tab Promo Cashback -->
+    <!-- Tab Promociones -->
     @if (selectedTab() === 'promo') {
       <div class="tab-content">
-        <!-- Promociones exclusivas Cashback -->
+        <!-- Promociones exclusivas -->
         @if (mockPromotions.length > 0) {
           <app-promotions-slider
             [promotions]="mockPromotions"
-            title="Promociones exclusivas Cashback"
+            title="Promociones exclusivas"
             [showViewMore]="true"
             (viewMoreClick)="onPromotionsViewMore()">
           </app-promotions-slider>
         }
 
-        <!-- Santander Unique Rewards -->
+        <!-- Rewards Program -->
         @if (mockUniqueRewards.length > 0) {
           <app-promotions-slider
             [promotions]="mockUniqueRewards"
-            title="Santander Unique Rewards"
+            title="Rewards Program"
             [showViewMore]="true"
             (viewMoreClick)="onUniqueRewardsViewMore()">
           </app-promotions-slider>
