@@ -388,7 +388,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Gasolineras',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
@@ -410,7 +410,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Telecomunicaciones',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
@@ -432,7 +432,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Entretenimiento',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
@@ -454,7 +454,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Supermercados',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
@@ -476,7 +476,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Restaurantes',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     },
@@ -498,7 +498,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Farmacias',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: false
     }
@@ -524,7 +524,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Acerca de Unique Rewards',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
@@ -546,7 +546,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Tarjetas Unique',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
@@ -568,7 +568,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Catálogo de Premios',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
@@ -590,7 +590,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Promociones Especiales',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
@@ -612,7 +612,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Consulta de Puntos',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     },
@@ -634,7 +634,7 @@ export class CashbackPage {
       },
       merchant: {
         name: 'Únete Ahora',
-        url: 'https://www.santander.com.mx/cashback/promociones-unicas/'
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
       },
       isUniqueRewards: true
     }
@@ -644,13 +644,13 @@ export class CashbackPage {
    * Maneja el click en "Ver más" de promociones
    */
   onPromotionsViewMore(): void {
-    window.open('https://www.santander.com.mx/cashback/promociones-unicas/', '_blank');
+    window.open('https://www.rockstar.com.mx/cashback/promociones-unicas/', '_blank');
   }
 
   /**
    * Maneja el click en "Ver más" de Unique Rewards
    */
   onUniqueRewardsViewMore(): void {
-    window.open('https://www.santander.com.mx/cashback/promociones-unicas/', '_blank');
+    window.open('https://www.rockstar.com.mx/cashback/promociones-unicas/', '_blank');
   }
 }

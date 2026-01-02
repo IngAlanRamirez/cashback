@@ -36,7 +36,7 @@
 
   .btn-filter {
     background-color: var(--sn-color-clear, #ffffff);
-    color: var(--sn-color-santander, #ec0000);
+    color: var(--sn-color-rockstar, #ec0000);
     padding: 8px 16px;
     border-radius: 12px;
     cursor: pointer;
@@ -67,7 +67,7 @@
   margin-bottom: 16px;
 
   ion-icon {
-    color: var(--sn-color-santander, #ec0000);
+    color: var(--sn-color-rockstar, #ec0000);
     font-size: 18px;
     flex-shrink: 0;
   }
@@ -110,7 +110,7 @@
   padding-top: 8px;
 
   .btn-more {
-    color: var(--sn-color-santander, #ec0000);
+    color: var(--sn-color-rockstar, #ec0000);
     font-weight: 400;
     font-size: 16px;
     cursor: pointer;

@@ -25,7 +25,7 @@ export class InfoBannerComponent {
   }
 
   @Input() message: string = 
-    'Recuerda que el Cashback de tus compras será depositado en tu cuenta Santander antes del día 15 de cada mes.';
+    'Recuerda que el Cashback de tus compras será depositado en tu cuenta RockStar antes del día 15 de cada mes.';
 
   @Input() dismissible: boolean = true;
 
