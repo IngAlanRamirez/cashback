@@ -18,12 +18,20 @@ export class PromotionsSliderComponent {
   @Input() showViewMore: boolean = true;
   
   @Output() viewMoreClick = new EventEmitter<void>();
+  @Output() promotionClick = new EventEmitter<Promotion>();
 
   /**
    * Maneja el click en "Ver más"
    */
   onViewMore(): void {
     this.viewMoreClick.emit();
+  }
+
+  /**
+   * Maneja el click en una promoción
+   */
+  onPromotionClick(promotion: Promotion): void {
+    this.promotionClick.emit(promotion);
   }
 }
 

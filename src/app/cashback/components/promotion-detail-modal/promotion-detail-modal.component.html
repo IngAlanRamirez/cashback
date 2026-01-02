@@ -1,0 +1,47 @@
+@if (isOpen && promotion) {
+  <ion-modal 
+    [isOpen]="isOpen" 
+    (willDismiss)="closeModal()" 
+    class="promotion-detail-modal"
+    [breakpoints]="[0, 0.7, 0.85]"
+    [initialBreakpoint]="0.7"
+    [backdropDismiss]="true">
+    <ng-template>
+      <ion-header class="modal-header">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeModal()" class="close-btn">
+              Cerrar
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Cashback</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="modal-content">
+        <div class="promotion-detail-content">
+          <img 
+            src="/assets/images/promotions/rockstar-exit.png" 
+            alt="RockStar Exit"
+            class="cashback-logo" />
+          
+          <div class="promotion-body">
+            <h2 class="exit-message">Estás por salir del sitio</h2>
+            
+            <div class="disclaimer">
+              Por tu seguridad, cerraremos tu sesión en el sitio para dirigirte al sitio de promociones RockStar Cashback.
+            </div>
+            
+            <button 
+              class="continue-btn" 
+              (click)="navigateToUrl()"
+              type="button">
+              Continuar
+            </button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+}
+

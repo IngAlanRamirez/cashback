@@ -8,7 +8,10 @@
       class="promotions-swiper">
       @for (promotion of promotions; track promotion.promotionId) {
         <swiper-slide>
-          <app-promotion-card [promotion]="promotion"></app-promotion-card>
+          <app-promotion-card 
+            [promotion]="promotion"
+            (learnMoreClick)="onPromotionClick($event)">
+          </app-promotion-card>
         </swiper-slide>
       }
     </swiper-container>

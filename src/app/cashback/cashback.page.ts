@@ -22,6 +22,7 @@ import { TransactionsListComponent } from './components/transactions-list/transa
 import { CardSelectionComponent } from './components/card-selection/card-selection.component';
 import { FilterModalComponent } from './components/filter-modal/filter-modal.component';
 import { PromotionsSliderComponent } from './components/promotions-slider/promotions-slider.component';
+import { PromotionDetailModalComponent } from './components/promotion-detail-modal/promotion-detail-modal.component';
 import { Product } from './models/product';
 import { CashBackAmounts } from './models/cashback-amounts';
 import { ActivityAmountCashBack } from './models/activity-amount-cashback';
@@ -52,7 +53,8 @@ import { Promotion } from './models/promotion';
     TransactionsListComponent,
     CardSelectionComponent,
     FilterModalComponent,
-    PromotionsSliderComponent
+    PromotionsSliderComponent,
+    PromotionDetailModalComponent
   ]
 })
 export class CashbackPage {
@@ -72,6 +74,12 @@ export class CashbackPage {
   
   // Signal para controlar la visibilidad del modal de filtros
   isFilterModalOpen = signal<boolean>(false);
+  
+  // Signal para controlar la visibilidad del modal de detalle de promoción
+  isPromotionDetailModalOpen = signal<boolean>(false);
+  
+  // Signal para la promoción seleccionada
+  selectedPromotion = signal<Promotion | null>(null);
   
   // Datos mock para desarrollo
   mockProduct: Product = {
@@ -600,13 +608,84 @@ export class CashbackPage {
    * Maneja el click en "Ver más" de promociones
    */
   onPromotionsViewMore(): void {
-    window.open('https://www.rockstar.com.mx/cashback/promociones-unicas/', '_blank');
+    // Crear una promoción genérica para el modal
+    const genericPromotion: Promotion = {
+      promotionId: 'view-more-promotions',
+      description: '',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 0,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'Promociones exclusivas',
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: false
+    };
+    this.selectedPromotion.set(genericPromotion);
+    this.isPromotionDetailModalOpen.set(true);
   }
 
   /**
    * Maneja el click en "Ver más" de RockStar Rewards
    */
   onRockStarRewardsViewMore(): void {
-    window.open('https://www.rockstar.com.mx/cashback/promociones-unicas/', '_blank');
+    // Crear una promoción genérica para el modal
+    const genericPromotion: Promotion = {
+      promotionId: 'view-more-rewards',
+      description: '',
+      percentage: 0,
+      statusInfo: {
+        statusCode: 'ACTIVE'
+      },
+      period: {
+        startDate: '2025-01-01'
+      },
+      creationDate: '2025-01-01',
+      expirationDate: '2025-12-31',
+      position: 0,
+      image: {
+        imageNumber: ''
+      },
+      merchant: {
+        name: 'RockStar Rewards',
+        url: 'https://www.rockstar.com.mx/cashback/promociones-unicas/'
+      },
+      isUniqueRewards: true
+    };
+    this.selectedPromotion.set(genericPromotion);
+    this.isPromotionDetailModalOpen.set(true);
+  }
+
+  /**
+   * Maneja el click en una promoción
+   */
+  onPromotionClick(promotion: Promotion): void {
+    this.selectedPromotion.set(promotion);
+    this.isPromotionDetailModalOpen.set(true);
+  }
+
+  /**
+   * Cierra el modal de detalle de promoción
+   */
+  onPromotionDetailModalClose(): void {
+    this.isPromotionDetailModalOpen.set(false);
+    this.selectedPromotion.set(null);
+  }
+
+  /**
+   * Navega a la URL de la promoción
+   */
+  onPromotionNavigate(url: string): void {
+    window.open(url, '_blank');
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Promotion } from '../../models/promotion';
 
@@ -11,6 +11,7 @@ import { Promotion } from '../../models/promotion';
 })
 export class PromotionCardComponent {
   @Input() promotion!: Promotion;
+  @Output() learnMoreClick = new EventEmitter<Promotion>();
 
   /**
    * Obtiene la URL de la imagen
@@ -53,10 +54,7 @@ export class PromotionCardComponent {
    * Maneja el click en el botón "Conocer más"
    */
   onLearnMore(): void {
-    if (this.promotion.merchant && this.promotion.merchant.url) {
-      // Abrir URL en navegador externo
-      window.open(this.promotion.merchant.url, '_blank');
-    }
+    this.learnMoreClick.emit(this.promotion);
   }
 }
 

@@ -83,7 +83,8 @@
             [promotions]="mockPromotions"
             title="Promociones exclusivas"
             [showViewMore]="true"
-            (viewMoreClick)="onPromotionsViewMore()">
+            (viewMoreClick)="onPromotionsViewMore()"
+            (promotionClick)="onPromotionClick($event)">
           </app-promotions-slider>
         }
 
@@ -93,7 +94,8 @@
             [promotions]="mockRockStarRewards"
             title="RockStar Rewards"
             [showViewMore]="true"
-            (viewMoreClick)="onRockStarRewardsViewMore()">
+            (viewMoreClick)="onRockStarRewardsViewMore()"
+            (promotionClick)="onPromotionClick($event)">
           </app-promotions-slider>
         }
       </div>
@@ -115,4 +117,12 @@
     (close)="onFilterModalClose()"
     (filtersApplied)="onFiltersApplied($event)">
   </app-filter-modal>
+
+  <!-- Modal de Detalle de Promoción -->
+  <app-promotion-detail-modal
+    [isOpen]="isPromotionDetailModalOpen()"
+    [promotion]="selectedPromotion()"
+    (close)="onPromotionDetailModalClose()"
+    (navigate)="onPromotionNavigate($event)">
+  </app-promotion-detail-modal>
 </ion-content>
